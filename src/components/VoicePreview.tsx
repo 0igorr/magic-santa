@@ -20,19 +20,19 @@ const VoicePreview = () => {
   };
 
   return (
-    <section className="py-20 px-4 bg-gradient-to-b from-accent/10 to-background">
+    <section className="py-12 md:py-20 px-4 bg-gradient-to-b from-accent/10 to-background">
       <div className="container mx-auto max-w-3xl">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="text-center mb-12"
+          className="text-center mb-8 md:mb-12"
         >
-          <h2 className="text-3xl md:text-5xl font-bold mb-4">
+          <h2 className="text-2xl sm:text-3xl md:text-5xl font-bold mb-3 md:mb-4 px-4">
             Ouça a Voz Mágica do Papai Noel
           </h2>
-          <p className="text-lg text-muted-foreground">
+          <p className="text-base md:text-lg text-muted-foreground px-4">
             Digite o nome e teste a magia agora mesmo
           </p>
         </motion.div>
@@ -42,16 +42,16 @@ const VoicePreview = () => {
           whileInView={{ opacity: 1, scale: 1 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6, delay: 0.2 }}
-          className="glass rounded-2xl p-8 md:p-12 shadow-gold border-2 border-accent/20"
+          className="glass rounded-2xl p-6 md:p-12 shadow-gold border-2 border-accent/20"
         >
-          <div className="space-y-6">
+          <div className="space-y-5 md:space-y-6">
             <div>
               <Input
                 type="text"
                 placeholder="Digite o nome da criança..."
                 value={childName}
                 onChange={(e) => setChildName(e.target.value)}
-                className="text-lg py-6 rounded-xl border-2 border-accent/30 focus:border-accent"
+                className="text-base md:text-lg py-5 md:py-6 rounded-xl border-2 border-accent/30 focus:border-accent"
                 disabled={isGenerating || isReady}
               />
             </div>
@@ -59,10 +59,10 @@ const VoicePreview = () => {
             {!isReady && !isGenerating && (
               <Button
                 onClick={handleGenerate}
-                className="w-full bg-primary hover:bg-primary/90 text-white py-6 rounded-xl text-lg font-semibold"
+                className="w-full bg-primary hover:bg-primary/90 text-white py-5 md:py-6 rounded-xl text-base md:text-lg font-semibold"
                 disabled={!childName.trim()}
               >
-                <Mic className="w-5 h-5 mr-2" />
+                <Mic className="w-4 h-4 md:w-5 md:h-5 mr-2" />
                 Ouvir a Voz do Noel
               </Button>
             )}
