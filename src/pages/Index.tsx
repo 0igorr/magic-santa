@@ -1,6 +1,7 @@
 import Header from "@/components/Header";
 import Snowfall from "@/components/Snowfall";
 import HeroSection from "@/components/HeroSection";
+import TrustCarousel from "@/components/TrustCarousel";
 import VoicePreview from "@/components/VoicePreview";
 import Features from "@/components/Features";
 import VideoDemo from "@/components/VideoDemo";
@@ -15,6 +16,7 @@ const Index = () => {
       <Header />
       <Snowfall />
       <HeroSection />
+      <TrustCarousel />
       <VoicePreview />
       <Features />
       <VideoDemo />
