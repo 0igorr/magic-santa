@@ -4,10 +4,10 @@ import { Star } from "lucide-react";
 import heroImage from "@/assets/santa-hero.jpg";
 const HeroSection = () => {
   return <section id="hero" className="relative min-h-screen flex items-center justify-center overflow-hidden pt-16">
-      {/* Background Image with Overlay */}
+      {/* Background Image without Overlay */}
       <div className="absolute inset-0 z-0">
-        <img alt="Santa in cozy workshop" src="/lovable-uploads/4f9cc7e5-9b01-47c1-8598-f6d1bdf372d9.webp" className="w-full h-full object-cover opacity-100 shadow-none" />
-        <div className="absolute inset-0 bg-gradient-to-b from-secondary/90 via-secondary/70 to-secondary/90" />
+        <img alt="Santa in cozy workshop" src="/lovable-uploads/4f9cc7e5-9b01-47c1-8598-f6d1bdf372d9.webp" className="w-full h-full object-cover" />
+        <div className="absolute inset-0 bg-black/40" />
       </div>
 
       {/* Content */}
@@ -49,9 +49,21 @@ const HeroSection = () => {
         }} transition={{
           duration: 0.8,
           delay: 0.4
-        }}>
-            <Button size="lg" className="bg-primary hover:bg-primary/90 text-white text-base md:text-lg px-6 md:px-8 py-5 md:py-6 rounded-full shadow-button animate-pulse-glow font-semibold uppercase tracking-wide">
+        }} className="flex flex-col items-center gap-4">
+            <Button size="lg" className="bg-primary hover:bg-primary/90 text-white text-base md:text-lg px-6 md:px-8 py-5 md:py-6 rounded-full shadow-button animate-pulse-glow font-semibold uppercase tracking-wide w-full max-w-sm">
               Criar Meu Vídeo Agora
+            </Button>
+            <Button 
+              variant="secondary" 
+              size="lg" 
+              className="bg-white/90 hover:bg-white text-foreground text-sm md:text-base px-6 md:px-8 py-4 md:py-5 rounded-full font-medium flex items-center gap-2 backdrop-blur-sm"
+            >
+              <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4 text-white ml-0.5">
+                  <path d="M8 5v14l11-7z"/>
+                </svg>
+              </div>
+              Veja o vídeo
             </Button>
           </motion.div>
 
