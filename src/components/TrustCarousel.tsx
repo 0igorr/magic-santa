@@ -33,59 +33,54 @@ const TrustCarousel = () => {
       align: "start",
       slidesToScroll: 1,
       skipSnaps: false,
+      dragFree: false,
     },
     []
   );
 
-  const autoplay = useCallback(() => {
-    if (!emblaApi) return;
-    
-    const play = () => {
-      emblaApi.scrollNext();
-    };
-
-    const interval = setInterval(play, 4500); // 4.5 seconds between slides
-
-    // Pause on hover/touch
-    const container = emblaApi.rootNode();
-    
-    const pause = () => clearInterval(interval);
-    const resume = () => {
-      clearInterval(interval);
-      const newInterval = setInterval(play, 4500);
-      return newInterval;
-    };
-
-    let currentInterval = interval;
-    
-    container.addEventListener('mouseenter', pause);
-    container.addEventListener('touchstart', pause);
-    container.addEventListener('mouseleave', () => {
-      currentInterval = resume();
-    });
-    container.addEventListener('touchend', () => {
-      currentInterval = resume();
-    });
-
-    return () => {
-      clearInterval(interval);
-      clearInterval(currentInterval);
-      container.removeEventListener('mouseenter', pause);
-      container.removeEventListener('touchstart', pause);
-      container.removeEventListener('mouseleave', resume);
-      container.removeEventListener('touchend', resume);
-    };
-  }, [emblaApi]);
-
   useEffect(() => {
     if (!emblaApi) return;
-    autoplay();
-  }, [emblaApi, autoplay]);
+
+    let autoplayInterval: NodeJS.Timeout;
+
+    const startAutoplay = () => {
+      autoplayInterval = setInterval(() => {
+        emblaApi.scrollNext();
+      }, 4500); // 4.5 seconds between slides
+    };
+
+    const stopAutoplay = () => {
+      if (autoplayInterval) {
+        clearInterval(autoplayInterval);
+      }
+    };
+
+    // Start autoplay immediately
+    startAutoplay();
+
+    // Pause only during active drag
+    emblaApi.on('pointerDown', stopAutoplay);
+    emblaApi.on('pointerUp', startAutoplay);
+
+    return () => {
+      stopAutoplay();
+      emblaApi.off('pointerDown', stopAutoplay);
+      emblaApi.off('pointerUp', startAutoplay);
+    };
+  }, [emblaApi]);
 
   return (
     <section className="py-8 bg-background overflow-hidden border-y border-accent/20">
       <div className="relative">
-        <div ref={emblaRef} className="overflow-hidden">
+        <div 
+          ref={emblaRef} 
+          className="overflow-hidden cursor-grab active:cursor-grabbing"
+          style={{ 
+            touchAction: 'pan-y',
+            userSelect: 'none',
+            WebkitUserSelect: 'none'
+          }}
+        >
           <div className="flex" style={{ transition: 'transform 0.7s ease-in-out' }}>
             {/* Triple the items for smooth infinite loop */}
             {[...trustItems, ...trustItems, ...trustItems].map((item, index) => {
@@ -93,7 +88,8 @@ const TrustCarousel = () => {
               return (
                 <div
                   key={index}
-                  className="flex-shrink-0 w-[50vw] px-4 flex flex-col items-center justify-center text-center"
+                  className="flex-shrink-0 w-[50vw] px-4 flex flex-col items-center justify-center text-center pointer-events-none"
+                  onClick={(e) => e.preventDefault()}
                 >
                   <Icon className="w-8 h-8 mb-3 text-accent" strokeWidth={1.5} />
                   <p className="text-sm font-medium text-foreground leading-tight">
