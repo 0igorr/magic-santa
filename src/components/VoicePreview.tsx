@@ -4,7 +4,6 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Mic, Play, Loader2 } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
-import { supabase } from "@/integrations/supabase/client";
 
 const VoicePreview = () => {
   const [childName, setChildName] = useState("");
@@ -29,11 +28,23 @@ const VoicePreview = () => {
     setIsGenerating(true);
     
     try {
-      const { data, error } = await supabase.functions.invoke('generate-santa-voice', {
-        body: { text: childName }
-      });
+      const response = await fetch(
+        `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/generate-santa-voice`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY}`,
+          },
+          body: JSON.stringify({ text: childName }),
+        }
+      );
 
-      if (error) throw error;
+      if (!response.ok) {
+        throw new Error('Failed to generate voice');
+      }
+
+      const data = await response.json();
 
       if (data?.audioContent) {
         // Convert base64 to audio URL
