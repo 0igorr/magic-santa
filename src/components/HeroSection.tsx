@@ -53,7 +53,7 @@ const HeroSection = () => {
             <Button size="lg" className="bg-primary hover:bg-primary/90 text-white text-base md:text-lg px-6 md:px-8 py-5 md:py-6 rounded-full shadow-button animate-pulse-glow font-semibold uppercase tracking-wide w-full max-w-sm">
               Criar Meu Vídeo Agora
             </Button>
-            <Button variant="secondary" size="lg" className="">
+            <Button variant="secondary" size="lg" className="bg-black/0">
               <div className="w-8 h-8 rounded-full flex items-center justify-center bg-white">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4 ml-0.5 bg-white text-[#d2282b]">
                   <path d="M8 5v14l11-7z" />
