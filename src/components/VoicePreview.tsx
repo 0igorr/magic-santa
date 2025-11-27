@@ -18,8 +18,8 @@ const VoicePreview = () => {
     
     if (childName.length > 10) {
       toast({
-        title: "Nome muito longo",
-        description: "O nome deve ter no máximo 10 caracteres",
+        title: "Nombre muy largo",
+        description: "El nombre debe tener máximo 10 caracteres",
         variant: "destructive",
       });
       return;
@@ -59,8 +59,8 @@ const VoicePreview = () => {
     } catch (error) {
       console.error('Error generating voice:', error);
       toast({
-        title: "Erro ao gerar voz",
-        description: "Não foi possível gerar a voz. Tente novamente.",
+        title: "Error al generar voz",
+        description: "No se pudo generar la voz. Inténtalo de nuevo.",
         variant: "destructive",
       });
     } finally {
@@ -85,10 +85,10 @@ const VoicePreview = () => {
           className="text-center mb-8 md:mb-12"
         >
           <h2 className="text-2xl sm:text-3xl md:text-5xl font-bold mb-3 md:mb-4 px-4">
-            Ouça a Voz Mágica do Papai Noel
+            Escucha la Voz Mágica de Papá Noel
           </h2>
           <p className="text-base md:text-lg text-muted-foreground px-4">
-            Digite o nome e teste a magia agora mesmo
+            Escribe el nombre y prueba la magia ahora
           </p>
         </motion.div>
 
@@ -104,7 +104,7 @@ const VoicePreview = () => {
               <div className="space-y-2">
                 <Input
                   type="text"
-                  placeholder="Digite o nome..."
+                  placeholder="Escribe el nombre..."
                   value={childName}
                   onChange={(e) => setChildName(e.target.value.slice(0, 10))}
                   className="text-base md:text-lg py-5 md:py-6 rounded-xl border-2 border-accent/30 focus:border-accent"
@@ -124,7 +124,7 @@ const VoicePreview = () => {
                 disabled={!childName.trim()}
               >
                 <Mic className="w-4 h-4 md:w-5 md:h-5 mr-2" />
-                Ouvir a Voz do Noel
+                Escuchar la Voz de Papá Noel
               </Button>
             )}
 
@@ -147,7 +147,7 @@ const VoicePreview = () => {
                     />
                   ))}
                 </div>
-                <p className="text-accent font-semibold">Gerando voz mágica...</p>
+                <p className="text-accent font-semibold">Generando voz mágica...</p>
               </div>
             )}
 
@@ -159,19 +159,19 @@ const VoicePreview = () => {
               >
                 <div className="bg-gradient-magic rounded-xl p-6 border border-accent/30">
                   <p className="text-xl font-semibold text-accent mb-4">
-                    ✨ Nome encontrado na Lista do Polo Norte!
+                    ✨ ¡Nombre encontrado en la Lista del Polo Norte!
                   </p>
                   <Button
                     className="bg-accent hover:bg-accent/90 text-foreground font-semibold px-8 py-3 rounded-full"
                     onClick={handlePlay}
                   >
                     <Play className="w-5 h-5 mr-2" />
-                    Ouvir Prévia
+                    Escuchar Muestra
                   </Button>
                   <audio ref={audioRef} src={audioUrl || undefined} className="hidden" />
                 </div>
                 <p className="text-sm text-muted-foreground">
-                  Esta é apenas uma demonstração. O vídeo completo terá muito mais magia!
+                  Esta es solo una demostración. ¡El video completo tendrá mucha más magia!
                 </p>
               </motion.div>
             )}

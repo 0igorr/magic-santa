@@ -36,6 +36,10 @@ serve(async (req) => {
       );
     }
 
+    // Build Spanish greeting with the name
+    const greeting = `Hola ${text}, ¿todo bien?`;
+    console.log('Generated greeting:', greeting);
+
     const ELEVENLABS_API_KEY = Deno.env.get('ELEVENLABS_API_KEY');
     if (!ELEVENLABS_API_KEY) {
       console.error('ELEVENLABS_API_KEY not set');
@@ -43,8 +47,6 @@ serve(async (req) => {
     }
 
     const VOICE_ID = 'EVe3WGOyN9gwJfP4WJRB';
-    
-    console.log('Generating voice for text:', text);
 
     // Call ElevenLabs API
     const response = await fetch(
@@ -57,7 +59,7 @@ serve(async (req) => {
           'xi-api-key': ELEVENLABS_API_KEY,
         },
         body: JSON.stringify({
-          text: text,
+          text: greeting,
           model_id: 'eleven_multilingual_v2',
           voice_settings: {
             stability: 0.5,
