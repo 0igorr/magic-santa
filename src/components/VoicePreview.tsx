@@ -1,22 +1,66 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Mic, Play, Loader2 } from "lucide-react";
+import { useToast } from "@/components/ui/use-toast";
+import { supabase } from "@/integrations/supabase/client";
 
 const VoicePreview = () => {
   const [childName, setChildName] = useState("");
   const [isGenerating, setIsGenerating] = useState(false);
   const [isReady, setIsReady] = useState(false);
+  const [audioUrl, setAudioUrl] = useState<string | null>(null);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+  const { toast } = useToast();
 
-  const handleGenerate = () => {
+  const handleGenerate = async () => {
     if (!childName.trim()) return;
     
+    if (childName.length > 10) {
+      toast({
+        title: "Nome muito longo",
+        description: "O nome deve ter no máximo 10 caracteres",
+        variant: "destructive",
+      });
+      return;
+    }
+    
     setIsGenerating(true);
-    setTimeout(() => {
+    
+    try {
+      const { data, error } = await supabase.functions.invoke('generate-santa-voice', {
+        body: { text: childName }
+      });
+
+      if (error) throw error;
+
+      if (data?.audioContent) {
+        // Convert base64 to audio URL
+        const audioBlob = new Blob(
+          [Uint8Array.from(atob(data.audioContent), c => c.charCodeAt(0))],
+          { type: 'audio/mpeg' }
+        );
+        const url = URL.createObjectURL(audioBlob);
+        setAudioUrl(url);
+        setIsReady(true);
+      }
+    } catch (error) {
+      console.error('Error generating voice:', error);
+      toast({
+        title: "Erro ao gerar voz",
+        description: "Não foi possível gerar a voz. Tente novamente.",
+        variant: "destructive",
+      });
+    } finally {
       setIsGenerating(false);
-      setIsReady(true);
-    }, 3000);
+    }
+  };
+
+  const handlePlay = () => {
+    if (audioRef.current && audioUrl) {
+      audioRef.current.play();
+    }
   };
 
   return (
@@ -46,14 +90,20 @@ const VoicePreview = () => {
         >
           <div className="space-y-5 md:space-y-6">
             <div>
-              <Input
-                type="text"
-                placeholder="Digite o nome da criança..."
-                value={childName}
-                onChange={(e) => setChildName(e.target.value)}
-                className="text-base md:text-lg py-5 md:py-6 rounded-xl border-2 border-accent/30 focus:border-accent"
-                disabled={isGenerating || isReady}
-              />
+              <div className="space-y-2">
+                <Input
+                  type="text"
+                  placeholder="Digite o nome..."
+                  value={childName}
+                  onChange={(e) => setChildName(e.target.value.slice(0, 10))}
+                  className="text-base md:text-lg py-5 md:py-6 rounded-xl border-2 border-accent/30 focus:border-accent"
+                  disabled={isGenerating || isReady}
+                  maxLength={10}
+                />
+                <p className="text-xs text-muted-foreground text-right">
+                  {childName.length}/10 caracteres
+                </p>
+              </div>
             </div>
 
             {!isReady && !isGenerating && (
@@ -102,10 +152,12 @@ const VoicePreview = () => {
                   </p>
                   <Button
                     className="bg-accent hover:bg-accent/90 text-foreground font-semibold px-8 py-3 rounded-full"
+                    onClick={handlePlay}
                   >
                     <Play className="w-5 h-5 mr-2" />
                     Ouvir Prévia
                   </Button>
+                  <audio ref={audioRef} src={audioUrl || undefined} className="hidden" />
                 </div>
                 <p className="text-sm text-muted-foreground">
                   Esta é apenas uma demonstração. O vídeo completo terá muito mais magia!

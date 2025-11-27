@@ -1,0 +1,2 @@
+[functions.generate-santa-voice]
+verify_jwt = false
