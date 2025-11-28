@@ -120,11 +120,11 @@ const VoicePreview = () => {
             {!isReady && !isGenerating && (
               <Button
                 onClick={handleGenerate}
-                className="w-full bg-primary hover:bg-primary/90 text-white py-5 md:py-6 rounded-xl text-base md:text-lg font-semibold"
+                className="w-full bg-primary hover:bg-primary/90 text-white py-4 md:py-6 rounded-xl text-sm md:text-lg font-semibold flex items-center justify-center"
                 disabled={!childName.trim()}
               >
-                <Mic className="w-4 h-4 md:w-5 md:h-5 mr-2" />
-                Escuchar la Voz de Papá Noel
+                <Mic className="w-4 h-4 md:w-5 md:h-5 mr-2 flex-shrink-0" />
+                <span className="truncate">Escuchar la Voz de Papá Noel</span>
               </Button>
             )}
 

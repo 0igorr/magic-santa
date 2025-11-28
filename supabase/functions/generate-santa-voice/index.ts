@@ -36,8 +36,8 @@ serve(async (req) => {
       );
     }
 
-    // Build Spanish greeting with the name
-    const greeting = `Hola ${text}, ¿todo bien?`;
+    // Build Spanish greeting with the name using excited emotion tag
+    const greeting = `[excited] ¡¡${text}!!`;
     console.log('Generated greeting:', greeting);
 
     const ELEVENLABS_API_KEY = Deno.env.get('ELEVENLABS_API_KEY');
@@ -60,7 +60,7 @@ serve(async (req) => {
         },
         body: JSON.stringify({
           text: greeting,
-          model_id: 'eleven_multilingual_v2',
+          model_id: 'eleven_turbo_v2_5',
           voice_settings: {
             stability: 0.5,
             similarity_boost: 0.75,
