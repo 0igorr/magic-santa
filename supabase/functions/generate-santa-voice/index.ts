@@ -36,9 +36,9 @@ serve(async (req) => {
       );
     }
 
-    // Build greeting with excited audio tag - only the name will be spoken
-    const greeting = `[excited] ${text}`;
-    console.log('Generated greeting:', greeting);
+    // Use the name directly without audio tags
+    const greeting = text;
+    console.log('Generating voice for name:', greeting);
 
     const ELEVENLABS_API_KEY = Deno.env.get('ELEVENLABS_API_KEY');
     if (!ELEVENLABS_API_KEY) {
