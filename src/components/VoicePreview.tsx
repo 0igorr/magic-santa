@@ -108,7 +108,7 @@ const VoicePreview = () => {
                   value={childName}
                   onChange={(e) => setChildName(e.target.value.slice(0, 10))}
                   className="text-base md:text-lg py-5 md:py-6 rounded-xl border-2 border-accent/30 focus:border-accent"
-                  disabled={isGenerating || isReady}
+                  disabled={isGenerating}
                   maxLength={10}
                 />
                 <p className="text-xs text-muted-foreground text-right">
@@ -170,6 +170,20 @@ const VoicePreview = () => {
                   </Button>
                   <audio ref={audioRef} src={audioUrl || undefined} className="hidden" />
                 </div>
+                <Button
+                  onClick={() => {
+                    setIsReady(false);
+                    setChildName("");
+                    if (audioUrl) {
+                      URL.revokeObjectURL(audioUrl);
+                      setAudioUrl(null);
+                    }
+                  }}
+                  variant="outline"
+                  className="w-full border-accent/30 hover:bg-accent/10"
+                >
+                  Generar Otro Nombre
+                </Button>
                 <p className="text-sm text-muted-foreground">
                   Esta es solo una demostración. ¡El video completo tendrá mucha más magia!
                 </p>

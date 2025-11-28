@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { Menu, X, Sparkles } from "lucide-react";
+import { Menu, X, ShoppingCart } from "lucide-react";
 
 const navLinks = [
   { name: "Início", href: "#hero" },
@@ -26,55 +26,43 @@ const Header = () => {
     <header className="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-md shadow-sm">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16 md:h-20">
-          {/* Mobile Menu Button - Left */}
+          {/* Menu Button - Left */}
           <button
             onClick={() => setIsOpen(!isOpen)}
-            className="md:hidden p-2 text-foreground hover:bg-muted rounded-lg transition-colors"
+            className="p-2 text-foreground hover:bg-accent/10 rounded-full transition-colors"
             aria-label="Toggle menu"
           >
             {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
           </button>
 
-          {/* Logo - Center on mobile, Left on desktop */}
+          {/* Logo - Center */}
           <motion.div
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
-            className="absolute left-1/2 -translate-x-1/2 md:relative md:left-0 md:translate-x-0 flex items-center gap-2"
+            className="absolute left-1/2 -translate-x-1/2 flex flex-col items-center"
           >
-            <Sparkles className="w-6 h-6 md:w-7 md:h-7 text-accent" />
-            <span className="text-lg md:text-xl font-heading font-bold text-foreground">
-              Magic Santa
-            </span>
+            <div className="relative w-10 h-10 md:w-12 md:h-12">
+              {/* Santa Hat Icon */}
+              <svg viewBox="0 0 40 40" className="w-full h-full">
+                <path
+                  d="M20 8 L12 28 L28 28 Z"
+                  fill="#D42426"
+                  stroke="#D42426"
+                  strokeWidth="1"
+                />
+                <ellipse cx="20" cy="8" rx="3" ry="3" fill="white" />
+                <rect x="10" y="27" width="20" height="4" rx="2" fill="white" />
+              </svg>
+            </div>
           </motion.div>
 
-          {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center gap-6">
-            {navLinks.map((link, index) => (
-              <motion.button
-                key={link.name}
-                initial={{ opacity: 0, y: -10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.1 }}
-                onClick={() => scrollToSection(link.href)}
-                className="text-sm font-medium text-foreground hover:text-primary transition-colors"
-              >
-                {link.name}
-              </motion.button>
-            ))}
-            <Button
-              onClick={() => scrollToSection("#pricing")}
-              className="bg-primary hover:bg-primary/90 text-white rounded-full px-6"
-            >
-              Criar Vídeo
-            </Button>
-          </nav>
-
-          {/* Right Icon - Cart or User */}
+          {/* Cart - Right */}
           <button
-            className="p-2 text-foreground hover:bg-muted rounded-lg transition-colors"
-            aria-label="Account"
+            onClick={() => scrollToSection("#pricing")}
+            className="relative p-2 text-foreground hover:bg-accent/10 rounded-full transition-colors"
+            aria-label="Cart"
           >
-            <Sparkles className="w-6 h-6" />
+            <ShoppingCart className="w-6 h-6" />
           </button>
         </div>
       </div>
@@ -86,7 +74,7 @@ const Header = () => {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
-            className="md:hidden bg-background border-t border-border/50"
+            className="bg-background border-t border-border/50"
           >
             <nav className="container mx-auto px-4 py-6 flex flex-col gap-4">
               {navLinks.map((link) => (
