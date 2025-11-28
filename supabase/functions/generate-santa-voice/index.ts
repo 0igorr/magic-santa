@@ -36,9 +36,9 @@ serve(async (req) => {
       );
     }
 
-    // Use the name directly without audio tags
-    const greeting = text;
-    console.log('Generating voice for name:', greeting);
+    // Use excited audio tag for animated intonation (tag won't be spoken)
+    const greeting = `[excited] ${text}`;
+    console.log('Generating voice with excited intonation for:', text);
 
     const ELEVENLABS_API_KEY = Deno.env.get('ELEVENLABS_API_KEY');
     if (!ELEVENLABS_API_KEY) {
@@ -60,7 +60,7 @@ serve(async (req) => {
         },
         body: JSON.stringify({
           text: greeting,
-          model_id: 'eleven_turbo_v2_5',
+          model_id: 'eleven_multilingual_v2',
           voice_settings: {
             stability: 0.5,
             similarity_boost: 0.75,
