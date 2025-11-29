@@ -73,13 +73,31 @@ const HeroSection = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.8, delay: 0.6 }}
-            className="flex flex-col sm:flex-row items-center justify-center gap-3 text-white/90 text-sm"
+            className="flex flex-col sm:flex-row items-center justify-center gap-4 text-white/90 text-sm"
           >
-            <div className="flex items-center gap-1">
-              {[...Array(5)].map((_, i) => (
-                <Star key={i} className="w-4 h-4 fill-accent text-accent" />
-              ))}
-              <span className="ml-2 font-medium">4,7 de 1429 avaliações</span>
+            {/* Trustpilot Section */}
+            <div className="flex items-center gap-2 bg-white/10 backdrop-blur-sm px-4 py-2 rounded-lg">
+              <div className="bg-white px-2 py-1 rounded">
+                <svg width="80" height="16" viewBox="0 0 80 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M0 6h6v10H0z" fill="#00B67A"/>
+                  <path d="M8 0l2 4 4 1-3 3 1 4-4-2-4 2 1-4-3-3 4-1z" fill="#00B67A"/>
+                  <text x="20" y="11" fontSize="10" fill="#00B67A" fontWeight="bold">Trustpilot</text>
+                </svg>
+              </div>
+              <div className="flex flex-col">
+                <div className="flex items-center gap-1">
+                  {[...Array(5)].map((_, i) => (
+                    <Star key={i} className="w-3 h-3 fill-accent text-accent" />
+                  ))}
+                </div>
+                <span className="text-xs font-medium">4,7 de 1429 avaliações</span>
+              </div>
+            </div>
+
+            {/* Badge +5 Anos */}
+            <div className="flex items-center gap-2 bg-accent/20 backdrop-blur-sm px-4 py-2 rounded-lg border border-accent/30">
+              <div className="text-accent text-2xl font-bold">+5</div>
+              <span className="text-white text-xs font-medium">anos no<br />mercado</span>
             </div>
           </motion.div>
         </motion.div>
