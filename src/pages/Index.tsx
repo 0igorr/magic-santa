@@ -1,3 +1,4 @@
+import AnnouncementBar from "@/components/AnnouncementBar";
 import Header from "@/components/Header";
 import Snowfall from "@/components/Snowfall";
 import HeroSection from "@/components/HeroSection";
@@ -13,6 +14,7 @@ import Footer from "@/components/Footer";
 const Index = () => {
   return (
     <div className="min-h-screen">
+      <AnnouncementBar />
       <Header />
       <Snowfall />
       <HeroSection />
