@@ -29,8 +29,8 @@ const Header = () => {
       setIsOpen(false);
     }
   };
-  return <header className="relative z-40 pt-4 px-4">
-      <div className="container mx-auto">
+  return <header className="absolute top-0 left-0 right-0 z-40 pt-4 px-2">
+      <div className="w-full">
         <div className="flex items-start justify-between">
           {/* Menu Button - Left */}
           <div className="flex flex-col items-center gap-1">
