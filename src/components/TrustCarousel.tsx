@@ -24,18 +24,20 @@ const trustItems = [
 ];
 
 const TrustCarousel = () => {
+  // Duplicate items 6 times to ensure seamless infinite loop on all screen sizes
+  const duplicatedItems = Array(6).fill(trustItems).flat();
+  
   return (
     <section className="py-8 bg-background overflow-hidden border-y border-accent/20">
       <div className="relative">
         <div className="overflow-hidden">
           <div className="flex animate-scroll-infinite">
-            {/* Duplicate items multiple times for seamless infinite loop */}
-            {[...trustItems, ...trustItems, ...trustItems, ...trustItems].map((item, index) => {
+            {duplicatedItems.map((item, index) => {
               const Icon = item.icon;
               return (
                 <div
                   key={index}
-                  className="flex-shrink-0 w-[300px] px-6 flex flex-col items-center justify-center text-center"
+                  className="flex-shrink-0 w-[280px] sm:w-[320px] px-6 flex flex-col items-center justify-center text-center"
                 >
                   <Icon className="w-8 h-8 mb-3 text-accent" strokeWidth={1.5} />
                   <p className="text-sm font-medium text-foreground leading-tight">
