@@ -1,5 +1,5 @@
 import { Star, ChevronLeft, ChevronRight, Play } from "lucide-react";
-import { useState } from "react";
+import { useState, useRef } from "react";
 
 const videoProofs = [
   { id: 1, username: "@maria_santos", thumbnail: "/lovable-uploads/4f9cc7e5-9b01-47c1-8598-f6d1bdf372d9.webp" },
@@ -11,26 +11,18 @@ const videoProofs = [
 
 const VideoProofSection = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const totalVideos = videoProofs.length;
-
-  // Helper to wrap index for infinite loop
-  const wrapIndex = (index: number) => {
-    return ((index % totalVideos) + totalVideos) % totalVideos;
-  };
+  const containerRef = useRef<HTMLDivElement>(null);
 
   const scrollPrev = () => {
-    setCurrentIndex((prev) => wrapIndex(prev - 1));
+    setCurrentIndex((prev) => (prev === 0 ? videoProofs.length - 1 : prev - 1));
   };
 
   const scrollNext = () => {
-    setCurrentIndex((prev) => wrapIndex(prev + 1));
+    setCurrentIndex((prev) => (prev === videoProofs.length - 1 ? 0 : prev + 1));
   };
 
-  const prevIndex = wrapIndex(currentIndex - 1);
-  const nextIndex = wrapIndex(currentIndex + 1);
-
   return (
-    <section className="py-12 md:py-16 bg-background overflow-hidden">
+    <section className="py-12 md:py-16 bg-background">
       <div className="container mx-auto px-4">
         {/* Header */}
         <div className="text-center mb-8">
@@ -56,66 +48,83 @@ const VideoProofSection = () => {
         </div>
 
         {/* Video Carousel */}
-        <div className="relative flex items-center justify-center">
-          {/* Navigation Arrow Left */}
+        <div className="relative">
+          {/* Navigation Arrows */}
           <button
             onClick={scrollPrev}
-            className="absolute left-2 md:left-4 top-1/2 -translate-y-1/2 z-20 w-10 h-10 md:w-12 md:h-12 bg-background rounded-full shadow-lg flex items-center justify-center hover:bg-muted transition-colors"
+            className="absolute left-0 top-1/2 -translate-y-1/2 z-10 w-10 h-10 md:w-12 md:h-12 bg-background rounded-full shadow-lg flex items-center justify-center hover:bg-muted transition-colors"
             aria-label="Anterior"
           >
             <ChevronLeft className="w-5 h-5 md:w-6 md:h-6 text-foreground" />
           </button>
           
-          {/* Navigation Arrow Right */}
           <button
             onClick={scrollNext}
-            className="absolute right-2 md:right-4 top-1/2 -translate-y-1/2 z-20 w-10 h-10 md:w-12 md:h-12 bg-background rounded-full shadow-lg flex items-center justify-center hover:bg-muted transition-colors"
+            className="absolute right-0 top-1/2 -translate-y-1/2 z-10 w-10 h-10 md:w-12 md:h-12 bg-background rounded-full shadow-lg flex items-center justify-center hover:bg-muted transition-colors"
             aria-label="Próximo"
           >
             <ChevronRight className="w-5 h-5 md:w-6 md:h-6 text-foreground" />
           </button>
 
           {/* Videos Container */}
-          <div className="flex items-center justify-center w-full">
-            {/* Left partial video */}
-            <div className="relative flex-shrink-0 w-8 md:w-16 h-[400px] md:h-[500px] overflow-hidden rounded-l-2xl -mr-1">
-              <img
-                src={videoProofs[prevIndex].thumbnail}
-                alt={`Vídeo de ${videoProofs[prevIndex].username}`}
-                className="w-full h-full object-cover object-right opacity-70"
-              />
-            </div>
+          <div 
+            ref={containerRef}
+            className="flex items-center justify-center gap-3 md:gap-4 overflow-hidden px-12 md:px-16"
+          >
+            {videoProofs.map((video, index) => {
+              const position = index - currentIndex;
+              const isCenter = position === 0;
+              const isVisible = Math.abs(position) <= 1 || 
+                (currentIndex === 0 && index === videoProofs.length - 1) ||
+                (currentIndex === videoProofs.length - 1 && index === 0);
+              
+              // Adjust position for wrap-around
+              let adjustedPosition = position;
+              if (currentIndex === 0 && index === videoProofs.length - 1) {
+                adjustedPosition = -1;
+              } else if (currentIndex === videoProofs.length - 1 && index === 0) {
+                adjustedPosition = 1;
+              }
 
-            {/* Center video (main) */}
-            <div className="relative flex-shrink-0 w-[280px] md:w-[350px] h-[400px] md:h-[500px] rounded-2xl overflow-hidden z-10 shadow-2xl transition-all duration-300">
-              <img
-                src={videoProofs[currentIndex].thumbnail}
-                alt={`Vídeo de ${videoProofs[currentIndex].username}`}
-                className="w-full h-full object-cover"
-              />
-              
-              {/* Play Button */}
-              <button className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-14 h-14 md:w-16 md:h-16 bg-background rounded-full flex items-center justify-center shadow-lg hover:scale-110 transition-transform">
-                <Play className="w-6 h-6 md:w-7 md:h-7 text-primary fill-primary ml-1" />
-              </button>
-              
-              {/* Username */}
-              <div className="absolute bottom-4 left-4 text-white text-sm font-medium drop-shadow-lg">
-                {videoProofs[currentIndex].username}
-              </div>
-              
-              {/* Gradient overlay */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent pointer-events-none" />
-            </div>
-
-            {/* Right partial video */}
-            <div className="relative flex-shrink-0 w-8 md:w-16 h-[400px] md:h-[500px] overflow-hidden rounded-r-2xl -ml-1">
-              <img
-                src={videoProofs[nextIndex].thumbnail}
-                alt={`Vídeo de ${videoProofs[nextIndex].username}`}
-                className="w-full h-full object-cover object-left opacity-70"
-              />
-            </div>
+              return (
+                <div
+                  key={video.id}
+                  className={`relative flex-shrink-0 rounded-2xl overflow-hidden transition-all duration-500 ${
+                    isCenter 
+                      ? "w-64 md:w-80 h-[400px] md:h-[500px] scale-100 opacity-100 z-10" 
+                      : "w-16 md:w-24 h-[350px] md:h-[450px] scale-95 opacity-60"
+                  } ${!isVisible ? "hidden md:block" : ""}`}
+                  style={{
+                    transform: `translateX(${adjustedPosition * 10}px)`,
+                  }}
+                >
+                  <img
+                    src={video.thumbnail}
+                    alt={`Vídeo de ${video.username}`}
+                    className="w-full h-full object-cover"
+                  />
+                  
+                  {/* Play Button - Only on center */}
+                  {isCenter && (
+                    <button className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-14 h-14 md:w-16 md:h-16 bg-background rounded-full flex items-center justify-center shadow-lg hover:scale-110 transition-transform">
+                      <Play className="w-6 h-6 md:w-7 md:h-7 text-primary fill-primary ml-1" />
+                    </button>
+                  )}
+                  
+                  {/* Username - Only on center */}
+                  {isCenter && (
+                    <div className="absolute bottom-4 left-4 text-white text-sm font-medium drop-shadow-lg">
+                      {video.username}
+                    </div>
+                  )}
+                  
+                  {/* Gradient overlay */}
+                  {isCenter && (
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent pointer-events-none" />
+                  )}
+                </div>
+              );
+            })}
           </div>
         </div>
       </div>
