@@ -48,11 +48,11 @@ const VideoProofSection = () => {
         </div>
 
         {/* Video Carousel */}
-        <div className="relative">
+        <div className="relative max-w-7xl mx-auto">
           {/* Navigation Arrows */}
           <button
             onClick={scrollPrev}
-            className="absolute left-0 top-1/2 -translate-y-1/2 z-10 w-10 h-10 md:w-12 md:h-12 bg-background rounded-full shadow-lg flex items-center justify-center hover:bg-muted transition-colors"
+            className="absolute left-2 md:-left-6 top-1/2 -translate-y-1/2 z-10 w-10 h-10 md:w-12 md:h-12 bg-background rounded-full shadow-lg flex items-center justify-center hover:bg-muted transition-colors"
             aria-label="Anterior"
           >
             <ChevronLeft className="w-5 h-5 md:w-6 md:h-6 text-foreground" />
@@ -60,43 +60,59 @@ const VideoProofSection = () => {
           
           <button
             onClick={scrollNext}
-            className="absolute right-0 top-1/2 -translate-y-1/2 z-10 w-10 h-10 md:w-12 md:h-12 bg-background rounded-full shadow-lg flex items-center justify-center hover:bg-muted transition-colors"
+            className="absolute right-2 md:-right-6 top-1/2 -translate-y-1/2 z-10 w-10 h-10 md:w-12 md:h-12 bg-background rounded-full shadow-lg flex items-center justify-center hover:bg-muted transition-colors"
             aria-label="Próximo"
           >
             <ChevronRight className="w-5 h-5 md:w-6 md:h-6 text-foreground" />
           </button>
 
           {/* Videos Container */}
-          <div 
-            ref={containerRef}
-            className="flex items-center justify-center gap-3 md:gap-4 overflow-hidden px-12 md:px-16"
-          >
-            {videoProofs.map((video, index) => {
-              const position = index - currentIndex;
-              const isCenter = position === 0;
-              const isVisible = Math.abs(position) <= 1 || 
-                (currentIndex === 0 && index === videoProofs.length - 1) ||
-                (currentIndex === videoProofs.length - 1 && index === 0);
-              
-              // Adjust position for wrap-around
-              let adjustedPosition = position;
-              if (currentIndex === 0 && index === videoProofs.length - 1) {
-                adjustedPosition = -1;
-              } else if (currentIndex === videoProofs.length - 1 && index === 0) {
-                adjustedPosition = 1;
-              }
+          <div className="overflow-hidden px-12 md:px-4">
+            {/* Mobile: Single video carousel */}
+            <div className="md:hidden">
+              <div className="relative">
+                <div 
+                  ref={containerRef}
+                  className="flex transition-transform duration-500 ease-out"
+                  style={{ transform: `translateX(-${currentIndex * 100}%)` }}
+                >
+                  {videoProofs.map((video) => (
+                    <div
+                      key={video.id}
+                      className="relative flex-shrink-0 w-full px-2"
+                    >
+                      <div className="relative rounded-2xl overflow-hidden aspect-[9/16] max-h-[500px] mx-auto">
+                        <img
+                          src={video.thumbnail}
+                          alt={`Vídeo de ${video.username}`}
+                          className="w-full h-full object-cover"
+                        />
+                        
+                        {/* Play Button */}
+                        <button className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-14 h-14 bg-background rounded-full flex items-center justify-center shadow-lg hover:scale-110 transition-transform">
+                          <Play className="w-6 h-6 text-primary fill-primary ml-1" />
+                        </button>
+                        
+                        {/* Username */}
+                        <div className="absolute bottom-4 left-4 text-white text-sm font-medium drop-shadow-lg">
+                          {video.username}
+                        </div>
+                        
+                        {/* Gradient overlay */}
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent pointer-events-none" />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
 
-              return (
+            {/* Desktop: All videos visible */}
+            <div className="hidden md:grid md:grid-cols-5 gap-3 lg:gap-4">
+              {videoProofs.map((video) => (
                 <div
                   key={video.id}
-                  className={`relative flex-shrink-0 rounded-2xl overflow-hidden transition-all duration-500 ${
-                    isCenter 
-                      ? "w-64 md:w-80 h-[400px] md:h-[500px] scale-100 opacity-100 z-10" 
-                      : "w-16 md:w-24 h-[350px] md:h-[450px] scale-95 opacity-60"
-                  } ${!isVisible ? "hidden md:block" : ""}`}
-                  style={{
-                    transform: `translateX(${adjustedPosition * 10}px)`,
-                  }}
+                  className="relative rounded-2xl overflow-hidden aspect-[9/16] group cursor-pointer"
                 >
                   <img
                     src={video.thumbnail}
@@ -104,27 +120,21 @@ const VideoProofSection = () => {
                     className="w-full h-full object-cover"
                   />
                   
-                  {/* Play Button - Only on center */}
-                  {isCenter && (
-                    <button className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-14 h-14 md:w-16 md:h-16 bg-background rounded-full flex items-center justify-center shadow-lg hover:scale-110 transition-transform">
-                      <Play className="w-6 h-6 md:w-7 md:h-7 text-primary fill-primary ml-1" />
-                    </button>
-                  )}
+                  {/* Play Button */}
+                  <button className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-12 h-12 lg:w-14 lg:h-14 bg-background rounded-full flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
+                    <Play className="w-5 h-5 lg:w-6 lg:h-6 text-primary fill-primary ml-1" />
+                  </button>
                   
-                  {/* Username - Only on center */}
-                  {isCenter && (
-                    <div className="absolute bottom-4 left-4 text-white text-sm font-medium drop-shadow-lg">
-                      {video.username}
-                    </div>
-                  )}
+                  {/* Username */}
+                  <div className="absolute bottom-3 left-3 text-white text-xs lg:text-sm font-medium drop-shadow-lg">
+                    {video.username}
+                  </div>
                   
                   {/* Gradient overlay */}
-                  {isCenter && (
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent pointer-events-none" />
-                  )}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent pointer-events-none" />
                 </div>
-              );
-            })}
+              ))}
+            </div>
           </div>
         </div>
       </div>
