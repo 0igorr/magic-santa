@@ -10,24 +10,20 @@ import Testimonials from "@/components/Testimonials";
 import Pricing from "@/components/Pricing";
 import FAQ from "@/components/FAQ";
 import Footer from "@/components/Footer";
-
 const Index = () => {
-  return (
-    <div className="min-h-screen">
+  return <div className="min-h-screen">
       <AnnouncementBar />
       <Header />
       <Snowfall />
       <HeroSection />
       <TrustCarousel />
-      <VoicePreview />
+      <VoicePreview className="bg-[#fbf6e9]" />
       <Features />
       <VideoDemo />
       <Testimonials />
       <Pricing />
       <FAQ />
       <Footer />
-    </div>
-  );
+    </div>;
 };
-
 export default Index;
