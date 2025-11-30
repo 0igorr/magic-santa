@@ -25,7 +25,6 @@ const HeroSection = () => {
           </p>
           
           <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-accent mb-3 leading-tight">Black Friday Com -40%
-​OFF em tudo
           <br />
             <span className="sm:text-6xl md:text-7xl lg:text-8xl text-4xl text-primary-foreground">​OFF em tudo </span>
             <br />
