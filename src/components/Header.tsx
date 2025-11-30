@@ -29,13 +29,16 @@ const Header = () => {
       setIsOpen(false);
     }
   };
-  return <header className="absolute top-0 left-0 right-0 z-40">
-      <div className="container mx-auto px-4">
-        <div className="flex items-center justify-between h-16 md:h-20">
+  return <header className="relative z-40 pt-4 px-4">
+      <div className="container mx-auto">
+        <div className="flex items-start justify-between">
           {/* Menu Button - Left */}
-          <button onClick={() => setIsOpen(!isOpen)} aria-label="Toggle menu" className="p-2 text-foreground rounded-full transition-colors bg-primary-foreground">
-            {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-          </button>
+          <div className="flex flex-col items-center gap-1">
+            <button onClick={() => setIsOpen(!isOpen)} aria-label="Toggle menu" className="w-14 h-14 flex items-center justify-center text-foreground rounded-full transition-colors bg-white shadow-lg">
+              {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+            </button>
+            <span className="text-xs text-white font-medium drop-shadow-md">Menu</span>
+          </div>
 
           {/* Logo - Center */}
           <motion.div initial={{
@@ -44,8 +47,8 @@ const Header = () => {
         }} animate={{
           opacity: 1,
           y: 0
-        }} className="absolute left-1/2 -translate-x-1/2 flex flex-col items-center">
-            <div className="relative w-10 h-10 md:w-12 md:h-12">
+        }} className="flex flex-col items-center">
+            <div className="relative w-12 h-12 md:w-14 md:h-14">
               {/* Santa Hat Icon */}
               <svg viewBox="0 0 40 40" className="w-full h-full">
                 <path d="M20 8 L12 28 L28 28 Z" fill="#D42426" stroke="#D42426" strokeWidth="1" />
@@ -56,9 +59,12 @@ const Header = () => {
           </motion.div>
 
           {/* Cart - Right */}
-          <button onClick={() => scrollToSection("#pricing")} aria-label="Cart" className="relative p-2 text-foreground rounded-full transition-colors bg-primary-foreground">
-            <ShoppingCart className="w-6 h-6" />
-          </button>
+          <div className="flex flex-col items-center gap-1">
+            <button onClick={() => scrollToSection("#pricing")} aria-label="Cart" className="w-14 h-14 flex items-center justify-center text-foreground rounded-full transition-colors bg-white shadow-lg">
+              <ShoppingCart className="w-6 h-6" />
+            </button>
+            <span className="text-xs text-white font-medium drop-shadow-md">Cesta</span>
+          </div>
         </div>
       </div>
 
