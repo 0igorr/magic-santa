@@ -10,7 +10,7 @@ const HeroSection = () => {
       </div>
 
       {/* Content */}
-      <div className="relative z-10 container text-center my-0 px-[15px] py-0 mx-0">
+      <div className="relative z-10 container text-center my-0 px-[15px] py-0 mx-0 pb-px pt-[70px]">
         <motion.div initial={{
         opacity: 0,
         y: 30
@@ -20,7 +20,7 @@ const HeroSection = () => {
       }} transition={{
         duration: 0.8
       }} className="max-w-3xl mx-auto">
-          <p className="text-sm md:text-base text-accent font-semibold mb-3 tracking-wide uppercase py-0 my-0">
+          <p className="text-sm md:text-base font-semibold mb-3 tracking-wide uppercase py-0 my-0 text-primary-foreground">
             Novo Vídeo 2025!
           </p>
           
