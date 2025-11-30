@@ -24,12 +24,12 @@ const HeroSection = () => {
             Novo Vídeo 2025!
           </p>
           
-          <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-accent mb-3 leading-tight">
-            Black Friday Com
+          <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-accent mb-3 leading-tight">Black Friday Com -40%
+​OFF em tudo
+          <br />
+            <span className="sm:text-6xl md:text-7xl lg:text-8xl text-4xl text-primary-foreground">​OFF em tudo </span>
             <br />
-            <span className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl">-40%</span>
-            <br />
-            <span className="text-white">off em tudo</span>
+            
           </h1>
           
           <motion.p initial={{
