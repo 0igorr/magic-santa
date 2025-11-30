@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { Volume2, Download, Clock, MessageCircle, CreditCard } from "lucide-react";
+import { Volume2 } from "lucide-react";
 
 const features = [
   { text: "Vídeo e ligação inéditos", highlight: "2025" },
@@ -9,29 +9,6 @@ const features = [
   { text: "Adicione seu", highlight: "próprio comentário" },
   { text: "Encomenda rápida: menos de", highlight: "5 minutos" },
   { text: "Entrega no seu e-mail em até", highlight: "2 horas" },
-];
-
-const benefits = [
-  {
-    icon: Download,
-    title: "Baixe gratuitamente",
-    description: "Calendário do Advento, Cartas para Papai Noel, Papéis de Parede Elfi.",
-  },
-  {
-    icon: Clock,
-    title: "Você tem 180 dias para solicitar o reembolso do valor pago",
-    description: "Comprar livremente e devolver a qualquer momento. Sem qualquer justificativa.",
-  },
-  {
-    icon: MessageCircle,
-    title: "Aprovado pelos pais",
-    description: "61.106 consumidores satisfeitos.",
-  },
-  {
-    icon: CreditCard,
-    title: "Métodos de pagamento",
-    description: "Veja todas as formas de pagamento.",
-  },
 ];
 
 const VideoDemo = () => {
@@ -100,35 +77,6 @@ const VideoDemo = () => {
                   </p>
                 </motion.div>
               ))}
-            </div>
-
-            {/* Benefits Section */}
-            <div className="space-y-6 pt-8">
-              {benefits.map((benefit, index) => {
-                const Icon = benefit.icon;
-                return (
-                  <motion.div
-                    key={index}
-                    initial={{ opacity: 0, x: -20 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.4, delay: index * 0.1 }}
-                    className="flex gap-4 items-start"
-                  >
-                    <div className="flex-shrink-0 w-12 h-12 md:w-14 md:h-14 rounded-full bg-white/20 flex items-center justify-center">
-                      <Icon className="w-6 h-6 md:w-7 md:h-7 text-white" strokeWidth={1.5} />
-                    </div>
-                    <div className="flex-1">
-                      <h3 className="font-display text-lg md:text-xl font-semibold text-white mb-2">
-                        {benefit.title}
-                      </h3>
-                      <p className="text-white/90 text-sm md:text-base">
-                        {benefit.description}
-                      </p>
-                    </div>
-                  </motion.div>
-                );
-              })}
             </div>
 
             {/* CTA Button */}
