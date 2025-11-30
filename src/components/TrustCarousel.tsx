@@ -24,7 +24,7 @@ const TrustCarousel = () => {
           <div className="flex animate-scroll-infinite">
             {duplicatedItems.map((item, index) => {
             const Icon = item.icon;
-            return <div key={index} className="flex-shrink-0 w-[280px] sm:w-[320px] px-6 flex flex-col items-center justify-center text-center bg-[#fbf6e9]">
+            return <div key={index} className="flex-shrink-0 w-[280px] sm:w-[320px] px-6 flex flex-col items-center justify-center text-center bg-[#fbfaf9]">
                   <Icon className="w-8 h-8 mb-3 text-accent" strokeWidth={1.5} />
                   <p className="text-sm font-medium text-foreground leading-tight">
                     {item.text}
