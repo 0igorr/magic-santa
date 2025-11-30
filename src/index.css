@@ -128,6 +128,6 @@ All colors MUST be HSL.
 }
 
 .animate-scroll-infinite {
-  animation: scroll-infinite 20s linear infinite;
+  animation: scroll-infinite 12s linear infinite;
   will-change: transform;
 }
