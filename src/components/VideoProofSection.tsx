@@ -11,23 +11,23 @@ const videoProofs = [
 
 const VideoProofSection = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const totalVideos = videoProofs.length;
 
-  const getIndex = (offset: number) => {
-    const newIndex = currentIndex + offset;
-    const len = videoProofs.length;
-    return ((newIndex % len) + len) % len;
+  // Helper to wrap index for infinite loop
+  const wrapIndex = (index: number) => {
+    return ((index % totalVideos) + totalVideos) % totalVideos;
   };
 
   const scrollPrev = () => {
-    setCurrentIndex((prev) => getIndex(-1));
+    setCurrentIndex((prev) => wrapIndex(prev - 1));
   };
 
   const scrollNext = () => {
-    setCurrentIndex((prev) => getIndex(1));
+    setCurrentIndex((prev) => wrapIndex(prev + 1));
   };
 
-  const prevIndex = getIndex(-1);
-  const nextIndex = getIndex(1);
+  const prevIndex = wrapIndex(currentIndex - 1);
+  const nextIndex = wrapIndex(currentIndex + 1);
 
   return (
     <section className="py-12 md:py-16 bg-background overflow-hidden">
@@ -87,7 +87,7 @@ const VideoProofSection = () => {
             </div>
 
             {/* Center video (main) */}
-            <div className="relative flex-shrink-0 w-[280px] md:w-[350px] h-[400px] md:h-[500px] rounded-2xl overflow-hidden z-10 shadow-2xl">
+            <div className="relative flex-shrink-0 w-[280px] md:w-[350px] h-[400px] md:h-[500px] rounded-2xl overflow-hidden z-10 shadow-2xl transition-all duration-300">
               <img
                 src={videoProofs[currentIndex].thumbnail}
                 alt={`Vídeo de ${videoProofs[currentIndex].username}`}
