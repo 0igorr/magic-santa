@@ -128,5 +128,5 @@ All colors MUST be HSL.
 }
 
 .animate-scroll-infinite {
-  animation: scroll-infinite 7.5s linear infinite;
+  animation: scroll-infinite 3.75s linear infinite;
 }
