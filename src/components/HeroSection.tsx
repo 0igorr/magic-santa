@@ -5,12 +5,12 @@ const HeroSection = () => {
   return <section id="hero" className="relative h-[85vh] flex items-center justify-center overflow-hidden pt-16">
       {/* Background Image */}
       <div className="absolute inset-0 z-0">
-        <img alt="Santa in cozy workshop" src="/lovable-uploads/4f9cc7e5-9b01-47c1-8598-f6d1bdf372d9.webp" className="w-full h-full object-cover" />
+        <img alt="Santa in cozy workshop" className="w-full h-full object-cover" src="/lovable-uploads/c8bf8993-93fd-4a6b-aa47-459397158fb6.png" />
         <div className="absolute inset-0 bg-black/50" />
       </div>
 
       {/* Content */}
-      <div className="relative z-10 container mx-auto px-4 py-8 text-center">
+      <div className="relative z-10 container mx-auto px-4 text-center py-px my-0">
         <motion.div initial={{
         opacity: 0,
         y: 30
@@ -20,7 +20,7 @@ const HeroSection = () => {
       }} transition={{
         duration: 0.8
       }} className="max-w-3xl mx-auto">
-          <p className="text-sm md:text-base text-accent font-semibold mb-3 tracking-wide uppercase">
+          <p className="text-sm md:text-base text-accent font-semibold mb-3 tracking-wide uppercase py-0 my-0">
             Novo Vídeo 2025!
           </p>
           
