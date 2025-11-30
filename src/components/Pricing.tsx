@@ -2,157 +2,52 @@ import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Check } from "lucide-react";
 import { useEffect, useState } from "react";
-
-const benefits = [
-  "Vídeo personalizado em Full HD",
-  "Nome e apelido da criança",
-  "Foto no livro mágico",
-  "Idade e série escolar",
-  "Mensagem de incentivo",
-  "Entrega em até 24h",
-  "Suporte dedicado",
-];
-
+const benefits = ["Vídeo personalizado em Full HD", "Nome e apelido da criança", "Foto no livro mágico", "Idade e série escolar", "Mensagem de incentivo", "Entrega em até 24h", "Suporte dedicado"];
 const Pricing = () => {
   const [timeLeft, setTimeLeft] = useState({
     hours: 23,
     minutes: 59,
-    seconds: 59,
+    seconds: 59
   });
-
   useEffect(() => {
     const timer = setInterval(() => {
-      setTimeLeft((prev) => {
+      setTimeLeft(prev => {
         if (prev.seconds > 0) {
-          return { ...prev, seconds: prev.seconds - 1 };
+          return {
+            ...prev,
+            seconds: prev.seconds - 1
+          };
         } else if (prev.minutes > 0) {
-          return { ...prev, minutes: prev.minutes - 1, seconds: 59 };
+          return {
+            ...prev,
+            minutes: prev.minutes - 1,
+            seconds: 59
+          };
         } else if (prev.hours > 0) {
-          return { hours: prev.hours - 1, minutes: 59, seconds: 59 };
+          return {
+            hours: prev.hours - 1,
+            minutes: 59,
+            seconds: 59
+          };
         }
         return prev;
       });
     }, 1000);
-
     return () => clearInterval(timer);
   }, []);
-
-  return (
-    <section id="pricing" className="py-12 md:py-20 px-4 bg-secondary relative overflow-hidden">
+  return <section id="pricing" className="py-12 md:py-20 px-4 bg-secondary relative overflow-hidden">
       {/* Decorative Stars */}
       <div className="absolute inset-0 opacity-10">
-        {[...Array(20)].map((_, i) => (
-          <div
-            key={i}
-            className="absolute text-accent"
-            style={{
-              left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 100}%`,
-              fontSize: `${Math.random() * 20 + 10}px`,
-            }}
-          >
+        {[...Array(20)].map((_, i) => <div key={i} className="absolute text-accent" style={{
+        left: `${Math.random() * 100}%`,
+        top: `${Math.random() * 100}%`,
+        fontSize: `${Math.random() * 20 + 10}px`
+      }}>
             ✨
-          </div>
-        ))}
+          </div>)}
       </div>
 
-      <div className="container mx-auto max-w-4xl relative z-10">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-8 md:mb-12 px-4"
-        >
-          <div className="inline-block bg-accent text-foreground px-5 md:px-6 py-2 rounded-full font-bold text-xs md:text-sm mb-4 md:mb-6 animate-bounce-subtle">
-            🎁 OFERTA DE NATAL 🎁
-          </div>
-          <h2 className="text-2xl sm:text-3xl md:text-5xl font-bold text-white mb-3 md:mb-4">
-            Garanta a Magia Agora
-          </h2>
-        </motion.div>
-
-        <motion.div
-          initial={{ opacity: 0, scale: 0.95 }}
-          whileInView={{ opacity: 1, scale: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.2 }}
-          className="relative"
-        >
-          {/* Golden Ticket Card */}
-          <div className="bg-gradient-to-br from-accent to-yellow-500 p-1 rounded-2xl md:rounded-3xl shadow-gold">
-            <div className="bg-white rounded-2xl md:rounded-3xl p-6 md:p-12">
-              <div className="text-center mb-6 md:mb-8">
-                <div className="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-4 mb-3 md:mb-4">
-                  <span className="text-2xl md:text-4xl text-muted-foreground line-through">
-                    R$ 69,90
-                  </span>
-                  <span className="text-4xl md:text-7xl font-bold text-primary">
-                    R$ 29,90
-                  </span>
-                </div>
-                <p className="text-base md:text-lg text-muted-foreground">
-                  Mais de 57% de desconto
-                </p>
-              </div>
-
-              <div className="space-y-3 md:space-y-4 mb-6 md:mb-8">
-                {benefits.map((benefit, index) => (
-                  <motion.div
-                    key={index}
-                    initial={{ opacity: 0, x: -20 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.4, delay: index * 0.05 }}
-                    className="flex items-center gap-2 md:gap-3"
-                  >
-                    <div className="w-5 h-5 md:w-6 md:h-6 rounded-full bg-primary flex items-center justify-center flex-shrink-0">
-                      <Check className="w-3 h-3 md:w-4 md:h-4 text-white" />
-                    </div>
-                    <span className="text-foreground font-medium text-sm md:text-base">
-                      {benefit}
-                    </span>
-                  </motion.div>
-                ))}
-              </div>
-
-              <Button
-                size="lg"
-                className="w-full bg-primary hover:bg-primary/90 text-white text-lg md:text-xl py-6 md:py-7 rounded-full shadow-button animate-bounce-subtle font-bold uppercase tracking-wide"
-              >
-                Garantir Vídeo Agora
-              </Button>
-
-              <div className="mt-6 md:mt-8 text-center">
-                <p className="text-muted-foreground mb-3 text-sm md:text-base">
-                  O Papai Noel sai para entrega em:
-                </p>
-                <div className="flex justify-center gap-2 md:gap-4">
-                  {[
-                    { value: timeLeft.hours, label: "Horas" },
-                    { value: timeLeft.minutes, label: "Min" },
-                    { value: timeLeft.seconds, label: "Seg" },
-                  ].map((item, index) => (
-                    <div key={index} className="text-center">
-                      <div className="bg-primary text-white text-xl md:text-3xl font-bold rounded-lg px-3 md:px-4 py-2 md:py-3 min-w-[60px] md:min-w-[70px]">
-                        {String(item.value).padStart(2, "0")}
-                      </div>
-                      <div className="text-xs text-muted-foreground mt-1">
-                        {item.label}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Glow Effect */}
-          <div className="absolute -inset-2 bg-gradient-gold opacity-30 blur-2xl -z-10" />
-        </motion.div>
-      </div>
-    </section>
-  );
+      
+    </section>;
 };
-
 export default Pricing;

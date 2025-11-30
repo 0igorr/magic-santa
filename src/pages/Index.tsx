@@ -23,7 +23,7 @@ const Index = () => {
       <TrustCarousel />
       <VideoProofSection />
       <VideoDemo />
-      <VoicePreview />
+      
       <Features />
       <Testimonials />
       <Pricing />
