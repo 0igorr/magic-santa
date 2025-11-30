@@ -75,23 +75,22 @@ const VideoProofSection = () => {
             <ChevronRight className="w-5 h-5 md:w-6 md:h-6 text-foreground" />
           </button>
 
-          {/* Mobile Carousel - Center with peek */}
-          <div className="md:hidden overflow-hidden px-10">
-            <div className="relative flex items-center justify-center">
+          {/* Mobile Carousel - Center with side peeks */}
+          <div className="md:hidden overflow-hidden">
+            <div className="flex items-center justify-center gap-2 px-8">
               {/* Previous Video (Peek Left) */}
-              <div className="absolute left-0 w-16 h-[400px] -translate-x-1/2 opacity-70 scale-95">
-                <div className="relative rounded-2xl overflow-hidden h-full">
+              <div className="w-12 flex-shrink-0">
+                <div className="relative rounded-xl overflow-hidden aspect-[9/16]">
                   <img
                     src={videoProofs[visibleVideos.prev].thumbnail}
                     alt={`Vídeo de ${videoProofs[visibleVideos.prev].username}`}
                     className="w-full h-full object-cover"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
                 </div>
               </div>
 
               {/* Current Video (Center) */}
-              <div className="relative w-64 flex-shrink-0">
+              <div className="relative w-56 flex-shrink-0">
                 <div className="relative rounded-2xl overflow-hidden aspect-[9/16]">
                   <img
                     src={videoProofs[visibleVideos.current].thumbnail}
@@ -115,14 +114,13 @@ const VideoProofSection = () => {
               </div>
 
               {/* Next Video (Peek Right) */}
-              <div className="absolute right-0 w-16 h-[400px] translate-x-1/2 opacity-70 scale-95">
-                <div className="relative rounded-2xl overflow-hidden h-full">
+              <div className="w-12 flex-shrink-0">
+                <div className="relative rounded-xl overflow-hidden aspect-[9/16]">
                   <img
                     src={videoProofs[visibleVideos.next].thumbnail}
                     alt={`Vídeo de ${videoProofs[visibleVideos.next].username}`}
                     className="w-full h-full object-cover"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
                 </div>
               </div>
             </div>
