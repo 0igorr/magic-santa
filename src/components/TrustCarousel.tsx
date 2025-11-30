@@ -16,8 +16,8 @@ const trustItems = [{
   text: "O presente perfeito para uma criança querida"
 }];
 const TrustCarousel = () => {
-  // Duplicate items 6 times to ensure seamless infinite loop on all screen sizes
-  const duplicatedItems = Array(6).fill(trustItems).flat();
+  // Duplicate items exactly 2 times for seamless infinite loop (original + 1 copy)
+  const duplicatedItems = [...trustItems, ...trustItems];
   return <section className="py-8 bg-background overflow-hidden border-y border-accent/20">
       <div className="relative">
         <div className="overflow-hidden">
