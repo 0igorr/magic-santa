@@ -3,6 +3,7 @@ import Header from "@/components/Header";
 import Snowfall from "@/components/Snowfall";
 import HeroSection from "@/components/HeroSection";
 import TrustCarousel from "@/components/TrustCarousel";
+import VideoProofSection from "@/components/VideoProofSection";
 import VoicePreview from "@/components/VoicePreview";
 import Features from "@/components/Features";
 import VideoDemo from "@/components/VideoDemo";
@@ -18,7 +19,8 @@ const Index = () => {
         <Snowfall />
         <HeroSection />
       </div>
-      <TrustCarousel className="bg-[#faf6ee]" />
+      <TrustCarousel />
+      <VideoProofSection />
       <VoicePreview />
       <Features />
       <VideoDemo />
