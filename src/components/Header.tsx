@@ -31,7 +31,7 @@ const Header = () => {
   };
   return <header className="absolute top-0 left-0 right-0 z-40 pt-4 px-2">
       <div className="w-full">
-        <div className="flex items-start justify-between">
+        <div className="flex items-start justify-between my-0 py-0">
           {/* Menu Button - Left */}
           <div className="flex flex-col items-center gap-1">
             <button onClick={() => setIsOpen(!isOpen)} aria-label="Toggle menu" className="w-14 h-14 flex items-center justify-center text-foreground rounded-full transition-colors bg-white shadow-lg">

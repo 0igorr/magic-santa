@@ -10,7 +10,7 @@ const HeroSection = () => {
       </div>
 
       {/* Content */}
-      <div className="relative z-10 container mx-auto px-4 text-center py-px my-0">
+      <div className="relative z-10 container text-center my-0 px-[15px] py-0 mx-0">
         <motion.div initial={{
         opacity: 0,
         y: 30
