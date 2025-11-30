@@ -9,7 +9,6 @@ import Features from "@/components/Features";
 import VideoDemo from "@/components/VideoDemo";
 import Testimonials from "@/components/Testimonials";
 import Pricing from "@/components/Pricing";
-import BenefitsSection from "@/components/BenefitsSection";
 import FAQ from "@/components/FAQ";
 import Footer from "@/components/Footer";
 const Index = () => {
@@ -27,7 +26,6 @@ const Index = () => {
       <Features />
       <Testimonials />
       <Pricing />
-      <BenefitsSection />
       <FAQ />
       <Footer />
     </div>;
