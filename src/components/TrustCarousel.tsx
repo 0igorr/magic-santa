@@ -1,56 +1,39 @@
 import { Clock, Gift, Video, Star, Heart } from "lucide-react";
-
-const trustItems = [
-  {
-    icon: Clock,
-    text: "Entrega a partir de 10 minutos",
-  },
-  {
-    icon: Gift,
-    text: "Surpresa de natal perfeita",
-  },
-  {
-    icon: Video,
-    text: "Personalize seu vídeo em 5 minutos",
-  },
-  {
-    icon: Star,
-    text: "Nota 4,8 de 11.479 comentários",
-  },
-  {
-    icon: Heart,
-    text: "O presente perfeito para uma criança querida",
-  },
-];
-
+const trustItems = [{
+  icon: Clock,
+  text: "Entrega a partir de 10 minutos"
+}, {
+  icon: Gift,
+  text: "Surpresa de natal perfeita"
+}, {
+  icon: Video,
+  text: "Personalize seu vídeo em 5 minutos"
+}, {
+  icon: Star,
+  text: "Nota 4,8 de 11.479 comentários"
+}, {
+  icon: Heart,
+  text: "O presente perfeito para uma criança querida"
+}];
 const TrustCarousel = () => {
   // Duplicate items 6 times to ensure seamless infinite loop on all screen sizes
   const duplicatedItems = Array(6).fill(trustItems).flat();
-  
-  return (
-    <section className="py-8 bg-background overflow-hidden border-y border-accent/20">
+  return <section className="py-8 bg-background overflow-hidden border-y border-accent/20">
       <div className="relative">
         <div className="overflow-hidden">
           <div className="flex animate-scroll-infinite">
             {duplicatedItems.map((item, index) => {
-              const Icon = item.icon;
-              return (
-                <div
-                  key={index}
-                  className="flex-shrink-0 w-[280px] sm:w-[320px] px-6 flex flex-col items-center justify-center text-center"
-                >
+            const Icon = item.icon;
+            return <div key={index} className="flex-shrink-0 w-[280px] sm:w-[320px] px-6 flex flex-col items-center justify-center text-center bg-[#fbf6e9]">
                   <Icon className="w-8 h-8 mb-3 text-accent" strokeWidth={1.5} />
                   <p className="text-sm font-medium text-foreground leading-tight">
                     {item.text}
                   </p>
-                </div>
-              );
-            })}
+                </div>;
+          })}
           </div>
         </div>
       </div>
-    </section>
-  );
+    </section>;
 };
-
 export default TrustCarousel;

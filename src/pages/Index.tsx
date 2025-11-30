@@ -16,7 +16,7 @@ const Index = () => {
       <Header />
       <Snowfall />
       <HeroSection />
-      <TrustCarousel className="bg-[#fbf6e9]" />
+      <TrustCarousel className="bg-[#fbf6e9] border-[#fbf6e9]" />
       <VoicePreview className="bg-[#fbf6e9]" />
       <Features />
       <VideoDemo />
