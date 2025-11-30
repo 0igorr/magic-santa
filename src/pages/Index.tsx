@@ -21,9 +21,9 @@ const Index = () => {
       </div>
       <TrustCarousel />
       <VideoProofSection />
+      <VideoDemo />
       <VoicePreview />
       <Features />
-      <VideoDemo />
       <Testimonials />
       <Pricing />
       <FAQ />

@@ -1,65 +1,101 @@
 import { motion } from "framer-motion";
-import { Play } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Volume2 } from "lucide-react";
+
+const features = [
+  { text: "Vídeo e ligação inéditos", highlight: "2025" },
+  { text: "Personalização", highlight: "incomparável" },
+  { text: "Qualidade", highlight: "cinematográfica" },
+  { text: "Adicione seu", highlight: "próprio comentário" },
+  { text: "Encomenda rápida: menos de", highlight: "5 minutos" },
+  { text: "Entrega no seu e-mail em até", highlight: "2 horas" },
+];
 
 const VideoDemo = () => {
   return (
-    <section className="py-12 md:py-20 px-4 bg-gradient-to-b from-background to-accent/5">
-      <div className="container mx-auto max-w-5xl">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-8 md:mb-12 px-4"
-        >
-          <h2 className="text-2xl sm:text-3xl md:text-5xl font-bold mb-3 md:mb-4">
-            Veja Como Fica o Vídeo Mágico
-          </h2>
-          <p className="text-base md:text-lg text-muted-foreground">
-            Um exemplo real de como seu filho vai se emocionar
-          </p>
-        </motion.div>
+    <section className="relative">
+      {/* Video Area - Black background */}
+      <div className="relative bg-black aspect-video md:aspect-[21/9]">
+        {/* Video placeholder - you'll replace this with actual video */}
+        <div className="absolute inset-0 flex items-center justify-center">
+          <p className="text-white/50 text-lg">Vídeo será inserido aqui</p>
+        </div>
+        
+        {/* Volume button - top right */}
+        <button className="absolute top-4 right-4 w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-lg hover:scale-110 transition-transform">
+          <Volume2 className="w-6 h-6 text-foreground" />
+        </button>
+      </div>
 
-        <motion.div
-          initial={{ opacity: 0, scale: 0.95 }}
-          whileInView={{ opacity: 1, scale: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.2 }}
-          className="relative group"
-        >
-          <div className="relative aspect-video rounded-xl md:rounded-2xl overflow-hidden border-2 md:border-4 border-accent shadow-gold">
-            {/* Video Placeholder */}
-            <div className="absolute inset-0 bg-gradient-to-br from-secondary to-secondary/80 flex items-center justify-center p-4">
-              <div className="text-center space-y-4 md:space-y-6">
-                <div className="w-16 h-16 md:w-20 md:h-20 mx-auto rounded-full bg-accent/20 backdrop-blur-sm flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                  <Play className="w-8 h-8 md:w-10 md:h-10 text-accent fill-accent" />
-                </div>
-                <p className="text-white text-base md:text-xl font-semibold px-4">
-                  Clique para assistir o exemplo
-                </p>
-              </div>
+      {/* Content Area - Sage/green background */}
+      <div className="bg-[#8B9D7C] text-white py-12 md:py-16 px-4">
+        <div className="container mx-auto max-w-4xl">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="space-y-8"
+          >
+            {/* Title with large P */}
+            <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight">
+              Vídeo<br />
+              do <span className="text-6xl md:text-7xl lg:text-8xl">P</span>apai Noel
+            </h2>
+
+            {/* Description */}
+            <p className="text-base md:text-lg leading-relaxed max-w-2xl">
+              Presenteie quem você ama com um vídeo único, com nome e foto. Crie memórias mágicas que aproximam e unem. O Papai Noel vai dizer o nome da pessoa, ver as fotos que você adicionou e até ler a mensagem que você escreveu.
+            </p>
+
+            {/* Features List */}
+            <div className="space-y-4">
+              {features.map((feature, index) => (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, x: -20 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.4, delay: index * 0.1 }}
+                  className="flex items-start gap-3"
+                >
+                  {/* Holly icon */}
+                  <div className="flex-shrink-0 mt-1">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M12 16C13.1046 16 14 15.1046 14 14C14 12.8954 13.1046 12 12 12C10.8954 12 10 12.8954 10 14C10 15.1046 10.8954 16 12 16Z" fill="#DC2626"/>
+                      <path d="M7 13C8.10457 13 9 12.1046 9 11C9 9.89543 8.10457 9 7 9C5.89543 9 5 9.89543 5 11C5 12.1046 5.89543 13 7 13Z" fill="#DC2626"/>
+                      <path d="M17 13C18.1046 13 19 12.1046 19 11C19 9.89543 18.1046 9 17 9C15.8954 9 15 9.89543 15 11C15 12.1046 15.8954 13 17 13Z" fill="#DC2626"/>
+                      <path d="M8 7C8 7 9 5 11 5C11 5 10 3 8 3C6 3 5 5 5 7C5 7 6.5 6.5 8 7Z" fill="#16A34A"/>
+                      <path d="M16 7C16 7 15 5 13 5C13 5 14 3 16 3C18 3 19 5 19 7C19 7 17.5 6.5 16 7Z" fill="#16A34A"/>
+                      <path d="M12 9C12 9 13 7 12 5C12 5 11 7 12 9Z" fill="#16A34A"/>
+                    </svg>
+                  </div>
+                  <p className="text-base md:text-lg">
+                    {feature.text.split(feature.highlight)[0]}
+                    <span className="font-bold">{feature.highlight}</span>
+                    {feature.text.split(feature.highlight)[1]}
+                  </p>
+                </motion.div>
+              ))}
             </div>
-            
-            {/* Decorative Corner Elements */}
-            <div className="absolute top-2 left-2 md:top-4 md:left-4 w-8 h-8 md:w-12 md:h-12 border-t-2 border-l-2 md:border-t-4 md:border-l-4 border-accent rounded-tl-lg" />
-            <div className="absolute top-2 right-2 md:top-4 md:right-4 w-8 h-8 md:w-12 md:h-12 border-t-2 border-r-2 md:border-t-4 md:border-r-4 border-accent rounded-tr-lg" />
-            <div className="absolute bottom-2 left-2 md:bottom-4 md:left-4 w-8 h-8 md:w-12 md:h-12 border-b-2 border-l-2 md:border-b-4 md:border-l-4 border-accent rounded-bl-lg" />
-            <div className="absolute bottom-2 right-2 md:bottom-4 md:right-4 w-8 h-8 md:w-12 md:h-12 border-b-2 border-r-2 md:border-b-4 md:border-r-4 border-accent rounded-br-lg" />
-          </div>
 
-          {/* Glow Effect */}
-          <div className="absolute -inset-1 bg-gradient-gold opacity-20 blur-xl -z-10 group-hover:opacity-30 transition-opacity duration-300" />
-        </motion.div>
-
-        <motion.p
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.4 }}
-          className="text-center mt-6 md:mt-8 text-sm md:text-base text-muted-foreground px-4"
-        >
-          Vídeo em Full HD, pronto para compartilhar ou projetar na TV
-        </motion.p>
+            {/* CTA Button */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.6 }}
+              className="pt-8"
+            >
+              <Button 
+                size="lg"
+                className="w-full bg-primary hover:bg-primary/90 text-white text-lg md:text-xl py-6 md:py-8 rounded-full font-bold shadow-xl"
+              >
+                Criar vídeo
+              </Button>
+            </motion.div>
+          </motion.div>
+        </div>
       </div>
     </section>
   );
