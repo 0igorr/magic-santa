@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Star } from "lucide-react";
-import { Link } from "react-router-dom";
 const HeroSection = () => {
   return <section id="hero" className="relative h-[85vh] flex items-center justify-center overflow-hidden pt-16">
       {/* Background Image */}

@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Play, Clock, Sparkles, Heart, Film } from "lucide-react";
-import { Link } from "react-router-dom";
 
 const highlights = [
   {
