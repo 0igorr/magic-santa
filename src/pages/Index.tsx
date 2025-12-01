@@ -6,6 +6,7 @@ import TrustCarousel from "@/components/TrustCarousel";
 import VideoProofSection from "@/components/VideoProofSection";
 import VoicePreview from "@/components/VoicePreview";
 import Features from "@/components/Features";
+import HowToOrder from "@/components/HowToOrder";
 import VideoDemo from "@/components/VideoDemo";
 import Testimonials from "@/components/Testimonials";
 import Pricing from "@/components/Pricing";
@@ -24,6 +25,7 @@ const Index = () => {
       <VideoDemo />
       
       <Features />
+      <HowToOrder />
       <Testimonials />
       <Pricing />
       <FAQ />
