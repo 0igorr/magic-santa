@@ -25,14 +25,14 @@ const steps = [{
   image: stepEnchantImg
 }];
 const HowToOrder = () => {
-  return <section className="py-20 md:py-28 bg-background relative overflow-hidden">
+  return <section className="bg-background relative overflow-hidden">
       {/* Subtle pattern overlay */}
       <div className="absolute inset-0 opacity-[0.02]" style={{
       backgroundImage: `radial-gradient(circle at 1px 1px, currentColor 1px, transparent 0)`,
       backgroundSize: '40px 40px'
     }} />
 
-      <div className="container mx-auto px-4 relative z-10 bg-[#ffe084] my-0 py-[10px]">
+      <div className="container mx-auto px-4 relative z-10 bg-[#ffe084] my-0 py-20 md:py-28">
         {/* Header */}
         <motion.div initial={{
         opacity: 0,
