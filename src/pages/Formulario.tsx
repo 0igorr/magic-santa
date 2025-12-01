@@ -58,6 +58,7 @@ const Formulario = () => {
   // Step 2 states
   const [age, setAge] = useState("");
   const [ageSearch, setAgeSearch] = useState("");
+  const [isAgeDropdownOpen, setIsAgeDropdownOpen] = useState(false);
   const [secretMessage, setSecretMessage] = useState("");
   const [secretAdvice, setSecretAdvice] = useState("");
   const [activity, setActivity] = useState("");
@@ -445,9 +446,11 @@ const Formulario = () => {
                       placeholder="Digite para buscar ou selecione..."
                       value={ageSearch}
                       onChange={(e) => setAgeSearch(e.target.value)}
+                      onFocus={() => setIsAgeDropdownOpen(true)}
+                      onBlur={() => setTimeout(() => setIsAgeDropdownOpen(false), 200)}
                       className="text-base md:text-lg py-6 rounded-xl border-2 border-accent/30 focus:border-accent"
                     />
-                    {ageSearch && (
+                    {isAgeDropdownOpen && (
                       <div className="absolute z-10 w-full mt-2 bg-background border-2 border-accent/30 rounded-xl shadow-lg max-h-60 overflow-y-auto">
                         {filteredAgeOptions.length > 0 ? (
                           filteredAgeOptions.map((option, index) => (
@@ -456,6 +459,7 @@ const Formulario = () => {
                               onClick={() => {
                                 setAge(option);
                                 setAgeSearch(option);
+                                setIsAgeDropdownOpen(false);
                               }}
                               className="px-4 py-3 hover:bg-accent/10 cursor-pointer transition-colors border-b border-border/50 last:border-0"
                             >
