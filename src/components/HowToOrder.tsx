@@ -1,91 +1,122 @@
 import { motion } from "framer-motion";
+import { FileVideo, Palette, PartyPopper, ArrowRight } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 const steps = [
   {
-    number: "1",
-    title: "Escolha o Roteiro",
-    description: "Selecione o modelo de vídeo perfeito para surpreender seu filho"
+    number: "01",
+    icon: FileVideo,
+    title: "Escolha",
+    description: "Selecione o roteiro perfeito para a idade do seu filho",
   },
   {
-    number: "2",
+    number: "02",
+    icon: Palette,
     title: "Personalize",
-    description: "Adicione o nome, foto e detalhes especiais em apenas 5 minutos"
+    description: "Nome, foto, idade e uma mensagem especial em 5 minutos",
   },
   {
-    number: "3",
-    title: "Encante!",
-    description: "Receba o vídeo mágico e veja a alegria no rosto da criança"
-  }
+    number: "03",
+    icon: PartyPopper,
+    title: "Encante",
+    description: "Receba o vídeo e veja a magia acontecer",
+  },
 ];
 
 const HowToOrder = () => {
   return (
-    <section className="py-16 md:py-24 bg-secondary/30 relative overflow-hidden">
-      {/* Decorative background shapes */}
-      <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-accent/5 rounded-full blur-3xl" />
-        <div className="absolute bottom-1/4 right-1/4 w-48 h-48 bg-primary/5 rounded-full blur-3xl" />
-      </div>
+    <section className="py-20 md:py-28 bg-background relative overflow-hidden">
+      {/* Subtle pattern overlay */}
+      <div className="absolute inset-0 opacity-[0.02]" style={{
+        backgroundImage: `radial-gradient(circle at 1px 1px, currentColor 1px, transparent 0)`,
+        backgroundSize: '40px 40px'
+      }} />
 
       <div className="container mx-auto px-4 relative z-10">
+        {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="text-center mb-12 md:mb-16"
+          className="text-center mb-16 md:mb-20"
         >
-          <h2 className="font-heading text-3xl md:text-4xl lg:text-5xl text-foreground mb-4">
-            Como pedir?
+          <span className="inline-block text-primary font-medium text-sm uppercase tracking-wider mb-3">
+            Simples e rápido
+          </span>
+          <h2 className="font-heading text-3xl md:text-4xl lg:text-5xl text-foreground">
+            3 passos para a magia
           </h2>
-          <p className="text-muted-foreground text-base md:text-lg max-w-md mx-auto">
-            Em 3 passos simples, crie a magia do Natal
-          </p>
         </motion.div>
 
-        <div className="max-w-2xl mx-auto space-y-6 md:space-y-8">
-          {steps.map((step, index) => (
-            <motion.div
-              key={step.number}
-              initial={{ opacity: 0, x: -30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: index * 0.15 }}
-              className="flex items-start gap-5 md:gap-8"
-            >
-              {/* Number */}
-              <div className="flex-shrink-0">
-                <span className="font-heading text-5xl md:text-6xl lg:text-7xl text-accent/30 font-light leading-none">
-                  {step.number}
-                </span>
-              </div>
+        {/* Steps - Horizontal on desktop, vertical on mobile */}
+        <div className="relative max-w-5xl mx-auto">
+          {/* Connection line - desktop only */}
+          <div className="hidden md:block absolute top-[60px] left-[15%] right-[15%] h-[2px] bg-gradient-to-r from-primary/20 via-accent/40 to-primary/20" />
 
-              {/* Content */}
-              <div className="pt-2 md:pt-3">
-                <h3 className="font-heading text-xl md:text-2xl text-foreground mb-1 md:mb-2">
-                  {step.title}
-                </h3>
-                <p className="text-muted-foreground text-sm md:text-base leading-relaxed">
-                  {step.description}
-                </p>
-              </div>
-            </motion.div>
-          ))}
+          <div className="grid md:grid-cols-3 gap-8 md:gap-6">
+            {steps.map((step, index) => (
+              <motion.div
+                key={step.number}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: index * 0.15 }}
+                className="relative"
+              >
+                {/* Card */}
+                <div className="bg-card rounded-2xl p-6 md:p-8 shadow-lg border border-border/50 hover:shadow-xl hover:border-accent/30 transition-all duration-300 h-full">
+                  {/* Number badge */}
+                  <div className="w-14 h-14 md:w-16 md:h-16 rounded-full bg-gradient-to-br from-primary to-primary/80 flex items-center justify-center mb-6 shadow-lg mx-auto md:mx-0"
+                    style={{ boxShadow: "0 8px 24px rgba(212, 36, 38, 0.25)" }}
+                  >
+                    <step.icon className="w-6 h-6 md:w-7 md:h-7 text-primary-foreground" />
+                  </div>
+
+                  {/* Step number */}
+                  <span className="text-xs font-bold text-accent uppercase tracking-widest mb-2 block text-center md:text-left">
+                    Passo {step.number}
+                  </span>
+
+                  {/* Title */}
+                  <h3 className="font-heading text-xl md:text-2xl text-foreground mb-3 text-center md:text-left">
+                    {step.title}
+                  </h3>
+
+                  {/* Description */}
+                  <p className="text-muted-foreground text-sm md:text-base leading-relaxed text-center md:text-left">
+                    {step.description}
+                  </p>
+                </div>
+
+                {/* Arrow connector - mobile only */}
+                {index < steps.length - 1 && (
+                  <div className="flex md:hidden justify-center my-4">
+                    <ArrowRight className="w-5 h-5 text-accent rotate-90" />
+                  </div>
+                )}
+              </motion.div>
+            ))}
+          </div>
         </div>
 
-        {/* Final flourish */}
+        {/* CTA */}
         <motion.div
-          initial={{ opacity: 0, scale: 0.9 }}
-          whileInView={{ opacity: 1, scale: 1 }}
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5, delay: 0.5 }}
-          className="text-center mt-10 md:mt-14"
+          className="text-center mt-12 md:mt-16"
         >
-          <span className="font-heading text-2xl md:text-3xl text-accent italic">
-            Feito!
-          </span>
-          <p className="text-muted-foreground text-sm mt-2">
-            Simples assim ✨
+          <Button
+            size="lg"
+            className="bg-primary hover:bg-primary/90 text-primary-foreground text-base md:text-lg px-10 py-6 rounded-full font-bold shadow-xl"
+            style={{ boxShadow: "0 8px 30px rgba(212, 36, 38, 0.35)" }}
+          >
+            Começar agora
+          </Button>
+          <p className="text-muted-foreground text-sm mt-4">
+            Pronto em menos de 5 minutos
           </p>
         </motion.div>
       </div>
