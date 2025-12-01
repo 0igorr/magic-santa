@@ -1,99 +1,139 @@
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { Volume2 } from "lucide-react";
+import { Play, Clock, Sparkles, Heart, Film } from "lucide-react";
 
-const features = [
-  { text: "Vídeo e ligação inéditos", highlight: "2025" },
-  { text: "Personalização", highlight: "incomparável" },
-  { text: "Qualidade", highlight: "cinematográfica" },
-  { text: "Adicione seu", highlight: "próprio comentário" },
-  { text: "Encomenda rápida: menos de", highlight: "5 minutos" },
-  { text: "Entrega no seu e-mail em até", highlight: "2 horas" },
+const highlights = [
+  {
+    icon: Clock,
+    stat: "5 min",
+    label: "para criar",
+  },
+  {
+    icon: Film,
+    stat: "2h",
+    label: "de entrega",
+  },
+  {
+    icon: Sparkles,
+    stat: "100%",
+    label: "personalizado",
+  },
+  {
+    icon: Heart,
+    stat: "∞",
+    label: "memórias",
+  },
 ];
 
 const VideoDemo = () => {
   return (
-    <section className="relative">
-      {/* Video Area - Black background */}
-      <div className="relative bg-black aspect-video md:aspect-[21/9]">
-        {/* Video placeholder - you'll replace this with actual video */}
-        <div className="absolute inset-0 flex items-center justify-center">
-          <p className="text-white/50 text-lg">Vídeo será inserido aqui</p>
-        </div>
-        
-        {/* Volume button - top right */}
-        <button className="absolute top-4 right-4 w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-lg hover:scale-110 transition-transform">
-          <Volume2 className="w-6 h-6 text-foreground" />
-        </button>
+    <section className="relative py-16 md:py-24 overflow-hidden">
+      {/* Background with subtle gradient */}
+      <div className="absolute inset-0 bg-gradient-to-br from-secondary via-secondary/95 to-secondary/90" />
+      
+      {/* Decorative elements */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute -top-24 -right-24 w-96 h-96 bg-accent/10 rounded-full blur-3xl" />
+        <div className="absolute -bottom-32 -left-32 w-80 h-80 bg-primary/10 rounded-full blur-3xl" />
       </div>
 
-      {/* Content Area - Sage/green background */}
-      <div className="bg-[#8B9D7C] text-white py-12 md:py-16 px-4">
-        <div className="container mx-auto max-w-4xl">
+      <div className="container mx-auto px-4 relative z-10">
+        <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-center">
+          {/* Left: Video Preview */}
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
+            initial={{ opacity: 0, x: -40 }}
+            whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="space-y-8"
+            transition={{ duration: 0.7 }}
+            className="relative order-2 lg:order-1"
           >
-            {/* Title with large P */}
-            <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight">
-              Vídeo<br />
-              do <span className="text-6xl md:text-7xl lg:text-8xl">P</span>apai Noel
-            </h2>
-
-            {/* Description */}
-            <p className="text-base md:text-lg leading-relaxed max-w-2xl">
-              Presenteie quem você ama com um vídeo único, com nome e foto. Crie memórias mágicas que aproximam e unem. O Papai Noel vai dizer o nome da pessoa, ver as fotos que você adicionou e até ler a mensagem que você escreveu.
-            </p>
-
-            {/* Features List */}
-            <div className="space-y-4">
-              {features.map((feature, index) => (
-                <motion.div
-                  key={index}
-                  initial={{ opacity: 0, x: -20 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.4, delay: index * 0.1 }}
-                  className="flex items-start gap-3"
+            {/* Video Container with elegant frame */}
+            <div className="relative rounded-2xl overflow-hidden shadow-2xl bg-foreground/90 aspect-[4/3]">
+              {/* Video placeholder */}
+              <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-foreground/80 to-foreground">
+                {/* Play button */}
+                <motion.button
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="w-20 h-20 md:w-24 md:h-24 rounded-full bg-primary flex items-center justify-center shadow-lg"
+                  style={{ boxShadow: "0 0 40px rgba(212, 36, 38, 0.5)" }}
                 >
-                  {/* Holly icon */}
-                  <div className="flex-shrink-0 mt-1">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M12 16C13.1046 16 14 15.1046 14 14C14 12.8954 13.1046 12 12 12C10.8954 12 10 12.8954 10 14C10 15.1046 10.8954 16 12 16Z" fill="#DC2626"/>
-                      <path d="M7 13C8.10457 13 9 12.1046 9 11C9 9.89543 8.10457 9 7 9C5.89543 9 5 9.89543 5 11C5 12.1046 5.89543 13 7 13Z" fill="#DC2626"/>
-                      <path d="M17 13C18.1046 13 19 12.1046 19 11C19 9.89543 18.1046 9 17 9C15.8954 9 15 9.89543 15 11C15 12.1046 15.8954 13 17 13Z" fill="#DC2626"/>
-                      <path d="M8 7C8 7 9 5 11 5C11 5 10 3 8 3C6 3 5 5 5 7C5 7 6.5 6.5 8 7Z" fill="#16A34A"/>
-                      <path d="M16 7C16 7 15 5 13 5C13 5 14 3 16 3C18 3 19 5 19 7C19 7 17.5 6.5 16 7Z" fill="#16A34A"/>
-                      <path d="M12 9C12 9 13 7 12 5C12 5 11 7 12 9Z" fill="#16A34A"/>
-                    </svg>
-                  </div>
-                  <p className="text-base md:text-lg">
-                    {feature.text.split(feature.highlight)[0]}
-                    <span className="font-bold">{feature.highlight}</span>
-                    {feature.text.split(feature.highlight)[1]}
-                  </p>
-                </motion.div>
-              ))}
+                  <Play className="w-8 h-8 md:w-10 md:h-10 text-primary-foreground ml-1" fill="currentColor" />
+                </motion.button>
+              </div>
+
+              {/* Badge overlay */}
+              <div className="absolute top-4 left-4 bg-accent text-accent-foreground px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider">
+                Novo 2025
+              </div>
             </div>
 
-            {/* CTA Button */}
+            {/* Floating stat card */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.6 }}
-              className="pt-8"
+              transition={{ duration: 0.5, delay: 0.4 }}
+              className="absolute -bottom-4 -right-4 md:bottom-8 md:-right-8 bg-background rounded-xl p-4 shadow-xl"
             >
-              <Button 
-                size="lg"
-                className="w-full bg-primary hover:bg-primary/90 text-white text-lg md:text-xl py-6 md:py-8 rounded-full font-bold shadow-xl"
-              >
-                Criar vídeo
-              </Button>
+              <p className="text-3xl md:text-4xl font-heading font-bold text-primary">11.479+</p>
+              <p className="text-xs md:text-sm text-muted-foreground">famílias encantadas</p>
             </motion.div>
+          </motion.div>
+
+          {/* Right: Content */}
+          <motion.div
+            initial={{ opacity: 0, x: 40 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.7 }}
+            className="order-1 lg:order-2 text-secondary-foreground"
+          >
+            {/* Eyebrow */}
+            <span className="inline-block text-accent font-medium text-sm uppercase tracking-wider mb-4">
+              A experiência mágica
+            </span>
+
+            {/* Headline */}
+            <h2 className="font-heading text-3xl md:text-4xl lg:text-5xl mb-6 leading-tight">
+              Um vídeo que seu filho 
+              <span className="text-accent"> nunca vai esquecer</span>
+            </h2>
+
+            {/* Description */}
+            <p className="text-secondary-foreground/80 text-base md:text-lg mb-8 leading-relaxed">
+              O Papai Noel chama pelo nome, mostra a foto no livro mágico, comenta sobre a idade 
+              e deixa uma mensagem especial. Tudo em um vídeo cinematográfico feito só para sua criança.
+            </p>
+
+            {/* Stats Grid */}
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-10">
+              {highlights.map((item, index) => (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.4, delay: index * 0.1 }}
+                  className="text-center p-3 rounded-xl bg-secondary-foreground/5 backdrop-blur-sm"
+                >
+                  <item.icon className="w-5 h-5 mx-auto mb-2 text-accent" />
+                  <p className="text-2xl md:text-3xl font-heading font-bold text-secondary-foreground">
+                    {item.stat}
+                  </p>
+                  <p className="text-xs text-secondary-foreground/70">{item.label}</p>
+                </motion.div>
+              ))}
+            </div>
+
+            {/* CTA */}
+            <Button
+              size="lg"
+              className="w-full sm:w-auto bg-primary hover:bg-primary/90 text-primary-foreground text-base md:text-lg px-10 py-6 rounded-full font-bold shadow-xl hover:shadow-2xl transition-all"
+              style={{ boxShadow: "0 8px 30px rgba(212, 36, 38, 0.4)" }}
+            >
+              Criar vídeo agora
+            </Button>
           </motion.div>
         </div>
       </div>
