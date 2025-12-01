@@ -2,6 +2,7 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Menu, X, ShoppingCart } from "lucide-react";
+import { Link } from "react-router-dom";
 const navLinks = [{
   name: "Início",
   href: "#hero"
@@ -84,9 +85,11 @@ const Header = () => {
               {navLinks.map(link => <button key={link.name} onClick={() => scrollToSection(link.href)} className="text-left text-base font-medium text-foreground hover:text-primary transition-colors py-2">
                   {link.name}
                 </button>)}
-              <Button onClick={() => scrollToSection("#pricing")} className="bg-primary hover:bg-primary/90 text-white rounded-full w-full mt-2">
-                Criar Vídeo
-              </Button>
+              <Link to="/formulario" className="w-full">
+                <Button className="bg-primary hover:bg-primary/90 text-white rounded-full w-full mt-2">
+                  Criar Vídeo
+                </Button>
+              </Link>
             </nav>
           </motion.div>}
       </AnimatePresence>

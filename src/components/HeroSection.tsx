@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Star } from "lucide-react";
+import { Link } from "react-router-dom";
 const HeroSection = () => {
   return <section id="hero" className="relative h-[85vh] flex items-center justify-center overflow-hidden pt-16">
       {/* Background Image */}
@@ -56,9 +57,11 @@ const HeroSection = () => {
           duration: 0.8,
           delay: 0.4
         }} className="flex flex-col items-center gap-4 mb-6">
-            <Button size="lg" className="bg-primary hover:bg-primary/90 text-white text-base md:text-lg px-8 md:px-12 py-6 md:py-7 rounded-full shadow-button font-bold tracking-wide w-full max-w-md">
-              Criar vídeo
-            </Button>
+            <Link to="/formulario" className="w-full max-w-md">
+              <Button size="lg" className="bg-primary hover:bg-primary/90 text-white text-base md:text-lg px-8 md:px-12 py-6 md:py-7 rounded-full shadow-button font-bold tracking-wide w-full">
+                Criar vídeo
+              </Button>
+            </Link>
             
             <button className="flex items-center gap-3 text-white hover:text-accent transition-colors">
               <div className="w-10 h-10 rounded-full flex items-center justify-center bg-white">
