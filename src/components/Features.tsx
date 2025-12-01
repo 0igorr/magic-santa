@@ -48,10 +48,14 @@ const Features = () => {
           {features.map((feature, index) => (
             <motion.div
               key={index}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: index * 0.1 }}
+              initial={{ opacity: 0, y: 60, scale: 0.9 }}
+              whileInView={{ opacity: 1, y: 0, scale: 1 }}
+              viewport={{ once: true, margin: "-50px" }}
+              transition={{ 
+                duration: 0.7, 
+                delay: index * 0.15,
+                ease: [0.25, 0.4, 0.25, 1]
+              }}
             >
               <Card className="p-5 md:p-8 hover:shadow-gold transition-all duration-300 border-2 border-accent/10 hover:border-accent/30 bg-card h-full">
                 <div className="flex flex-col items-center text-center space-y-3 md:space-y-4">
