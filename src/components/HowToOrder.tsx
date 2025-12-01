@@ -25,7 +25,7 @@ const HowToOrder = () => {
       backgroundSize: '40px 40px'
     }} />
 
-      <div className="container mx-auto px-4 relative z-10 bg-[#ffe084]">
+      <div className="container mx-auto px-4 relative z-10 bg-[#ffe084] my-0 py-[10px]">
         {/* Header */}
         <motion.div initial={{
         opacity: 0,
@@ -65,7 +65,7 @@ const HowToOrder = () => {
             delay: index * 0.15
           }} className="relative">
                 {/* Card */}
-                <div className="bg-card rounded-2xl p-6 md:p-8 shadow-lg hover:shadow-xl transition-all duration-300 h-full border-primary border">
+                <div className="bg-card rounded-2xl p-6 md:p-8 shadow-lg hover:shadow-xl transition-all duration-300 h-full border-primary py-[12px] border-0">
                   {/* Number badge */}
                   <div className="w-14 h-14 md:w-16 md:h-16 rounded-full bg-gradient-to-br from-primary to-primary/80 flex items-center justify-center mb-6 shadow-lg mx-auto md:mx-0" style={{
                 boxShadow: "0 8px 24px rgba(212, 36, 38, 0.25)"
@@ -115,7 +115,7 @@ const HowToOrder = () => {
         }}>
             Começar agora
           </Button>
-          <p className="text-muted-foreground text-sm mt-4">
+          <p className="text-muted-foreground text-sm mt-4 my-[15px]">
             Pronto em menos de 5 minutos
           </p>
         </motion.div>
