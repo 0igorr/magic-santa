@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Play, Clock, Sparkles, Heart, Film } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const highlights = [
   {
@@ -127,13 +128,15 @@ const VideoDemo = () => {
             </div>
 
             {/* CTA */}
-            <Button
-              size="lg"
-              className="w-full sm:w-auto bg-primary hover:bg-primary/90 text-primary-foreground text-base md:text-lg px-10 py-6 rounded-full font-bold shadow-xl hover:shadow-2xl transition-all"
-              style={{ boxShadow: "0 8px 30px rgba(212, 36, 38, 0.4)" }}
-            >
-              Criar vídeo agora
-            </Button>
+            <Link to="/formulario" className="w-full sm:w-auto">
+              <Button
+                size="lg"
+                className="w-full sm:w-auto bg-primary hover:bg-primary/90 text-primary-foreground text-base md:text-lg px-10 py-6 rounded-full font-bold shadow-xl hover:shadow-2xl transition-all"
+                style={{ boxShadow: "0 8px 30px rgba(212, 36, 38, 0.4)" }}
+              >
+                Criar vídeo agora
+              </Button>
+            </Link>
           </motion.div>
         </div>
       </div>
