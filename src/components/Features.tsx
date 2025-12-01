@@ -1,71 +1,87 @@
 import { motion } from "framer-motion";
-import { User, Image, Calendar, Star } from "lucide-react";
-import { Card } from "@/components/ui/card";
+import { User, BookOpen, GraduationCap, Heart } from "lucide-react";
 
 const features = [
   {
     icon: User,
-    title: "Fala o Nome e Apelido",
-    description: "O Papai Noel chama seu filho pelo nome verdadeiro e apelido carinhoso",
+    title: "Chama pelo nome",
+    highlight: "e apelido carinhoso",
+    description: "O Papai Noel fala o nome verdadeiro e aquele apelido especial que só a família conhece",
   },
   {
-    icon: Image,
-    title: "Mostra a Foto no Livro Mágico",
-    description: "A foto da criança aparece magicamente no livro especial do Noel",
+    icon: BookOpen,
+    title: "Mostra a foto",
+    highlight: "no livro mágico",
+    description: "A foto da criança aparece magicamente nas páginas do livro encantado do Noel",
   },
   {
-    icon: Calendar,
-    title: "Comenta a Idade e Série Escolar",
-    description: "Detalhes personalizados que provam que o Papai Noel conhece tudo",
+    icon: GraduationCap,
+    title: "Sabe a idade",
+    highlight: "e a série escolar",
+    description: "Detalhes personalizados que provam que o Papai Noel conhece tudo sobre seu filho",
   },
   {
-    icon: Star,
-    title: "Mensagem de Incentivo ou Elogio",
-    description: "Palavras especiais de motivação personalizadas para seu filho",
+    icon: Heart,
+    title: "Deixa uma mensagem",
+    highlight: "de carinho",
+    description: "Palavras especiais de motivação e elogio personalizadas para encantar",
   },
 ];
 
 const Features = () => {
   return (
-    <section id="features" className="py-12 md:py-20 px-4 bg-background">
-      <div className="container mx-auto max-w-6xl">
+    <section id="features" className="py-16 md:py-24 bg-secondary relative overflow-hidden">
+      {/* Decorative elements */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden">
+        <div className="absolute top-0 right-0 w-72 h-72 bg-accent/10 rounded-full blur-3xl translate-x-1/2 -translate-y-1/2" />
+        <div className="absolute bottom-0 left-0 w-64 h-64 bg-primary/10 rounded-full blur-3xl -translate-x-1/2 translate-y-1/2" />
+      </div>
+
+      <div className="container mx-auto px-4 relative z-10">
+        {/* Header */}
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="text-center mb-10 md:mb-16 px-4"
+          className="text-center mb-12 md:mb-16"
         >
-          <h2 className="text-2xl sm:text-3xl md:text-5xl font-bold mb-3 md:mb-4">
-            O Que O Papai Noel Vai Fazer?
+          <span className="inline-block text-accent font-medium text-sm uppercase tracking-wider mb-3">
+            Personalização completa
+          </span>
+          <h2 className="font-heading text-3xl md:text-4xl lg:text-5xl text-secondary-foreground mb-4">
+            O que o Papai Noel faz<br className="hidden sm:block" /> no seu vídeo?
           </h2>
-          <p className="text-base md:text-lg text-muted-foreground max-w-2xl mx-auto">
-            Cada vídeo é único e feito especialmente para seu filho
-          </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-8">
+        {/* Features List */}
+        <div className="max-w-3xl mx-auto">
           {features.map((feature, index) => (
             <motion.div
               key={index}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
+              initial={{ opacity: 0, x: index % 2 === 0 ? -30 : 30 }}
+              whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: index * 0.1 }}
+              transition={{ duration: 0.5, delay: index * 0.1 }}
+              className="flex items-start gap-5 md:gap-6 py-6 md:py-8 border-b border-secondary-foreground/10 last:border-b-0"
             >
-              <Card className="p-5 md:p-8 hover:shadow-gold transition-all duration-300 border-2 border-accent/10 hover:border-accent/30 bg-card h-full">
-                <div className="flex flex-col items-center text-center space-y-3 md:space-y-4">
-                  <div className="w-14 h-14 md:w-16 md:h-16 rounded-full bg-gradient-gold flex items-center justify-center shadow-gold">
-                    <feature.icon className="w-7 h-7 md:w-8 md:h-8 text-white" />
-                  </div>
-                  <h3 className="text-lg md:text-2xl font-bold">
-                    {feature.title}
-                  </h3>
-                  <p className="text-sm md:text-base text-muted-foreground leading-relaxed">
-                    {feature.description}
-                  </p>
+              {/* Icon */}
+              <div className="flex-shrink-0">
+                <div className="w-12 h-12 md:w-14 md:h-14 rounded-xl bg-accent/20 flex items-center justify-center">
+                  <feature.icon className="w-6 h-6 md:w-7 md:h-7 text-accent" />
                 </div>
-              </Card>
+              </div>
+
+              {/* Content */}
+              <div className="flex-1">
+                <h3 className="font-heading text-lg md:text-xl text-secondary-foreground mb-1">
+                  {feature.title}{" "}
+                  <span className="text-accent">{feature.highlight}</span>
+                </h3>
+                <p className="text-secondary-foreground/70 text-sm md:text-base leading-relaxed">
+                  {feature.description}
+                </p>
+              </div>
             </motion.div>
           ))}
         </div>
