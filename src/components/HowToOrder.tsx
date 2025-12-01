@@ -65,7 +65,7 @@ const HowToOrder = () => {
             delay: index * 0.15
           }} className="relative">
                 {/* Card */}
-                <div className="bg-card rounded-2xl p-6 md:p-8 shadow-lg hover:shadow-xl transition-all duration-300 h-full border-primary border-2">
+                <div className="bg-card rounded-2xl p-6 md:p-8 shadow-lg hover:shadow-xl transition-all duration-300 h-full border-primary border">
                   {/* Number badge */}
                   <div className="w-14 h-14 md:w-16 md:h-16 rounded-full bg-gradient-to-br from-primary to-primary/80 flex items-center justify-center mb-6 shadow-lg mx-auto md:mx-0" style={{
                 boxShadow: "0 8px 24px rgba(212, 36, 38, 0.25)"
