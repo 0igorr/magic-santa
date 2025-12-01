@@ -3,6 +3,7 @@ import Header from "@/components/Header";
 import Snowfall from "@/components/Snowfall";
 import HeroSection from "@/components/HeroSection";
 import TrustCarousel from "@/components/TrustCarousel";
+import MarqueeMessage from "@/components/MarqueeMessage";
 import VideoProofSection from "@/components/VideoProofSection";
 import VoicePreview from "@/components/VoicePreview";
 import Features from "@/components/Features";
@@ -21,6 +22,7 @@ const Index = () => {
         <HeroSection />
       </div>
       <TrustCarousel />
+      <MarqueeMessage />
       <VideoProofSection />
       <VideoDemo />
       
