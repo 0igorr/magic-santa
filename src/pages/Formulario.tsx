@@ -6,7 +6,7 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Volume2, Loader2, ArrowLeft, ArrowRight, Upload, X, Check, Star } from "lucide-react";
+import { Volume2, Loader2, ArrowLeft, ArrowRight, Upload, X, Check, Star, Gift } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
 import { Link } from "react-router-dom";
 const steps = [{
@@ -111,6 +111,7 @@ const Formulario = () => {
   const [photoPreview, setPhotoPreview] = useState<string | null>(null);
   const [email, setEmail] = useState("");
   const [fullName, setFullName] = useState("");
+  const [isGiftCard, setIsGiftCard] = useState(false);
   const [selectedPlan, setSelectedPlan] = useState<"comum" | "exclusivo" | null>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
@@ -289,10 +290,25 @@ const Formulario = () => {
           x: -20
         }} className="glass rounded-2xl p-6 md:p-10 shadow-gold border-2 border-accent/20">
             {currentStep === 1 && <div className="space-y-8">
-                <h2 className="text-2xl md:text-3xl font-bold text-foreground mb-8">
-                  {steps[0].number}
-                  <sub className="text-lg">/2</sub> {steps[0].title}
-                </h2>
+                <div className="flex justify-between items-start mb-8">
+                  <h2 className="text-2xl md:text-3xl font-bold text-foreground">
+                    {steps[0].number}
+                    <sub className="text-lg">/2</sub> {steps[0].title}
+                  </h2>
+                  <button
+                    onClick={() => {
+                      setIsGiftCard(true);
+                      setCurrentStep(3);
+                    }}
+                    className="flex items-center gap-2 px-4 py-2 rounded-full border border-border bg-background hover:bg-accent/10 transition-colors text-sm font-medium"
+                  >
+                    <span className="text-muted-foreground">Sem tempo?</span>
+                    <span className="flex items-center gap-1.5 bg-secondary px-3 py-1 rounded-full">
+                      <Gift className="w-4 h-4" />
+                      Vale presente
+                    </span>
+                  </button>
+                </div>
 
                 {/* Nome da Criança */}
                 <div className="space-y-3">
@@ -506,12 +522,11 @@ const Formulario = () => {
 
             {currentStep === 3 && <div className="space-y-8">
                 <h2 className="text-2xl md:text-3xl font-bold text-foreground mb-8">
-                  {steps[2].number}
-                  <sub className="text-lg">/3</sub> {steps[2].title}
+                  {isGiftCard ? "Vale Presente" : <>{steps[2].number}<sub className="text-lg">/3</sub> {steps[2].title}</>}
                 </h2>
 
-                {/* Upload de Foto */}
-                <div className="space-y-3">
+                {/* Upload de Foto - Hidden in gift card mode */}
+                {!isGiftCard && <div className="space-y-3">
                   <Label className="text-base md:text-lg font-semibold">
                     Foto da Criança
                   </Label>
@@ -541,7 +556,7 @@ const Formulario = () => {
                     </div>}
                   
                   <input ref={fileInputRef} type="file" accept="image/jpeg,image/png,image/webp" onChange={handlePhotoChange} className="hidden" />
-                </div>
+                </div>}
 
                 {/* Email */}
                 <div className="space-y-3">
@@ -578,48 +593,48 @@ const Formulario = () => {
                     </p>
                     
                     <div className="grid md:grid-cols-2 gap-4">
-                      {/* Plano Comum */}
-                      <div onClick={() => setSelectedPlan("comum")} className={`relative rounded-2xl p-6 cursor-pointer transition-all border-2 ${selectedPlan === "comum" ? "border-primary bg-secondary text-secondary-foreground shadow-gold" : "border-border bg-secondary/80 text-secondary-foreground hover:border-primary/50"}`}>
+                      {/* Plano Comum - Verde claro */}
+                      <div onClick={() => setSelectedPlan("comum")} className={`relative rounded-2xl p-6 cursor-pointer transition-all border-2 ${selectedPlan === "comum" ? "border-primary shadow-gold" : "border-border hover:border-primary/50"}`} style={{ backgroundColor: 'hsl(120, 25%, 25%)' }}>
                         <div className="mb-4">
-                          <h4 className="text-lg font-bold">Plano Comum</h4>
+                          <h4 className="text-lg font-bold text-white">Plano Comum</h4>
                           <div className="flex items-baseline gap-2 mt-2">
                             <span className="text-3xl font-bold text-accent">R$ 14,90</span>
                           </div>
-                          <p className="text-sm text-secondary-foreground/70 mt-1">Pagamento único</p>
+                          <p className="text-sm text-white/70 mt-1">Pagamento único</p>
                         </div>
                         
-                        <p className="text-sm text-secondary-foreground/70 mb-4">O plano contém:</p>
+                        <p className="text-sm text-white/70 mb-4">O plano contém:</p>
                         
                         <ul className="space-y-3">
                           <li className="flex items-center gap-3">
                             <div className="w-5 h-5 rounded-full bg-accent/20 flex items-center justify-center flex-shrink-0">
                               <Check className="w-3 h-3 text-accent" />
                             </div>
-                            <span className="text-sm">Vídeo personalizado HD</span>
+                            <span className="text-sm text-white">Vídeo personalizado HD</span>
                           </li>
                           <li className="flex items-center gap-3">
                             <div className="w-5 h-5 rounded-full bg-accent/20 flex items-center justify-center flex-shrink-0">
                               <Check className="w-3 h-3 text-accent" />
                             </div>
-                            <span className="text-sm">Nome da criança no vídeo</span>
+                            <span className="text-sm text-white">Nome da criança no vídeo</span>
                           </li>
                           <li className="flex items-center gap-3">
                             <div className="w-5 h-5 rounded-full bg-accent/20 flex items-center justify-center flex-shrink-0">
                               <Check className="w-3 h-3 text-accent" />
                             </div>
-                            <span className="text-sm">Foto no livro mágico</span>
+                            <span className="text-sm text-white">Foto no livro mágico</span>
                           </li>
                           <li className="flex items-center gap-3">
                             <div className="w-5 h-5 rounded-full bg-accent/20 flex items-center justify-center flex-shrink-0">
                               <Check className="w-3 h-3 text-accent" />
                             </div>
-                            <span className="text-sm">Entrega em até 12h</span>
+                            <span className="text-sm text-white">Entrega em até 12h</span>
                           </li>
                         </ul>
                       </div>
 
-                      {/* Plano Exclusivo */}
-                      <div onClick={() => setSelectedPlan("exclusivo")} className={`relative rounded-2xl p-6 cursor-pointer transition-all border-2 ${selectedPlan === "exclusivo" ? "border-accent bg-secondary text-secondary-foreground shadow-gold" : "border-border bg-secondary/80 text-secondary-foreground hover:border-accent/50"}`}>
+                      {/* Plano Exclusivo - Verde escuro */}
+                      <div onClick={() => setSelectedPlan("exclusivo")} className={`relative rounded-2xl p-6 cursor-pointer transition-all border-2 ${selectedPlan === "exclusivo" ? "border-accent shadow-gold" : "border-border hover:border-accent/50"}`} style={{ backgroundColor: 'hsl(120, 35%, 15%)' }}>
                         {/* Popular Badge */}
                         <div className="absolute -top-3 left-4">
                           <span className="bg-accent text-accent-foreground text-xs font-bold px-3 py-1 rounded-full flex items-center gap-1">
@@ -628,59 +643,103 @@ const Formulario = () => {
                         </div>
                         
                         <div className="mb-4 mt-2">
-                          <h4 className="text-lg font-bold">Plano Exclusivo</h4>
+                          <h4 className="text-lg font-bold text-white">Plano Exclusivo</h4>
                           <div className="flex items-baseline gap-2 mt-2">
-                            <span className="text-sm line-through text-secondary-foreground/50">R$ 49,90</span>
+                            <span className="text-sm line-through text-white/50">R$ 49,90</span>
                             <span className="text-3xl font-bold text-accent">R$ 19,90</span>
                           </div>
-                          <p className="text-sm text-secondary-foreground/70 mt-1">Pagamento único</p>
+                          <p className="text-sm text-white/70 mt-1">Pagamento único</p>
                         </div>
                         
-                        <p className="text-sm text-secondary-foreground/70 mb-4">O plano contém:</p>
+                        <p className="text-sm text-white/70 mb-4">O plano contém:</p>
                         
                         <ul className="space-y-3">
                           <li className="flex items-center gap-3">
                             <div className="w-5 h-5 rounded-full bg-accent/20 flex items-center justify-center flex-shrink-0">
                               <Check className="w-3 h-3 text-accent" />
                             </div>
-                            <span className="text-sm">Tudo do Plano Comum</span>
+                            <span className="text-sm text-white">Tudo do Plano Comum</span>
                           </li>
                           <li className="flex items-center gap-3">
                             <div className="w-5 h-5 rounded-full bg-accent/20 flex items-center justify-center flex-shrink-0">
                               <Check className="w-3 h-3 text-accent" />
                             </div>
-                            <span className="text-sm">Vídeo em qualidade 4K</span>
+                            <span className="text-sm text-white">Vídeo em qualidade 4K</span>
                           </li>
                           <li className="flex items-center gap-3">
                             <div className="w-5 h-5 rounded-full bg-accent/20 flex items-center justify-center flex-shrink-0">
                               <Check className="w-3 h-3 text-accent" />
                             </div>
-                            <span className="text-sm">Música de fundo</span>
+                            <span className="text-sm text-white">Música de fundo</span>
                           </li>
                           <li className="flex items-center gap-3">
                             <div className="w-5 h-5 rounded-full bg-accent/20 flex items-center justify-center flex-shrink-0">
                               <Check className="w-3 h-3 text-accent" />
                             </div>
-                            <span className="text-sm">Entrega expressa em até 1h</span>
+                            <span className="text-sm text-white">Entrega expressa em até 1h</span>
                           </li>
                           <li className="flex items-center gap-3">
                             <div className="w-5 h-5 rounded-full bg-accent/20 flex items-center justify-center flex-shrink-0">
                               <Check className="w-3 h-3 text-accent" />
                             </div>
-                            <span className="text-sm">Suporte prioritário 24h</span>
+                            <span className="text-sm text-white">Suporte prioritário 24h</span>
                           </li>
                         </ul>
+
+                        {/* Bônus Section */}
+                        <div className="mt-6 pt-4 border-t border-white/20">
+                          <p className="text-sm font-semibold text-white mb-3 flex items-center gap-2">
+                            <Gift className="w-4 h-4 text-red-500" />
+                            Bônus Exclusivos:
+                          </p>
+                          <ul className="space-y-2">
+                            <li className="flex items-center gap-3">
+                              <div className="w-5 h-5 rounded-full bg-red-500/20 flex items-center justify-center flex-shrink-0">
+                                <Gift className="w-3 h-3 text-red-500" />
+                              </div>
+                              <span className="text-sm text-white">Carta Personalizada do Papai Noel</span>
+                            </li>
+                            <li className="flex items-center gap-3">
+                              <div className="w-5 h-5 rounded-full bg-red-500/20 flex items-center justify-center flex-shrink-0">
+                                <Gift className="w-3 h-3 text-red-500" />
+                              </div>
+                              <span className="text-sm text-white">Certificado Oficial de "Criança Especial"</span>
+                            </li>
+                            <li className="flex items-center gap-3">
+                              <div className="w-5 h-5 rounded-full bg-red-500/20 flex items-center justify-center flex-shrink-0">
+                                <Gift className="w-3 h-3 text-red-500" />
+                              </div>
+                              <span className="text-sm text-white">Lista de tarefas natalinas</span>
+                            </li>
+                            <li className="flex items-center gap-3">
+                              <div className="w-5 h-5 rounded-full bg-red-500/20 flex items-center justify-center flex-shrink-0">
+                                <Gift className="w-3 h-3 text-red-500" />
+                              </div>
+                              <span className="text-sm text-white">Bilhete para deixar na árvore</span>
+                            </li>
+                          </ul>
+                        </div>
                       </div>
                     </div>
                   </motion.div>}
 
                 {/* Navigation */}
                 <div className="flex justify-between pt-6">
-                  <Button variant="outline" size="lg" className="gap-2" onClick={() => setCurrentStep(2)}>
-                    <ArrowLeft className="w-4 h-4" />
-                    Voltar
-                  </Button>
-                  <Button size="lg" disabled={!photo || !email.trim() || !fullName.trim() || !selectedPlan} className="bg-primary hover:bg-primary/90 gap-2">
+                  {!isGiftCard ? (
+                    <Button variant="outline" size="lg" className="gap-2" onClick={() => setCurrentStep(2)}>
+                      <ArrowLeft className="w-4 h-4" />
+                      Voltar
+                    </Button>
+                  ) : (
+                    <Button variant="outline" size="lg" className="gap-2" onClick={() => {
+                      setIsGiftCard(false);
+                      setCurrentStep(1);
+                    }}>
+                      <ArrowLeft className="w-4 h-4" />
+                      Voltar ao formulário
+                    </Button>
+                  )}
+                  <Button size="lg" disabled={(!isGiftCard && !photo) || !email.trim() || !fullName.trim() || !selectedPlan} className="bg-primary hover:bg-primary/90 gap-2">
                     Finalizar Pedido
                     <ArrowRight className="w-4 h-4" />
                   </Button>
