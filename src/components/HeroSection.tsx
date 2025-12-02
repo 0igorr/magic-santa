@@ -21,13 +21,11 @@ const HeroSection = () => {
       }} transition={{
         duration: 0.8
       }} className="max-w-3xl mx-auto">
-          <p className="text-sm md:text-base font-semibold mb-3 tracking-wide uppercase py-0 my-0 text-primary-foreground">
-            Novo Vídeo 2025!
-          </p>
+          <p className="text-sm md:text-base font-semibold mb-3 tracking-wide uppercase py-0 my-0 text-primary-foreground">O presente perfeito🎁</p>
           
-          <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-accent mb-3 leading-tight">Black Friday Com -40%
+          <h1 className="sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-3 leading-tight text-primary-foreground text-2xl">A melhor  e inesquecível surpresa    
           <br />
-            <span className="sm:text-6xl md:text-7xl lg:text-8xl text-4xl text-primary-foreground">​OFF em tudo </span>
+            <span className="sm:text-6xl md:text-7xl lg:text-8xl text-4xl text-accent"> de natal </span>
             <br />
             
           </h1>
