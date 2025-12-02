@@ -629,7 +629,7 @@ const Formulario = () => {
                             <div className="w-5 h-5 rounded-full bg-accent/20 flex items-center justify-center flex-shrink-0">
                               <Check className="w-3 h-3 text-accent" />
                             </div>
-                            <span className="text-sm text-white">Entrega em até 12h</span>
+                            <span className="text-sm text-white">Entrega em até 24h</span>
                           </li>
                         </ul>
 
@@ -683,7 +683,7 @@ const Formulario = () => {
                             <div className="w-5 h-5 rounded-full bg-accent/20 flex items-center justify-center flex-shrink-0">
                               <Check className="w-3 h-3 text-accent" />
                             </div>
-                            <span className="text-sm text-white">Entrega expressa em até 1h</span>
+                            <span className="text-sm text-white">Entrega expressa em até 12h</span>
                           </li>
                           <li className="flex items-center gap-3">
                             <div className="w-5 h-5 rounded-full bg-accent/20 flex items-center justify-center flex-shrink-0">
