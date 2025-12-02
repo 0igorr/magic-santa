@@ -6,7 +6,7 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Volume2, Loader2, ArrowLeft, ArrowRight, Upload, X } from "lucide-react";
+import { Volume2, Loader2, ArrowLeft, ArrowRight, Upload, X, Check, Star } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
 import { Link } from "react-router-dom";
 const steps = [{
@@ -17,7 +17,7 @@ const steps = [{
   title: "Personalização"
 }, {
   number: 3,
-  title: "Fotos e Upgrades"
+  title: "Fotos e Plano"
 }];
 
 // Age options
@@ -111,6 +111,7 @@ const Formulario = () => {
   const [photoPreview, setPhotoPreview] = useState<string | null>(null);
   const [email, setEmail] = useState("");
   const [fullName, setFullName] = useState("");
+  const [selectedPlan, setSelectedPlan] = useState<"comum" | "exclusivo" | null>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const {
@@ -561,44 +562,128 @@ const Formulario = () => {
                   <Input id="fullName" type="text" placeholder="Digite seu nome completo" value={fullName} onChange={e => setFullName(e.target.value)} className="text-base py-6 rounded-xl border-2 border-accent/30 focus:border-accent" />
                 </div>
 
-                {/* Upgrades Section - Shows when email and fullName are filled */}
+                {/* Plans Section - Shows when email and fullName are filled */}
                 {email && fullName && <motion.div initial={{
               opacity: 0,
               y: 20
             }} animate={{
               opacity: 1,
               y: 0
-            }} className="border-2 border-primary/30 rounded-xl p-6 bg-primary/5">
-                    <h3 className="text-xl font-bold text-foreground mb-4">
-                      ✨ Upgrades Disponíveis
+            }} className="space-y-4">
+                    <h3 className="text-xl font-bold text-foreground mb-2">
+                      🎄 Escolha seu Plano
                     </h3>
-                    <p className="text-muted-foreground mb-4">
-                      Aprimore seu vídeo com recursos extras!
+                    <p className="text-muted-foreground mb-6">
+                      Selecione o plano ideal para sua experiência mágica
                     </p>
                     
-                    <div className="grid gap-4">
-                      <div className="flex items-center justify-between p-4 bg-background rounded-lg border border-border">
-                        <div>
-                          <h4 className="font-semibold">Vídeo HD Premium</h4>
-                          <p className="text-sm text-muted-foreground">Qualidade de vídeo superior</p>
+                    <div className="grid md:grid-cols-2 gap-4">
+                      {/* Plano Comum */}
+                      <div 
+                        onClick={() => setSelectedPlan("comum")}
+                        className={`relative rounded-2xl p-6 cursor-pointer transition-all border-2 ${
+                          selectedPlan === "comum" 
+                            ? "border-primary bg-secondary text-secondary-foreground shadow-gold" 
+                            : "border-border bg-secondary/80 text-secondary-foreground hover:border-primary/50"
+                        }`}
+                      >
+                        <div className="mb-4">
+                          <h4 className="text-lg font-bold">Plano Comum</h4>
+                          <div className="flex items-baseline gap-2 mt-2">
+                            <span className="text-3xl font-bold text-accent">R$ 29,90</span>
+                          </div>
+                          <p className="text-sm text-secondary-foreground/70 mt-1">Pagamento único</p>
                         </div>
-                        <span className="font-bold text-primary">+ R$ 29,90</span>
+                        
+                        <p className="text-sm text-secondary-foreground/70 mb-4">O plano contém:</p>
+                        
+                        <ul className="space-y-3">
+                          <li className="flex items-center gap-3">
+                            <div className="w-5 h-5 rounded-full bg-accent/20 flex items-center justify-center flex-shrink-0">
+                              <Check className="w-3 h-3 text-accent" />
+                            </div>
+                            <span className="text-sm">Vídeo personalizado HD</span>
+                          </li>
+                          <li className="flex items-center gap-3">
+                            <div className="w-5 h-5 rounded-full bg-accent/20 flex items-center justify-center flex-shrink-0">
+                              <Check className="w-3 h-3 text-accent" />
+                            </div>
+                            <span className="text-sm">Nome da criança no vídeo</span>
+                          </li>
+                          <li className="flex items-center gap-3">
+                            <div className="w-5 h-5 rounded-full bg-accent/20 flex items-center justify-center flex-shrink-0">
+                              <Check className="w-3 h-3 text-accent" />
+                            </div>
+                            <span className="text-sm">Foto no livro mágico</span>
+                          </li>
+                          <li className="flex items-center gap-3">
+                            <div className="w-5 h-5 rounded-full bg-accent/20 flex items-center justify-center flex-shrink-0">
+                              <Check className="w-3 h-3 text-accent" />
+                            </div>
+                            <span className="text-sm">Entrega em até 48h</span>
+                          </li>
+                        </ul>
                       </div>
-                      
-                      <div className="flex items-center justify-between p-4 bg-background rounded-lg border border-border">
-                        <div>
-                          <h4 className="font-semibold">Música Personalizada</h4>
-                          <p className="text-sm text-muted-foreground">Adicione a música favorita</p>
+
+                      {/* Plano Exclusivo */}
+                      <div 
+                        onClick={() => setSelectedPlan("exclusivo")}
+                        className={`relative rounded-2xl p-6 cursor-pointer transition-all border-2 ${
+                          selectedPlan === "exclusivo" 
+                            ? "border-accent bg-secondary text-secondary-foreground shadow-gold" 
+                            : "border-border bg-secondary/80 text-secondary-foreground hover:border-accent/50"
+                        }`}
+                      >
+                        {/* Popular Badge */}
+                        <div className="absolute -top-3 left-4">
+                          <span className="bg-accent text-accent-foreground text-xs font-bold px-3 py-1 rounded-full flex items-center gap-1">
+                            <Star className="w-3 h-3" /> Mais Popular
+                          </span>
                         </div>
-                        <span className="font-bold text-primary">+ R$ 19,90</span>
-                      </div>
-                      
-                      <div className="flex items-center justify-between p-4 bg-background rounded-lg border border-border">
-                        <div>
-                          <h4 className="font-semibold">Entrega Expressa</h4>
-                          <p className="text-sm text-muted-foreground">Receba em até 24h</p>
+                        
+                        <div className="mb-4 mt-2">
+                          <h4 className="text-lg font-bold">Plano Exclusivo</h4>
+                          <div className="flex items-baseline gap-2 mt-2">
+                            <span className="text-sm line-through text-secondary-foreground/50">R$ 79,90</span>
+                            <span className="text-3xl font-bold text-accent">R$ 49,90</span>
+                          </div>
+                          <p className="text-sm text-secondary-foreground/70 mt-1">Pagamento único</p>
                         </div>
-                        <span className="font-bold text-primary">+ R$ 14,90</span>
+                        
+                        <p className="text-sm text-secondary-foreground/70 mb-4">O plano contém:</p>
+                        
+                        <ul className="space-y-3">
+                          <li className="flex items-center gap-3">
+                            <div className="w-5 h-5 rounded-full bg-accent/20 flex items-center justify-center flex-shrink-0">
+                              <Check className="w-3 h-3 text-accent" />
+                            </div>
+                            <span className="text-sm">Tudo do Plano Comum</span>
+                          </li>
+                          <li className="flex items-center gap-3">
+                            <div className="w-5 h-5 rounded-full bg-accent/20 flex items-center justify-center flex-shrink-0">
+                              <Check className="w-3 h-3 text-accent" />
+                            </div>
+                            <span className="text-sm">Vídeo em qualidade 4K</span>
+                          </li>
+                          <li className="flex items-center gap-3">
+                            <div className="w-5 h-5 rounded-full bg-accent/20 flex items-center justify-center flex-shrink-0">
+                              <Check className="w-3 h-3 text-accent" />
+                            </div>
+                            <span className="text-sm">Música de fundo personalizada</span>
+                          </li>
+                          <li className="flex items-center gap-3">
+                            <div className="w-5 h-5 rounded-full bg-accent/20 flex items-center justify-center flex-shrink-0">
+                              <Check className="w-3 h-3 text-accent" />
+                            </div>
+                            <span className="text-sm">Entrega expressa em 24h</span>
+                          </li>
+                          <li className="flex items-center gap-3">
+                            <div className="w-5 h-5 rounded-full bg-accent/20 flex items-center justify-center flex-shrink-0">
+                              <Check className="w-3 h-3 text-accent" />
+                            </div>
+                            <span className="text-sm">Suporte prioritário 24h</span>
+                          </li>
+                        </ul>
                       </div>
                     </div>
                   </motion.div>}
@@ -609,7 +694,7 @@ const Formulario = () => {
                     <ArrowLeft className="w-4 h-4" />
                     Voltar
                   </Button>
-                  <Button size="lg" disabled={!photo || !email.trim() || !fullName.trim()} className="bg-primary hover:bg-primary/90 gap-2">
+                  <Button size="lg" disabled={!photo || !email.trim() || !fullName.trim() || !selectedPlan} className="bg-primary hover:bg-primary/90 gap-2">
                     Finalizar Pedido
                     <ArrowRight className="w-4 h-4" />
                   </Button>
