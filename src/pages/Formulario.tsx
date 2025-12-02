@@ -290,24 +290,26 @@ const Formulario = () => {
           x: -20
         }} className="glass rounded-2xl p-6 md:p-10 shadow-gold border-2 border-accent/20">
             {currentStep === 1 && <div className="space-y-8">
-                <div className="flex justify-between items-start mb-8">
-                  <h2 className="text-2xl md:text-3xl font-bold text-foreground">
-                    {steps[0].number}
-                    <sub className="text-lg">/2</sub> {steps[0].title}
-                  </h2>
-                  <button
-                    onClick={() => {
-                      setIsGiftCard(true);
-                      setCurrentStep(3);
-                    }}
-                    className="flex items-center gap-2 px-4 py-2 rounded-full border border-border bg-background hover:bg-accent/10 transition-colors text-sm font-medium"
-                  >
-                    <span className="text-muted-foreground">Sem tempo?</span>
-                    <span className="flex items-center gap-1.5 bg-secondary px-3 py-1 rounded-full">
-                      <Gift className="w-4 h-4" />
-                      Vale presente
-                    </span>
-                  </button>
+                <div className="flex flex-col gap-4 mb-8">
+                  <div className="flex justify-between items-center">
+                    <h2 className="text-xl md:text-3xl font-bold text-foreground">
+                      {steps[0].number}
+                      <sub className="text-lg">/2</sub> {steps[0].title}
+                    </h2>
+                    <button
+                      onClick={() => {
+                        setIsGiftCard(true);
+                        setCurrentStep(3);
+                      }}
+                      className="flex items-center gap-1.5 px-3 py-2 rounded-full border border-border bg-background hover:bg-accent/10 transition-colors text-xs md:text-sm font-medium"
+                    >
+                      <span className="hidden md:inline text-muted-foreground">Sem tempo?</span>
+                      <span className="flex items-center gap-1.5 bg-secondary px-2 py-1 rounded-full">
+                        <Gift className="w-3 h-3 md:w-4 md:h-4" />
+                        <span className="whitespace-nowrap">Vale presente</span>
+                      </span>
+                    </button>
+                  </div>
                 </div>
 
                 {/* Nome da Criança */}
@@ -592,20 +594,20 @@ const Formulario = () => {
                       Selecione o plano ideal para sua experiência mágica
                     </p>
                     
-                    <div className="grid md:grid-cols-2 gap-4">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       {/* Plano Comum - Verde claro */}
-                      <div onClick={() => setSelectedPlan("comum")} className={`relative rounded-2xl p-6 cursor-pointer transition-all border-2 ${selectedPlan === "comum" ? "border-primary shadow-gold" : "border-border hover:border-primary/50"}`} style={{ backgroundColor: 'hsl(120, 25%, 25%)' }}>
+                      <div onClick={() => setSelectedPlan("comum")} className={`relative rounded-2xl p-5 md:p-6 cursor-pointer transition-all border-2 flex flex-col ${selectedPlan === "comum" ? "border-primary shadow-gold" : "border-border hover:border-primary/50"}`} style={{ backgroundColor: 'hsl(120, 25%, 25%)' }}>
                         <div className="mb-4">
                           <h4 className="text-lg font-bold text-white">Plano Comum</h4>
                           <div className="flex items-baseline gap-2 mt-2">
-                            <span className="text-3xl font-bold text-accent">R$ 14,90</span>
+                            <span className="text-2xl md:text-3xl font-bold text-accent">R$ 14,90</span>
                           </div>
                           <p className="text-sm text-white/70 mt-1">Pagamento único</p>
                         </div>
                         
                         <p className="text-sm text-white/70 mb-4">O plano contém:</p>
                         
-                        <ul className="space-y-3">
+                        <ul className="space-y-3 flex-1">
                           <li className="flex items-center gap-3">
                             <div className="w-5 h-5 rounded-full bg-accent/20 flex items-center justify-center flex-shrink-0">
                               <Check className="w-3 h-3 text-accent" />
@@ -631,10 +633,17 @@ const Formulario = () => {
                             <span className="text-sm text-white">Entrega em até 12h</span>
                           </li>
                         </ul>
+
+                        <Button 
+                          className="w-full mt-6 bg-accent hover:bg-accent/90 text-accent-foreground font-semibold"
+                          size="lg"
+                        >
+                          Comprar Plano Comum
+                        </Button>
                       </div>
 
                       {/* Plano Exclusivo - Verde escuro */}
-                      <div onClick={() => setSelectedPlan("exclusivo")} className={`relative rounded-2xl p-6 cursor-pointer transition-all border-2 ${selectedPlan === "exclusivo" ? "border-accent shadow-gold" : "border-border hover:border-accent/50"}`} style={{ backgroundColor: 'hsl(120, 35%, 15%)' }}>
+                      <div onClick={() => setSelectedPlan("exclusivo")} className={`relative rounded-2xl p-5 md:p-6 cursor-pointer transition-all border-2 flex flex-col ${selectedPlan === "exclusivo" ? "border-accent shadow-gold" : "border-border hover:border-accent/50"}`} style={{ backgroundColor: 'hsl(120, 35%, 15%)' }}>
                         {/* Popular Badge */}
                         <div className="absolute -top-3 left-4">
                           <span className="bg-accent text-accent-foreground text-xs font-bold px-3 py-1 rounded-full flex items-center gap-1">
@@ -646,7 +655,7 @@ const Formulario = () => {
                           <h4 className="text-lg font-bold text-white">Plano Exclusivo</h4>
                           <div className="flex items-baseline gap-2 mt-2">
                             <span className="text-sm line-through text-white/50">R$ 49,90</span>
-                            <span className="text-3xl font-bold text-accent">R$ 19,90</span>
+                            <span className="text-2xl md:text-3xl font-bold text-accent">R$ 19,90</span>
                           </div>
                           <p className="text-sm text-white/70 mt-1">Pagamento único</p>
                         </div>
@@ -719,19 +728,26 @@ const Formulario = () => {
                             </li>
                           </ul>
                         </div>
+
+                        <Button 
+                          className="w-full mt-6 bg-accent hover:bg-accent/90 text-accent-foreground font-semibold"
+                          size="lg"
+                        >
+                          Comprar Plano Exclusivo
+                        </Button>
                       </div>
                     </div>
                   </motion.div>}
 
                 {/* Navigation */}
-                <div className="flex justify-between pt-6">
+                <div className="flex flex-col sm:flex-row gap-3 sm:justify-between pt-6">
                   {!isGiftCard ? (
-                    <Button variant="outline" size="lg" className="gap-2" onClick={() => setCurrentStep(2)}>
+                    <Button variant="outline" size="lg" className="gap-2 w-full sm:w-auto" onClick={() => setCurrentStep(2)}>
                       <ArrowLeft className="w-4 h-4" />
                       Voltar
                     </Button>
                   ) : (
-                    <Button variant="outline" size="lg" className="gap-2" onClick={() => {
+                    <Button variant="outline" size="lg" className="gap-2 w-full sm:w-auto" onClick={() => {
                       setIsGiftCard(false);
                       setCurrentStep(1);
                     }}>
@@ -739,10 +755,6 @@ const Formulario = () => {
                       Voltar ao formulário
                     </Button>
                   )}
-                  <Button size="lg" disabled={(!isGiftCard && !photo) || !email.trim() || !fullName.trim() || !selectedPlan} className="bg-primary hover:bg-primary/90 gap-2">
-                    Finalizar Pedido
-                    <ArrowRight className="w-4 h-4" />
-                  </Button>
                 </div>
               </div>}
           </motion.div>
