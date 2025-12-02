@@ -579,18 +579,11 @@ const Formulario = () => {
                     
                     <div className="grid md:grid-cols-2 gap-4">
                       {/* Plano Comum */}
-                      <div 
-                        onClick={() => setSelectedPlan("comum")}
-                        className={`relative rounded-2xl p-6 cursor-pointer transition-all border-2 ${
-                          selectedPlan === "comum" 
-                            ? "border-primary bg-secondary text-secondary-foreground shadow-gold" 
-                            : "border-border bg-secondary/80 text-secondary-foreground hover:border-primary/50"
-                        }`}
-                      >
+                      <div onClick={() => setSelectedPlan("comum")} className={`relative rounded-2xl p-6 cursor-pointer transition-all border-2 ${selectedPlan === "comum" ? "border-primary bg-secondary text-secondary-foreground shadow-gold" : "border-border bg-secondary/80 text-secondary-foreground hover:border-primary/50"}`}>
                         <div className="mb-4">
                           <h4 className="text-lg font-bold">Plano Comum</h4>
                           <div className="flex items-baseline gap-2 mt-2">
-                            <span className="text-3xl font-bold text-accent">R$ 29,90</span>
+                            <span className="text-3xl font-bold text-accent">R$ 14,90</span>
                           </div>
                           <p className="text-sm text-secondary-foreground/70 mt-1">Pagamento único</p>
                         </div>
@@ -620,20 +613,13 @@ const Formulario = () => {
                             <div className="w-5 h-5 rounded-full bg-accent/20 flex items-center justify-center flex-shrink-0">
                               <Check className="w-3 h-3 text-accent" />
                             </div>
-                            <span className="text-sm">Entrega em até 48h</span>
+                            <span className="text-sm">Entrega em até 12h</span>
                           </li>
                         </ul>
                       </div>
 
                       {/* Plano Exclusivo */}
-                      <div 
-                        onClick={() => setSelectedPlan("exclusivo")}
-                        className={`relative rounded-2xl p-6 cursor-pointer transition-all border-2 ${
-                          selectedPlan === "exclusivo" 
-                            ? "border-accent bg-secondary text-secondary-foreground shadow-gold" 
-                            : "border-border bg-secondary/80 text-secondary-foreground hover:border-accent/50"
-                        }`}
-                      >
+                      <div onClick={() => setSelectedPlan("exclusivo")} className={`relative rounded-2xl p-6 cursor-pointer transition-all border-2 ${selectedPlan === "exclusivo" ? "border-accent bg-secondary text-secondary-foreground shadow-gold" : "border-border bg-secondary/80 text-secondary-foreground hover:border-accent/50"}`}>
                         {/* Popular Badge */}
                         <div className="absolute -top-3 left-4">
                           <span className="bg-accent text-accent-foreground text-xs font-bold px-3 py-1 rounded-full flex items-center gap-1">
@@ -644,8 +630,8 @@ const Formulario = () => {
                         <div className="mb-4 mt-2">
                           <h4 className="text-lg font-bold">Plano Exclusivo</h4>
                           <div className="flex items-baseline gap-2 mt-2">
-                            <span className="text-sm line-through text-secondary-foreground/50">R$ 79,90</span>
-                            <span className="text-3xl font-bold text-accent">R$ 49,90</span>
+                            <span className="text-sm line-through text-secondary-foreground/50">R$ 49,90</span>
+                            <span className="text-3xl font-bold text-accent">R$ 19,90</span>
                           </div>
                           <p className="text-sm text-secondary-foreground/70 mt-1">Pagamento único</p>
                         </div>
@@ -669,13 +655,13 @@ const Formulario = () => {
                             <div className="w-5 h-5 rounded-full bg-accent/20 flex items-center justify-center flex-shrink-0">
                               <Check className="w-3 h-3 text-accent" />
                             </div>
-                            <span className="text-sm">Música de fundo personalizada</span>
+                            <span className="text-sm">Música de fundo</span>
                           </li>
                           <li className="flex items-center gap-3">
                             <div className="w-5 h-5 rounded-full bg-accent/20 flex items-center justify-center flex-shrink-0">
                               <Check className="w-3 h-3 text-accent" />
                             </div>
-                            <span className="text-sm">Entrega expressa em 24h</span>
+                            <span className="text-sm">Entrega expressa em até 1h</span>
                           </li>
                           <li className="flex items-center gap-3">
                             <div className="w-5 h-5 rounded-full bg-accent/20 flex items-center justify-center flex-shrink-0">
