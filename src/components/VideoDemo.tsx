@@ -108,7 +108,7 @@ const VideoDemo = () => {
             </h2>
 
             {/* Description */}
-            <p className="text-secondary-foreground/80 text-base md:text-lg mb-8 leading-relaxed">O Papai Noel chama pelo nome, mostra sua foto no livro mágico, da conselhos e ainda deixa uma mensagem especial. Tudo em um vídeo cinematográfico feito só para sua criança.  
+            <p className="text-secondary-foreground/80 text-base md:text-lg mb-8 leading-relaxed">O Papai Noel chama pelo nome, mostra sua foto no livro mágico, da conselhos e ainda deixa uma mensagem especial. Tudo em um vídeo cinematográfico feito só para sua criança.   
 
 
 E 100% personalizado por você ou seja</p>
