@@ -644,12 +644,7 @@ const Formulario = () => {
 
                   {/* Terms checkbox for image upload */}
                   <div className="flex items-start gap-3 mt-4 p-4 bg-muted/50 rounded-xl border border-border/50">
-                    <Checkbox 
-                      id="imageTerms" 
-                      checked={acceptedImageTerms}
-                      onCheckedChange={(checked) => setAcceptedImageTerms(checked as boolean)}
-                      className="mt-0.5"
-                    />
+                    <Checkbox id="imageTerms" checked={acceptedImageTerms} onCheckedChange={checked => setAcceptedImageTerms(checked as boolean)} className="mt-0.5" />
                     <label htmlFor="imageTerms" className="text-xs text-muted-foreground leading-relaxed cursor-pointer">
                       Confirmo que tenho autorização legal para enviar estas imagens e dados, e concordo com os{" "}
                       <Link to="/politicas" className="text-primary hover:underline" target="_blank">
@@ -684,7 +679,7 @@ const Formulario = () => {
                     Telefone
                   </Label>
                   <p className="text-xs text-muted-foreground">
-                    Para segurança dos dados da criança
+                    Seu numero de telefone.            
                   </p>
                   <Input id="phone" type="tel" placeholder="(00) 00000-0000" value={phone} onChange={e => setPhone(e.target.value)} className="text-base py-6 rounded-xl border-2 border-accent/30 focus:border-accent" />
                 </div>
@@ -695,7 +690,7 @@ const Formulario = () => {
                     CPF ou CNPJ
                   </Label>
                   <p className="text-xs text-muted-foreground">
-                    Para segurança dos dados da criança
+                    Para segurança e integridade dos dados da criança
                   </p>
                   <Input id="cpfCnpj" type="text" placeholder="000.000.000-00" value={cpfCnpj} onChange={e => setCpfCnpj(e.target.value)} className="text-base py-6 rounded-xl border-2 border-accent/30 focus:border-accent" />
                 </div>
@@ -759,12 +754,7 @@ const Formulario = () => {
 
                         {/* Terms checkbox for purchase */}
                         <div className="flex items-start gap-3 mt-4 p-3 bg-white/10 rounded-lg">
-                          <Checkbox 
-                            id="purchaseTermsComum" 
-                            checked={acceptedPurchaseTermsComum}
-                            onCheckedChange={(checked) => setAcceptedPurchaseTermsComum(checked as boolean)}
-                            className="mt-0.5 border-white/50"
-                          />
+                          <Checkbox id="purchaseTermsComum" checked={acceptedPurchaseTermsComum} onCheckedChange={checked => setAcceptedPurchaseTermsComum(checked as boolean)} className="mt-0.5 border-white/50" />
                           <label htmlFor="purchaseTermsComum" className="text-[10px] text-white/70 leading-relaxed cursor-pointer">
                             Confirmo que li e aceito os{" "}
                             <Link to="/politicas" className="text-accent hover:underline" target="_blank">
@@ -773,11 +763,7 @@ const Formulario = () => {
                           </label>
                         </div>
 
-                        <Button 
-                          className="w-full mt-4 bg-accent hover:bg-accent/90 text-accent-foreground font-semibold" 
-                          size="lg"
-                          disabled={!acceptedPurchaseTermsComum}
-                        >
+                        <Button className="w-full mt-4 bg-accent hover:bg-accent/90 text-accent-foreground font-semibold" size="lg" disabled={!acceptedPurchaseTermsComum}>
                           Comprar Plano Comum
                         </Button>
                       </div>
@@ -873,12 +859,7 @@ const Formulario = () => {
 
                         {/* Terms checkbox for purchase */}
                         <div className="flex items-start gap-3 mt-4 p-3 bg-white/10 rounded-lg">
-                          <Checkbox 
-                            id="purchaseTermsExclusivo" 
-                            checked={acceptedPurchaseTermsExclusivo}
-                            onCheckedChange={(checked) => setAcceptedPurchaseTermsExclusivo(checked as boolean)}
-                            className="mt-0.5 border-white/50"
-                          />
+                          <Checkbox id="purchaseTermsExclusivo" checked={acceptedPurchaseTermsExclusivo} onCheckedChange={checked => setAcceptedPurchaseTermsExclusivo(checked as boolean)} className="mt-0.5 border-white/50" />
                           <label htmlFor="purchaseTermsExclusivo" className="text-[10px] text-white/70 leading-relaxed cursor-pointer">
                             Confirmo que li e aceito os{" "}
                             <Link to="/politicas" className="text-accent hover:underline" target="_blank">
@@ -887,11 +868,7 @@ const Formulario = () => {
                           </label>
                         </div>
 
-                        <Button 
-                          className="w-full mt-4 bg-accent hover:bg-accent/90 text-accent-foreground font-semibold" 
-                          size="lg"
-                          disabled={!acceptedPurchaseTermsExclusivo}
-                        >
+                        <Button className="w-full mt-4 bg-accent hover:bg-accent/90 text-accent-foreground font-semibold" size="lg" disabled={!acceptedPurchaseTermsExclusivo}>
                           Comprar Plano Exclusivo
                         </Button>
                       </div>
