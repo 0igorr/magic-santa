@@ -46,7 +46,7 @@ const VideoProofSection = () => {
       <div className="container mx-auto px-4">
         {/* Header */}
         <div className="text-center mb-8">
-          <h2 className="font-display text-3xl md:text-4xl lg:text-5xl text-foreground leading-tight mb-4">Crie um momento mágico que ficará na memória de quem você mais ama
+          <h2 className="font-display text-3xl md:text-4xl lg:text-5xl text-foreground leading-tight mb-4">O presente que ficará na memória de quem você mais ama
           <br />
             alegria do Natal para<br />
             quem você ama
