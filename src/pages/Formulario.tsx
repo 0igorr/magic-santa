@@ -446,12 +446,87 @@ const Formulario = () => {
                     Mensagem Secreta
                   </Label>
                   <p className="text-sm text-muted-foreground">
-                    O que o Papai Noel deve ler como uma mensagem particular (gratidão, apoio, ou um momento especial do ano)?
+                    O que o Papai Noel deve dizer sobre a criança?
                   </p>
-                  <Textarea id="secretMessage" placeholder="Digite a mensagem secreta..." value={secretMessage} onChange={e => setSecretMessage(e.target.value.slice(0, 150))} className="min-h-[100px] text-base rounded-xl border-2 border-accent/30 focus:border-accent resize-none" maxLength={150} />
-                  <p className="text-xs text-muted-foreground text-right">
-                    {secretMessage.length}/150 caracteres
-                  </p>
+                  <Select value={secretMessage} onValueChange={setSecretMessage}>
+                    <SelectTrigger className="text-base py-6 rounded-xl border-2 border-accent/30">
+                      <SelectValue placeholder="Selecione uma opção..." />
+                    </SelectTrigger>
+                    <SelectContent className="max-h-[300px]">
+                      <SelectItem value="É o melhor irmão.">É o melhor irmão.</SelectItem>
+                      <SelectItem value="É a melhor irmã.">É a melhor irmã.</SelectItem>
+                      <SelectItem value="É o melhor filho.">É o melhor filho.</SelectItem>
+                      <SelectItem value="É a melhor filha.">É a melhor filha.</SelectItem>
+                      <SelectItem value="É o melhor neto.">É o melhor neto.</SelectItem>
+                      <SelectItem value="É a melhor neta.">É a melhor neta.</SelectItem>
+                      <SelectItem value="É o melhor sobrinho.">É o melhor sobrinho.</SelectItem>
+                      <SelectItem value="É a melhor sobrinha.">É a melhor sobrinha.</SelectItem>
+                      <SelectItem value="É o melhor amigo do mundo.">É o melhor amigo do mundo.</SelectItem>
+                      <SelectItem value="É a melhor amiga do mundo.">É a melhor amiga do mundo.</SelectItem>
+                      <SelectItem value="É o melhor dançarino do mundo.">É o melhor dançarino do mundo.</SelectItem>
+                      <SelectItem value="É a melhor dançarina do mundo.">É a melhor dançarina do mundo.</SelectItem>
+                      <SelectItem value="É o melhor cantor do mundo.">É o melhor cantor do mundo.</SelectItem>
+                      <SelectItem value="É a melhor cantora do mundo.">É a melhor cantora do mundo.</SelectItem>
+                      <SelectItem value="É muito divertido.">É muito divertido.</SelectItem>
+                      <SelectItem value="É muito divertida.">É muito divertida.</SelectItem>
+                      <SelectItem value="É muito minucioso.">É muito minucioso.</SelectItem>
+                      <SelectItem value="É muito minuciosa.">É muito minuciosa.</SelectItem>
+                      <SelectItem value="É muito valente.">É muito valente.</SelectItem>
+                      <SelectItem value="É muito respeitoso.">É muito respeitoso.</SelectItem>
+                      <SelectItem value="É muito respeitosa.">É muito respeitosa.</SelectItem>
+                      <SelectItem value="É muito bom em tecnologia.">É muito bom em tecnologia.</SelectItem>
+                      <SelectItem value="É muito boa em tecnologia.">É muito boa em tecnologia.</SelectItem>
+                      <SelectItem value="É um mestre na cozinha.">É um mestre na cozinha.</SelectItem>
+                      <SelectItem value="É uma mestra na cozinha.">É uma mestra na cozinha.</SelectItem>
+                      <SelectItem value="É um artista incrível.">É um artista incrível.</SelectItem>
+                      <SelectItem value="É uma artista incrível.">É uma artista incrível.</SelectItem>
+                      <SelectItem value="É o melhor colega de classe.">É o melhor colega de classe.</SelectItem>
+                      <SelectItem value="É a melhor colega de classe.">É a melhor colega de classe.</SelectItem>
+                      <SelectItem value="É muito dedicado ao que faz.">É muito dedicado ao que faz.</SelectItem>
+                      <SelectItem value="É muito dedicada ao que faz.">É muito dedicada ao que faz.</SelectItem>
+                      <SelectItem value="É muito bom em desenhar.">É muito bom em desenhar.</SelectItem>
+                      <SelectItem value="É muito boa em desenhar.">É muito boa em desenhar.</SelectItem>
+                      <SelectItem value="É muito criativo com as histórias.">É muito criativo com as histórias.</SelectItem>
+                      <SelectItem value="É muito criativa com as histórias.">É muito criativa com as histórias.</SelectItem>
+                      <SelectItem value="É muito honesto.">É muito honesto.</SelectItem>
+                      <SelectItem value="É muito honesta.">É muito honesta.</SelectItem>
+                      <SelectItem value="É muito gentil.">É muito gentil.</SelectItem>
+                      <SelectItem value="É muito amigável.">É muito amigável.</SelectItem>
+                      <SelectItem value="É muito inteligente.">É muito inteligente.</SelectItem>
+                      <SelectItem value="É um bom líder.">É um bom líder.</SelectItem>
+                      <SelectItem value="É uma boa líder.">É uma boa líder.</SelectItem>
+                      <SelectItem value="É muito amoroso.">É muito amoroso.</SelectItem>
+                      <SelectItem value="É muito amorosa.">É muito amorosa.</SelectItem>
+                      <SelectItem value="É um excelente ouvinte.">É um excelente ouvinte.</SelectItem>
+                      <SelectItem value="É uma excelente ouvinte.">É uma excelente ouvinte.</SelectItem>
+                      <SelectItem value="Adora ler muito bem.">Adora ler muito bem.</SelectItem>
+                      <SelectItem value="Cresce muito rápido.">Cresce muito rápido.</SelectItem>
+                      <SelectItem value="Conta lindas histórias.">Conta lindas histórias.</SelectItem>
+                      <SelectItem value="Adora fazer esportes.">Adora fazer esportes.</SelectItem>
+                      <SelectItem value="Adora jogar jogos.">Adora jogar jogos.</SelectItem>
+                      <SelectItem value="Adora rir.">Adora rir.</SelectItem>
+                      <SelectItem value="Gosta de contar piadas.">Gosta de contar piadas.</SelectItem>
+                      <SelectItem value="Gosta de tocar música.">Gosta de tocar música.</SelectItem>
+                      <SelectItem value="Vai muito bem na escola.">Vai muito bem na escola.</SelectItem>
+                      <SelectItem value="Sabe andar de bicicleta.">Sabe andar de bicicleta.</SelectItem>
+                      <SelectItem value="Tem uma grande imaginação.">Tem uma grande imaginação.</SelectItem>
+                      <SelectItem value="Tem um sorriso lindo.">Tem um sorriso lindo.</SelectItem>
+                      <SelectItem value="Está atento(a) aos outros.">Está atento(a) aos outros.</SelectItem>
+                      <SelectItem value="Estuda bastante.">Estuda bastante.</SelectItem>
+                      <SelectItem value="Tem um senso de justiça admirável.">Tem um senso de justiça admirável.</SelectItem>
+                      <SelectItem value="Gosta de cuidar dos animais.">Gosta de cuidar dos animais.</SelectItem>
+                      <SelectItem value="Tem uma risada muito contagiante.">Tem uma risada muito contagiante.</SelectItem>
+                      <SelectItem value="Consegue ver o lado bom das coisas.">Consegue ver o lado bom das coisas.</SelectItem>
+                      <SelectItem value="É muito minucioso(a) com os detalhes.">É muito minucioso(a) com os detalhes.</SelectItem>
+                      <SelectItem value="Adora passar tempo com o vovô.">Adora passar tempo com o vovô.</SelectItem>
+                      <SelectItem value="Adora passar tempo com a vovó.">Adora passar tempo com a vovó.</SelectItem>
+                      <SelectItem value="É um presente para todos nós.">É um presente para todos nós.</SelectItem>
+                      <SelectItem value="Tem um coração muito generoso.">Tem um coração muito generoso.</SelectItem>
+                      <SelectItem value="É o sol da nossa casa.">É o sol da nossa casa.</SelectItem>
+                      <SelectItem value="Tem um senso de humor único.">Tem um senso de humor único.</SelectItem>
+                      <SelectItem value="Escreve lindas histórias.">Escreve lindas histórias.</SelectItem>
+                    </SelectContent>
+                  </Select>
                 </div>
 
                 {/* Conselho Secreto */}
@@ -462,7 +537,12 @@ const Formulario = () => {
                   <p className="text-sm text-muted-foreground">
                     Qual deve ser o conselho final do Papai Noel para a criança?
                   </p>
-                  <Textarea id="secretAdvice" placeholder="Digite o conselho secreto..." value={secretAdvice} onChange={e => setSecretAdvice(e.target.value.slice(0, 80))} className="min-h-[80px] text-base rounded-xl border-2 border-accent/30 focus:border-accent resize-none" maxLength={80} />
+                  <div className="bg-amber-500/10 border border-amber-500/30 rounded-lg p-3 mb-2">
+                    <p className="text-xs text-amber-600 dark:text-amber-400">
+                      ⚠️ <strong>Atenção:</strong> Escreva exatamente o que o Papai Noel vai falar. Preste atenção na ortografia e pontuação, pois será lido da forma que você escrever.
+                    </p>
+                  </div>
+                  <Textarea id="secretAdvice" placeholder="Ex: Continue sendo essa criança maravilhosa e nunca deixe de sonhar!" value={secretAdvice} onChange={e => setSecretAdvice(e.target.value.slice(0, 80))} className="min-h-[80px] text-base rounded-xl border-2 border-accent/30 focus:border-accent resize-none" maxLength={80} />
                   <p className="text-xs text-muted-foreground text-right">
                     {secretAdvice.length}/80 caracteres
                   </p>
