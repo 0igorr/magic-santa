@@ -718,7 +718,7 @@ const Formulario = () => {
                         <div className="mb-4">
                           <h4 className="text-lg font-bold text-white">Plano Comum</h4>
                           <div className="flex items-baseline gap-2 mt-2">
-                            <span className="text-2xl md:text-3xl font-bold text-accent">R$ 14,90</span>
+                            <span className="text-2xl md:text-3xl font-bold text-accent">R$ 17,90</span>
                           </div>
                           <p className="text-sm text-white/70 mt-1">Pagamento único</p>
                         </div>
@@ -783,7 +783,7 @@ const Formulario = () => {
                           <h4 className="text-lg font-bold text-white">Plano Exclusivo</h4>
                           <div className="flex items-baseline gap-2 mt-2">
                             <span className="text-sm line-through text-white/50">R$ 49,90</span>
-                            <span className="text-2xl md:text-3xl font-bold text-accent">R$ 19,90</span>
+                            <span className="text-2xl md:text-3xl font-bold text-accent">R$ 24,90</span>
                           </div>
                           <p className="text-sm text-white/70 mt-1">Pagamento único</p>
                         </div>
