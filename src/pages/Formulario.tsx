@@ -674,21 +674,16 @@ const Formulario = () => {
                 </div>
 
                 {/* Telefone - Shows after email and fullName are filled */}
-                {email && fullName && (
-                  <div className="space-y-3">
+                {email && fullName && <div className="space-y-3">
                     <Label htmlFor="phone" className="text-base md:text-lg font-semibold">
                       Telefone
                     </Label>
-                    <p className="text-xs text-muted-foreground">
-                      Seu numero de telefone.            
-                    </p>
+                    <p className="text-xs text-muted-foreground">Seu numero de telefone. Com +55 e DDD</p>
                     <Input id="phone" type="tel" placeholder="(00) 00000-0000" value={phone} onChange={e => setPhone(e.target.value)} className="text-base py-6 rounded-xl border-2 border-accent/30 focus:border-accent" />
-                  </div>
-                )}
+                  </div>}
 
                 {/* CPF/CNPJ - Shows after email and fullName are filled */}
-                {email && fullName && (
-                  <div className="space-y-3">
+                {email && fullName && <div className="space-y-3">
                     <Label htmlFor="cpfCnpj" className="text-base md:text-lg font-semibold">
                       CPF ou CNPJ
                     </Label>
@@ -696,8 +691,7 @@ const Formulario = () => {
                       Para segurança e integridade dos dados da criança
                     </p>
                     <Input id="cpfCnpj" type="text" placeholder="000.000.000-00" value={cpfCnpj} onChange={e => setCpfCnpj(e.target.value)} className="text-base py-6 rounded-xl border-2 border-accent/30 focus:border-accent" />
-                  </div>
-                )}
+                  </div>}
 
                 {/* Plans Section - Shows when all fields are filled */}
                 {email && fullName && phone && cpfCnpj && (isGiftCard || acceptedImageTerms) && <motion.div initial={{
@@ -756,20 +750,15 @@ const Formulario = () => {
                           </li>
                         </ul>
 
-                        <Button 
-                          className="w-full mt-4 bg-accent hover:bg-accent/90 text-accent-foreground font-semibold" 
-                          size="lg" 
-                          disabled={!acceptedPurchaseTermsComum}
-                          onClick={() => {
-                            const params = new URLSearchParams({
-                              'customer.name': fullName,
-                              'customer.email': email,
-                              'customer.document': cpfCnpj.replace(/\D/g, ''),
-                              'customer.phone': phone.replace(/\D/g, '')
-                            });
-                            window.location.href = `https://pay.kirvano.com/4e00c8b4-2d7b-4243-9ac6-0774f6b2fd57?${params.toString()}`;
-                          }}
-                        >
+                        <Button className="w-full mt-4 bg-accent hover:bg-accent/90 text-accent-foreground font-semibold" size="lg" disabled={!acceptedPurchaseTermsComum} onClick={() => {
+                    const params = new URLSearchParams({
+                      'customer.name': fullName,
+                      'customer.email': email,
+                      'customer.document': cpfCnpj.replace(/\D/g, ''),
+                      'customer.phone': phone.replace(/\D/g, '')
+                    });
+                    window.location.href = `https://pay.kirvano.com/4e00c8b4-2d7b-4243-9ac6-0774f6b2fd57?${params.toString()}`;
+                  }}>
                           Comprar Plano Comum
                         </Button>
 
@@ -874,20 +863,15 @@ const Formulario = () => {
                           </ul>
                         </div>
 
-                        <Button 
-                          className="w-full mt-4 bg-accent hover:bg-accent/90 text-accent-foreground font-semibold" 
-                          size="lg" 
-                          disabled={!acceptedPurchaseTermsExclusivo}
-                          onClick={() => {
-                            const params = new URLSearchParams({
-                              'customer.name': fullName,
-                              'customer.email': email,
-                              'customer.document': cpfCnpj.replace(/\D/g, ''),
-                              'customer.phone': phone.replace(/\D/g, '')
-                            });
-                            window.location.href = `https://pay.kirvano.com/0055690f-e505-4609-8c00-913c29b3536b?${params.toString()}`;
-                          }}
-                        >
+                        <Button className="w-full mt-4 bg-accent hover:bg-accent/90 text-accent-foreground font-semibold" size="lg" disabled={!acceptedPurchaseTermsExclusivo} onClick={() => {
+                    const params = new URLSearchParams({
+                      'customer.name': fullName,
+                      'customer.email': email,
+                      'customer.document': cpfCnpj.replace(/\D/g, ''),
+                      'customer.phone': phone.replace(/\D/g, '')
+                    });
+                    window.location.href = `https://pay.kirvano.com/0055690f-e505-4609-8c00-913c29b3536b?${params.toString()}`;
+                  }}>
                           Comprar Plano Exclusivo
                         </Button>
 
