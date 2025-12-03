@@ -1,8 +1,6 @@
 import { Heart } from "lucide-react";
-
 const Footer = () => {
-  return (
-    <footer className="bg-secondary text-white py-10 md:py-12 px-4">
+  return <footer className="bg-secondary text-white py-10 md:py-12 px-4">
       <div className="container mx-auto max-w-6xl">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 mb-6 md:mb-8">
           <div>
@@ -18,34 +16,22 @@ const Footer = () => {
             <h4 className="font-semibold mb-3 md:mb-4 text-base md:text-lg">Links Úteis</h4>
             <ul className="space-y-2 text-sm md:text-base">
               <li>
-                <a
-                  href="#"
-                  className="text-white/80 hover:text-accent transition-colors"
-                >
+                <a href="#" className="text-white/80 hover:text-accent transition-colors">
                   Como Funciona
                 </a>
               </li>
               <li>
-                <a
-                  href="#"
-                  className="text-white/80 hover:text-accent transition-colors"
-                >
+                <a href="#" className="text-white/80 hover:text-accent transition-colors">
                   Perguntas Frequentes
                 </a>
               </li>
               <li>
-                <a
-                  href="#"
-                  className="text-white/80 hover:text-accent transition-colors"
-                >
+                <a href="#" className="text-white/80 hover:text-accent transition-colors">
                   Termos de Uso
                 </a>
               </li>
               <li>
-                <a
-                  href="#"
-                  className="text-white/80 hover:text-accent transition-colors"
-                >
+                <a href="#" className="text-white/80 hover:text-accent transition-colors">
                   Política de Privacidade
                 </a>
               </li>
@@ -56,7 +42,7 @@ const Footer = () => {
             <h4 className="font-semibold mb-3 md:mb-4 text-base md:text-lg">Contato</h4>
             <ul className="space-y-2 text-white/80 text-sm md:text-base">
               <li>contato@magicsantavideo.com</li>
-              <li>WhatsApp: (11) 99999-9999</li>
+              <li>WhatsApp: (31) 99149-5424</li>
               <li>Atendimento: 24h</li>
             </ul>
           </div>
@@ -71,8 +57,6 @@ const Footer = () => {
           </p>
         </div>
       </div>
-    </footer>
-  );
+    </footer>;
 };
-
 export default Footer;
