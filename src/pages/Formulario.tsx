@@ -673,27 +673,31 @@ const Formulario = () => {
                   <Input id="fullName" type="text" placeholder="Digite seu nome completo" value={fullName} onChange={e => setFullName(e.target.value)} className="text-base py-6 rounded-xl border-2 border-accent/30 focus:border-accent" />
                 </div>
 
-                {/* Telefone */}
-                <div className="space-y-3">
-                  <Label htmlFor="phone" className="text-base md:text-lg font-semibold">
-                    Telefone
-                  </Label>
-                  <p className="text-xs text-muted-foreground">
-                    Seu numero de telefone.            
-                  </p>
-                  <Input id="phone" type="tel" placeholder="(00) 00000-0000" value={phone} onChange={e => setPhone(e.target.value)} className="text-base py-6 rounded-xl border-2 border-accent/30 focus:border-accent" />
-                </div>
+                {/* Telefone - Shows after email and fullName are filled */}
+                {email && fullName && (
+                  <div className="space-y-3">
+                    <Label htmlFor="phone" className="text-base md:text-lg font-semibold">
+                      Telefone
+                    </Label>
+                    <p className="text-xs text-muted-foreground">
+                      Seu numero de telefone.            
+                    </p>
+                    <Input id="phone" type="tel" placeholder="(00) 00000-0000" value={phone} onChange={e => setPhone(e.target.value)} className="text-base py-6 rounded-xl border-2 border-accent/30 focus:border-accent" />
+                  </div>
+                )}
 
-                {/* CPF/CNPJ */}
-                <div className="space-y-3">
-                  <Label htmlFor="cpfCnpj" className="text-base md:text-lg font-semibold">
-                    CPF ou CNPJ
-                  </Label>
-                  <p className="text-xs text-muted-foreground">
-                    Para segurança e integridade dos dados da criança
-                  </p>
-                  <Input id="cpfCnpj" type="text" placeholder="000.000.000-00" value={cpfCnpj} onChange={e => setCpfCnpj(e.target.value)} className="text-base py-6 rounded-xl border-2 border-accent/30 focus:border-accent" />
-                </div>
+                {/* CPF/CNPJ - Shows after email and fullName are filled */}
+                {email && fullName && (
+                  <div className="space-y-3">
+                    <Label htmlFor="cpfCnpj" className="text-base md:text-lg font-semibold">
+                      CPF ou CNPJ
+                    </Label>
+                    <p className="text-xs text-muted-foreground">
+                      Para segurança e integridade dos dados da criança
+                    </p>
+                    <Input id="cpfCnpj" type="text" placeholder="000.000.000-00" value={cpfCnpj} onChange={e => setCpfCnpj(e.target.value)} className="text-base py-6 rounded-xl border-2 border-accent/30 focus:border-accent" />
+                  </div>
+                )}
 
                 {/* Plans Section - Shows when all fields are filled */}
                 {email && fullName && phone && cpfCnpj && (isGiftCard || acceptedImageTerms) && <motion.div initial={{
@@ -752,7 +756,24 @@ const Formulario = () => {
                           </li>
                         </ul>
 
-                        {/* Terms checkbox for purchase */}
+                        <Button 
+                          className="w-full mt-4 bg-accent hover:bg-accent/90 text-accent-foreground font-semibold" 
+                          size="lg" 
+                          disabled={!acceptedPurchaseTermsComum}
+                          onClick={() => {
+                            const params = new URLSearchParams({
+                              'customer.name': fullName,
+                              'customer.email': email,
+                              'customer.document': cpfCnpj.replace(/\D/g, ''),
+                              'customer.phone': phone.replace(/\D/g, '')
+                            });
+                            window.location.href = `https://pay.kirvano.com/4e00c8b4-2d7b-4243-9ac6-0774f6b2fd57?${params.toString()}`;
+                          }}
+                        >
+                          Comprar Plano Comum
+                        </Button>
+
+                        {/* Terms checkbox for purchase - Below button */}
                         <div className="flex items-start gap-3 mt-4 p-3 bg-white/10 rounded-lg">
                           <Checkbox id="purchaseTermsComum" checked={acceptedPurchaseTermsComum} onCheckedChange={checked => setAcceptedPurchaseTermsComum(checked as boolean)} className="mt-0.5 border-white/50" />
                           <label htmlFor="purchaseTermsComum" className="text-[10px] text-white/70 leading-relaxed cursor-pointer">
@@ -762,10 +783,6 @@ const Formulario = () => {
                             </Link>
                           </label>
                         </div>
-
-                        <Button className="w-full mt-4 bg-accent hover:bg-accent/90 text-accent-foreground font-semibold" size="lg" disabled={!acceptedPurchaseTermsComum}>
-                          Comprar Plano Comum
-                        </Button>
                       </div>
 
                       {/* Plano Exclusivo - Verde escuro */}
@@ -857,7 +874,24 @@ const Formulario = () => {
                           </ul>
                         </div>
 
-                        {/* Terms checkbox for purchase */}
+                        <Button 
+                          className="w-full mt-4 bg-accent hover:bg-accent/90 text-accent-foreground font-semibold" 
+                          size="lg" 
+                          disabled={!acceptedPurchaseTermsExclusivo}
+                          onClick={() => {
+                            const params = new URLSearchParams({
+                              'customer.name': fullName,
+                              'customer.email': email,
+                              'customer.document': cpfCnpj.replace(/\D/g, ''),
+                              'customer.phone': phone.replace(/\D/g, '')
+                            });
+                            window.location.href = `https://pay.kirvano.com/0055690f-e505-4609-8c00-913c29b3536b?${params.toString()}`;
+                          }}
+                        >
+                          Comprar Plano Exclusivo
+                        </Button>
+
+                        {/* Terms checkbox for purchase - Below button */}
                         <div className="flex items-start gap-3 mt-4 p-3 bg-white/10 rounded-lg">
                           <Checkbox id="purchaseTermsExclusivo" checked={acceptedPurchaseTermsExclusivo} onCheckedChange={checked => setAcceptedPurchaseTermsExclusivo(checked as boolean)} className="mt-0.5 border-white/50" />
                           <label htmlFor="purchaseTermsExclusivo" className="text-[10px] text-white/70 leading-relaxed cursor-pointer">
@@ -867,10 +901,6 @@ const Formulario = () => {
                             </Link>
                           </label>
                         </div>
-
-                        <Button className="w-full mt-4 bg-accent hover:bg-accent/90 text-accent-foreground font-semibold" size="lg" disabled={!acceptedPurchaseTermsExclusivo}>
-                          Comprar Plano Exclusivo
-                        </Button>
                       </div>
                     </div>
                   </motion.div>}
