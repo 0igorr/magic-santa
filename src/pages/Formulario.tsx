@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
+import { Checkbox } from "@/components/ui/checkbox";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Volume2, Loader2, ArrowLeft, ArrowRight, Upload, X, Check, Star, Gift } from "lucide-react";
@@ -111,8 +112,13 @@ const Formulario = () => {
   const [photoPreview, setPhotoPreview] = useState<string | null>(null);
   const [email, setEmail] = useState("");
   const [fullName, setFullName] = useState("");
+  const [phone, setPhone] = useState("");
+  const [cpfCnpj, setCpfCnpj] = useState("");
   const [isGiftCard, setIsGiftCard] = useState(false);
   const [selectedPlan, setSelectedPlan] = useState<"comum" | "exclusivo" | null>(null);
+  const [acceptedImageTerms, setAcceptedImageTerms] = useState(false);
+  const [acceptedPurchaseTermsComum, setAcceptedPurchaseTermsComum] = useState(false);
+  const [acceptedPurchaseTermsExclusivo, setAcceptedPurchaseTermsExclusivo] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const {
@@ -635,6 +641,22 @@ const Formulario = () => {
                     </div>}
                   
                   <input ref={fileInputRef} type="file" accept="image/jpeg,image/png,image/webp" onChange={handlePhotoChange} className="hidden" />
+
+                  {/* Terms checkbox for image upload */}
+                  <div className="flex items-start gap-3 mt-4 p-4 bg-muted/50 rounded-xl border border-border/50">
+                    <Checkbox 
+                      id="imageTerms" 
+                      checked={acceptedImageTerms}
+                      onCheckedChange={(checked) => setAcceptedImageTerms(checked as boolean)}
+                      className="mt-0.5"
+                    />
+                    <label htmlFor="imageTerms" className="text-xs text-muted-foreground leading-relaxed cursor-pointer">
+                      Confirmo que tenho autorização legal para enviar estas imagens e dados, e concordo com os{" "}
+                      <Link to="/politicas" className="text-primary hover:underline" target="_blank">
+                        Termos de Uso e Política de Privacidade
+                      </Link>.
+                    </label>
+                  </div>
                 </div>}
 
                 {/* Email */}
@@ -656,8 +678,30 @@ const Formulario = () => {
                   <Input id="fullName" type="text" placeholder="Digite seu nome completo" value={fullName} onChange={e => setFullName(e.target.value)} className="text-base py-6 rounded-xl border-2 border-accent/30 focus:border-accent" />
                 </div>
 
-                {/* Plans Section - Shows when email and fullName are filled */}
-                {email && fullName && <motion.div initial={{
+                {/* Telefone */}
+                <div className="space-y-3">
+                  <Label htmlFor="phone" className="text-base md:text-lg font-semibold">
+                    Telefone
+                  </Label>
+                  <p className="text-xs text-muted-foreground">
+                    Para segurança dos dados da criança
+                  </p>
+                  <Input id="phone" type="tel" placeholder="(00) 00000-0000" value={phone} onChange={e => setPhone(e.target.value)} className="text-base py-6 rounded-xl border-2 border-accent/30 focus:border-accent" />
+                </div>
+
+                {/* CPF/CNPJ */}
+                <div className="space-y-3">
+                  <Label htmlFor="cpfCnpj" className="text-base md:text-lg font-semibold">
+                    CPF ou CNPJ
+                  </Label>
+                  <p className="text-xs text-muted-foreground">
+                    Para segurança dos dados da criança
+                  </p>
+                  <Input id="cpfCnpj" type="text" placeholder="000.000.000-00" value={cpfCnpj} onChange={e => setCpfCnpj(e.target.value)} className="text-base py-6 rounded-xl border-2 border-accent/30 focus:border-accent" />
+                </div>
+
+                {/* Plans Section - Shows when all fields are filled */}
+                {email && fullName && phone && cpfCnpj && (isGiftCard || acceptedImageTerms) && <motion.div initial={{
               opacity: 0,
               y: 20
             }} animate={{
@@ -713,7 +757,27 @@ const Formulario = () => {
                           </li>
                         </ul>
 
-                        <Button className="w-full mt-6 bg-accent hover:bg-accent/90 text-accent-foreground font-semibold" size="lg">
+                        {/* Terms checkbox for purchase */}
+                        <div className="flex items-start gap-3 mt-4 p-3 bg-white/10 rounded-lg">
+                          <Checkbox 
+                            id="purchaseTermsComum" 
+                            checked={acceptedPurchaseTermsComum}
+                            onCheckedChange={(checked) => setAcceptedPurchaseTermsComum(checked as boolean)}
+                            className="mt-0.5 border-white/50"
+                          />
+                          <label htmlFor="purchaseTermsComum" className="text-[10px] text-white/70 leading-relaxed cursor-pointer">
+                            Confirmo que li e aceito os{" "}
+                            <Link to="/politicas" className="text-accent hover:underline" target="_blank">
+                              Termos e Políticas
+                            </Link>
+                          </label>
+                        </div>
+
+                        <Button 
+                          className="w-full mt-4 bg-accent hover:bg-accent/90 text-accent-foreground font-semibold" 
+                          size="lg"
+                          disabled={!acceptedPurchaseTermsComum}
+                        >
                           Comprar Plano Comum
                         </Button>
                       </div>
@@ -807,7 +871,27 @@ const Formulario = () => {
                           </ul>
                         </div>
 
-                        <Button className="w-full mt-6 bg-accent hover:bg-accent/90 text-accent-foreground font-semibold" size="lg">
+                        {/* Terms checkbox for purchase */}
+                        <div className="flex items-start gap-3 mt-4 p-3 bg-white/10 rounded-lg">
+                          <Checkbox 
+                            id="purchaseTermsExclusivo" 
+                            checked={acceptedPurchaseTermsExclusivo}
+                            onCheckedChange={(checked) => setAcceptedPurchaseTermsExclusivo(checked as boolean)}
+                            className="mt-0.5 border-white/50"
+                          />
+                          <label htmlFor="purchaseTermsExclusivo" className="text-[10px] text-white/70 leading-relaxed cursor-pointer">
+                            Confirmo que li e aceito os{" "}
+                            <Link to="/politicas" className="text-accent hover:underline" target="_blank">
+                              Termos e Políticas
+                            </Link>
+                          </label>
+                        </div>
+
+                        <Button 
+                          className="w-full mt-4 bg-accent hover:bg-accent/90 text-accent-foreground font-semibold" 
+                          size="lg"
+                          disabled={!acceptedPurchaseTermsExclusivo}
+                        >
                           Comprar Plano Exclusivo
                         </Button>
                       </div>
