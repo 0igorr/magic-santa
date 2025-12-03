@@ -292,14 +292,14 @@ const Formulario = () => {
             {currentStep === 1 && <div className="space-y-8">
                 <div className="flex flex-col gap-4 mb-8">
                   <div className="flex justify-between items-center">
-                    <h2 className="text-xl md:text-3xl font-bold text-foreground">
+                    <h2 className="md:text-3xl font-bold text-foreground text-base">
                       {steps[0].number}
                       <sub className="text-lg">/2</sub> {steps[0].title}
                     </h2>
                     <button onClick={() => {
                   setIsGiftCard(true);
                   setCurrentStep(3);
-                }} className="flex items-center gap-1.5 rounded-full border border-border bg-background hover:bg-accent/10 transition-colors text-xs md:text-sm font-medium mx-[7px] px-[7px] py-[5px]">
+                }} className="flex items-center gap-1.5 rounded-full border border-border bg-background hover:bg-accent/10 transition-colors text-xs md:text-sm font-medium px-[7px] py-[5px] mx-[40px]">
                       <span className="hidden md:inline text-muted-foreground">Sem tempo?</span>
                       <span className="flex items-center gap-1.5 bg-secondary px-2 py-1 rounded-full">
                         <Gift className="w-3 h-3 md:w-4 md:h-4 bg-primary border-primary text-primary" />
