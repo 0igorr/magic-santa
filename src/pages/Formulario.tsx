@@ -750,7 +750,7 @@ const Formulario = () => {
                           </li>
                         </ul>
 
-                        <Button className="w-full mt-4 bg-accent hover:bg-accent/90 text-accent-foreground font-semibold" size="lg" disabled={!acceptedPurchaseTermsComum} onClick={() => {
+                        <Button size="lg" disabled={!acceptedPurchaseTermsComum} onClick={() => {
                     const params = new URLSearchParams({
                       'customer.name': fullName,
                       'customer.email': email,
@@ -758,7 +758,7 @@ const Formulario = () => {
                       'customer.phone': phone.replace(/\D/g, '')
                     });
                     window.location.href = `https://pay.kirvano.com/4e00c8b4-2d7b-4243-9ac6-0774f6b2fd57?${params.toString()}`;
-                  }}>
+                  }} className="w-full mt-4 font-semibold bg-primary text-primary-foreground">
                           Comprar Plano Comum
                         </Button>
 
