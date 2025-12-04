@@ -10,7 +10,6 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Volume2, Loader2, ArrowLeft, ArrowRight, Upload, X } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
 import { Link } from "react-router-dom";
-
 const steps = [{
   number: 1,
   title: "Dados do destinatário"
@@ -89,7 +88,6 @@ const activityOptions = [{
   girl: "",
   neutral: "demonstrou grande resiliência"
 }];
-
 const FormularioErro = () => {
   const [currentStep, setCurrentStep] = useState(1);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -119,13 +117,12 @@ const FormularioErro = () => {
   const [cpfCnpj, setCpfCnpj] = useState("");
   const [acceptedImageTerms, setAcceptedImageTerms] = useState(false);
   const [acceptedFinalTerms, setAcceptedFinalTerms] = useState(false);
-
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
-  const { toast } = useToast();
-
+  const {
+    toast
+  } = useToast();
   const filteredAgeOptions = ageOptions.filter(option => option.toLowerCase().includes(ageSearch.toLowerCase()));
-
   const handlePhotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
@@ -145,7 +142,6 @@ const FormularioErro = () => {
       reader.readAsDataURL(file);
     }
   };
-
   const removePhoto = () => {
     setPhoto(null);
     setPhotoPreview(null);
@@ -153,7 +149,6 @@ const FormularioErro = () => {
       fileInputRef.current.value = "";
     }
   };
-
   const getActivityOptions = () => {
     return activityOptions.map((option, index) => {
       if (gender === "menino" && option.boy) {
@@ -178,13 +173,11 @@ const FormularioErro = () => {
       label: string;
     }[];
   };
-
   const getActivityLabel = (value: string) => {
     const options = getActivityOptions();
     const found = options.find(opt => opt.value === value);
     return found ? found.label : value;
   };
-
   const handleGenerateVoice = async () => {
     if (!childName.trim()) {
       toast({
@@ -224,7 +217,6 @@ const FormularioErro = () => {
         });
         const url = URL.createObjectURL(audioBlob);
         setAudioUrl(url);
-
         setTimeout(() => {
           if (audioRef.current) {
             audioRef.current.play();
@@ -246,7 +238,6 @@ const FormularioErro = () => {
       setIsGenerating(false);
     }
   };
-
   const handleSubmitForm = async () => {
     if (!acceptedFinalTerms) {
       toast({
@@ -256,16 +247,13 @@ const FormularioErro = () => {
       });
       return;
     }
-
     setIsSubmitting(true);
-
     try {
       // Convert photo to base64 if exists
       let photoBase64 = null;
       if (photo && photoPreview) {
         photoBase64 = photoPreview;
       }
-
       const formData = {
         childName,
         gender,
@@ -283,19 +271,16 @@ const FormularioErro = () => {
         cpfCnpj,
         submittedAt: new Date().toISOString()
       };
-
       const response = await fetch('https://n8n-n8n.lw9gve.easypanel.host/webhook/papainoel-poscompra', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
+          'Content-Type': 'application/json'
         },
         body: JSON.stringify(formData)
       });
-
       if (!response.ok) {
         throw new Error('Failed to submit form');
       }
-
       toast({
         title: "Formulário enviado!",
         description: "Seu vídeo personalizado será criado em breve."
@@ -320,7 +305,6 @@ const FormularioErro = () => {
       setCpfCnpj("");
       setAcceptedImageTerms(false);
       setAcceptedFinalTerms(false);
-
     } catch (error) {
       console.error('Error submitting form:', error);
       toast({
@@ -332,9 +316,7 @@ const FormularioErro = () => {
       setIsSubmitting(false);
     }
   };
-
-  return (
-    <div className="min-h-screen bg-background">
+  return <div className="min-h-screen bg-background">
       {/* Header */}
       <header className="border-b border-border/50 bg-background/95 backdrop-blur-sm sticky top-0 z-50">
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
@@ -353,47 +335,45 @@ const FormularioErro = () => {
       <div className="container mx-auto px-4 py-8 md:py-12">
         <div className="max-w-4xl mx-auto">
           <div className="flex items-center justify-between mb-12">
-            {steps.map((step, index) => (
-              <div key={step.number} className="flex items-center flex-1">
+            {steps.map((step, index) => <div key={step.number} className="flex items-center flex-1">
                 <div className="flex flex-col items-center flex-1">
-                  <motion.div
-                    initial={{ scale: 0.8, opacity: 0 }}
-                    animate={{
-                      scale: currentStep >= step.number ? 1 : 0.8,
-                      opacity: currentStep >= step.number ? 1 : 0.5
-                    }}
-                    className={`w-12 h-12 md:w-16 md:h-16 rounded-full flex items-center justify-center font-bold text-lg md:text-xl transition-all ${currentStep >= step.number ? 'bg-primary text-white shadow-gold' : 'bg-muted text-muted-foreground'}`}
-                  >
+                  <motion.div initial={{
+                scale: 0.8,
+                opacity: 0
+              }} animate={{
+                scale: currentStep >= step.number ? 1 : 0.8,
+                opacity: currentStep >= step.number ? 1 : 0.5
+              }} className={`w-12 h-12 md:w-16 md:h-16 rounded-full flex items-center justify-center font-bold text-lg md:text-xl transition-all ${currentStep >= step.number ? 'bg-primary text-white shadow-gold' : 'bg-muted text-muted-foreground'}`}>
                     {step.number}
                   </motion.div>
                   <p className={`mt-2 text-xs md:text-sm font-medium text-center ${currentStep >= step.number ? 'text-foreground' : 'text-muted-foreground'}`}>
                     {step.title}
                   </p>
                 </div>
-                {index < steps.length - 1 && (
-                  <div className="flex-1 h-1 mx-2 md:mx-4 bg-muted relative overflow-hidden">
-                    <motion.div
-                      initial={{ width: 0 }}
-                      animate={{ width: currentStep > step.number ? '100%' : '0%' }}
-                      transition={{ duration: 0.3 }}
-                      className="absolute inset-0 bg-primary"
-                    />
-                  </div>
-                )}
-              </div>
-            ))}
+                {index < steps.length - 1 && <div className="flex-1 h-1 mx-2 md:mx-4 bg-muted relative overflow-hidden">
+                    <motion.div initial={{
+                width: 0
+              }} animate={{
+                width: currentStep > step.number ? '100%' : '0%'
+              }} transition={{
+                duration: 0.3
+              }} className="absolute inset-0 bg-primary" />
+                  </div>}
+              </div>)}
           </div>
 
           {/* Form Content */}
-          <motion.div
-            key={currentStep}
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: -20 }}
-            className="glass rounded-2xl p-6 md:p-10 shadow-gold border-2 border-accent/20"
-          >
-            {currentStep === 1 && (
-              <div className="space-y-8">
+          <motion.div key={currentStep} initial={{
+          opacity: 0,
+          x: 20
+        }} animate={{
+          opacity: 1,
+          x: 0
+        }} exit={{
+          opacity: 0,
+          x: -20
+        }} className="glass rounded-2xl p-6 md:p-10 shadow-gold border-2 border-accent/20">
+            {currentStep === 1 && <div className="space-y-8">
                 <div className="flex flex-col gap-4 mb-8">
                   <div className="flex justify-between items-center">
                     <h2 className="md:text-3xl font-bold text-foreground text-base">
@@ -410,34 +390,16 @@ const FormularioErro = () => {
                   </Label>
                   <div className="flex gap-3 items-start">
                     <div className="flex-1">
-                      <Input
-                        id="childName"
-                        type="text"
-                        placeholder="Digite o nome..."
-                        value={childName}
-                        onChange={e => setChildName(e.target.value.slice(0, 10))}
-                        className="text-base md:text-lg py-6 rounded-xl border-2 border-accent/30 focus:border-accent"
-                        maxLength={10}
-                      />
+                      <Input id="childName" type="text" placeholder="Digite o nome..." value={childName} onChange={e => setChildName(e.target.value.slice(0, 10))} className="text-base md:text-lg py-6 rounded-xl border-2 border-accent/30 focus:border-accent" maxLength={10} />
                       <p className="text-xs text-muted-foreground mt-1">
                         {childName.length}/10 caracteres
                       </p>
                     </div>
-                    <Button
-                      onClick={handleGenerateVoice}
-                      disabled={isGenerating || !childName.trim()}
-                      variant="outline"
-                      size="lg"
-                      className="border-2 border-primary/30 hover:bg-primary/10 hover:border-primary text-primary px-4 py-6"
-                    >
-                      {isGenerating ? (
-                        <Loader2 className="w-5 h-5 animate-spin" />
-                      ) : (
-                        <>
+                    <Button onClick={handleGenerateVoice} disabled={isGenerating || !childName.trim()} variant="outline" size="lg" className="border-2 border-primary/30 hover:bg-primary/10 hover:border-primary text-primary px-4 py-6">
+                      {isGenerating ? <Loader2 className="w-5 h-5 animate-spin" /> : <>
                           <Volume2 className="w-5 h-5 mr-2" />
                           <span className="hidden md:inline">Escute</span>
-                        </>
-                      )}
+                        </>}
                     </Button>
                   </div>
                   {audioUrl && <audio ref={audioRef} src={audioUrl} className="hidden" />}
@@ -450,10 +412,7 @@ const FormularioErro = () => {
                   </Label>
                   <RadioGroup value={gender} onValueChange={setGender} className="flex gap-4">
                     <div className="flex-1">
-                      <div
-                        className={`flex flex-col items-center gap-3 p-6 rounded-xl border-2 cursor-pointer transition-all ${gender === 'menino' ? 'border-primary bg-primary/5' : 'border-border hover:border-accent/50'}`}
-                        onClick={() => setGender('menino')}
-                      >
+                      <div className={`flex flex-col items-center gap-3 p-6 rounded-xl border-2 cursor-pointer transition-all ${gender === 'menino' ? 'border-primary bg-primary/5' : 'border-border hover:border-accent/50'}`} onClick={() => setGender('menino')}>
                         <div className="text-6xl">👦</div>
                         <div className="flex items-center gap-2">
                           <RadioGroupItem value="menino" id="menino" />
@@ -464,10 +423,7 @@ const FormularioErro = () => {
                       </div>
                     </div>
                     <div className="flex-1">
-                      <div
-                        className={`flex flex-col items-center gap-3 p-6 rounded-xl border-2 cursor-pointer transition-all ${gender === 'menina' ? 'border-primary bg-primary/5' : 'border-border hover:border-accent/50'}`}
-                        onClick={() => setGender('menina')}
-                      >
+                      <div className={`flex flex-col items-center gap-3 p-6 rounded-xl border-2 cursor-pointer transition-all ${gender === 'menina' ? 'border-primary bg-primary/5' : 'border-border hover:border-accent/50'}`} onClick={() => setGender('menina')}>
                         <div className="text-6xl">👧</div>
                         <div className="flex items-center gap-2">
                           <RadioGroupItem value="menina" id="menina" />
@@ -486,10 +442,7 @@ const FormularioErro = () => {
                     A criança se comportou bem?
                   </Label>
                   <RadioGroup value={behavior} onValueChange={setBehavior} className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <div
-                      className={`flex flex-col items-center gap-3 p-6 rounded-xl border-2 cursor-pointer transition-all ${behavior === 'sim' ? 'border-green-500 bg-green-500/5' : 'border-border hover:border-accent/50'}`}
-                      onClick={() => setBehavior('sim')}
-                    >
+                    <div className={`flex flex-col items-center gap-3 p-6 rounded-xl border-2 cursor-pointer transition-all ${behavior === 'sim' ? 'border-green-500 bg-green-500/5' : 'border-border hover:border-accent/50'}`} onClick={() => setBehavior('sim')}>
                       <div className="text-5xl">😊</div>
                       <div className="flex items-center gap-2">
                         <RadioGroupItem value="sim" id="sim" />
@@ -498,10 +451,7 @@ const FormularioErro = () => {
                         </Label>
                       </div>
                     </div>
-                    <div
-                      className={`flex flex-col items-center gap-3 p-6 rounded-xl border-2 cursor-pointer transition-all ${behavior === 'mais-ou-menos' ? 'border-orange-500 bg-orange-500/5' : 'border-border hover:border-accent/50'}`}
-                      onClick={() => setBehavior('mais-ou-menos')}
-                    >
+                    <div className={`flex flex-col items-center gap-3 p-6 rounded-xl border-2 cursor-pointer transition-all ${behavior === 'mais-ou-menos' ? 'border-orange-500 bg-orange-500/5' : 'border-border hover:border-accent/50'}`} onClick={() => setBehavior('mais-ou-menos')}>
                       <div className="text-5xl">😐</div>
                       <div className="flex items-center gap-2">
                         <RadioGroupItem value="mais-ou-menos" id="mais-ou-menos" />
@@ -510,10 +460,7 @@ const FormularioErro = () => {
                         </Label>
                       </div>
                     </div>
-                    <div
-                      className={`flex flex-col items-center gap-3 p-6 rounded-xl border-2 cursor-pointer transition-all ${behavior === 'sem-resposta' ? 'border-blue-500 bg-blue-500/5' : 'border-border hover:border-accent/50'}`}
-                      onClick={() => setBehavior('sem-resposta')}
-                    >
+                    <div className={`flex flex-col items-center gap-3 p-6 rounded-xl border-2 cursor-pointer transition-all ${behavior === 'sem-resposta' ? 'border-blue-500 bg-blue-500/5' : 'border-border hover:border-accent/50'}`} onClick={() => setBehavior('sem-resposta')}>
                       <div className="text-5xl">🤷</div>
                       <div className="flex items-center gap-2">
                         <RadioGroupItem value="sem-resposta" id="sem-resposta" />
@@ -533,21 +480,14 @@ const FormularioErro = () => {
                       Voltar
                     </Button>
                   </Link>
-                  <Button
-                    size="lg"
-                    disabled={!childName.trim() || !gender || !behavior}
-                    onClick={() => setCurrentStep(2)}
-                    className="bg-primary hover:bg-primary/90 gap-2"
-                  >
+                  <Button size="lg" disabled={!childName.trim() || !gender || !behavior} onClick={() => setCurrentStep(2)} className="bg-primary hover:bg-primary/90 gap-2">
                     Próximo
                     <ArrowRight className="w-4 h-4" />
                   </Button>
                 </div>
-              </div>
-            )}
+              </div>}
 
-            {currentStep === 2 && (
-              <div className="space-y-8">
+            {currentStep === 2 && <div className="space-y-8">
                 <h2 className="text-2xl md:text-3xl font-bold text-foreground mb-8">
                   {steps[1].number}
                   <sub className="text-lg">/3</sub> {steps[1].title}
@@ -559,39 +499,18 @@ const FormularioErro = () => {
                     Qual a idade da criança?
                   </Label>
                   <div className="relative">
-                    <Input
-                      id="age"
-                      type="text"
-                      placeholder="Digite para buscar ou selecione..."
-                      value={ageSearch}
-                      onChange={e => setAgeSearch(e.target.value)}
-                      onFocus={() => setIsAgeDropdownOpen(true)}
-                      onBlur={() => setTimeout(() => setIsAgeDropdownOpen(false), 200)}
-                      className="text-base md:text-lg py-6 rounded-xl border-2 border-accent/30 focus:border-accent"
-                    />
-                    {isAgeDropdownOpen && (
-                      <div className="absolute z-10 w-full mt-2 bg-background border-2 border-accent/30 rounded-xl shadow-lg max-h-60 overflow-y-auto">
-                        {filteredAgeOptions.length > 0 ? (
-                          filteredAgeOptions.map((option, index) => (
-                            <div
-                              key={index}
-                              onClick={() => {
-                                setAge(option);
-                                setAgeSearch(option);
-                                setIsAgeDropdownOpen(false);
-                              }}
-                              className="px-4 py-3 hover:bg-accent/10 cursor-pointer transition-colors border-b border-border/50 last:border-0"
-                            >
+                    <Input id="age" type="text" placeholder="Digite para buscar ou selecione..." value={ageSearch} onChange={e => setAgeSearch(e.target.value)} onFocus={() => setIsAgeDropdownOpen(true)} onBlur={() => setTimeout(() => setIsAgeDropdownOpen(false), 200)} className="text-base md:text-lg py-6 rounded-xl border-2 border-accent/30 focus:border-accent" />
+                    {isAgeDropdownOpen && <div className="absolute z-10 w-full mt-2 bg-background border-2 border-accent/30 rounded-xl shadow-lg max-h-60 overflow-y-auto">
+                        {filteredAgeOptions.length > 0 ? filteredAgeOptions.map((option, index) => <div key={index} onClick={() => {
+                    setAge(option);
+                    setAgeSearch(option);
+                    setIsAgeDropdownOpen(false);
+                  }} className="px-4 py-3 hover:bg-accent/10 cursor-pointer transition-colors border-b border-border/50 last:border-0">
                               {option}
-                            </div>
-                          ))
-                        ) : (
-                          <div className="px-4 py-3 text-muted-foreground">
+                            </div>) : <div className="px-4 py-3 text-muted-foreground">
                             Nenhuma opção encontrada
-                          </div>
-                        )}
-                      </div>
-                    )}
+                          </div>}
+                      </div>}
                   </div>
                 </div>
 
@@ -697,14 +616,7 @@ const FormularioErro = () => {
                       ⚠️ <strong>Atenção:</strong> Escreva exatamente o que o Papai Noel vai falar. Preste atenção na ortografia e pontuação, pois será lido da forma que você escrever.
                     </p>
                   </div>
-                  <Textarea
-                    id="secretAdvice"
-                    placeholder="Ex: Continue sendo essa criança maravilhosa e nunca deixe de sonhar!"
-                    value={secretAdvice}
-                    onChange={e => setSecretAdvice(e.target.value.slice(0, 80))}
-                    className="min-h-[80px] text-base rounded-xl border-2 border-accent/30 focus:border-accent resize-none"
-                    maxLength={80}
-                  />
+                  <Textarea id="secretAdvice" placeholder="Ex: Continue sendo essa criança maravilhosa e nunca deixe de sonhar!" value={secretAdvice} onChange={e => setSecretAdvice(e.target.value.slice(0, 80))} className="min-h-[80px] text-base rounded-xl border-2 border-accent/30 focus:border-accent resize-none" maxLength={80} />
                   <p className="text-xs text-muted-foreground text-right">
                     {secretAdvice.length}/80 caracteres
                   </p>
@@ -720,11 +632,9 @@ const FormularioErro = () => {
                       <SelectValue placeholder="Selecione uma opção..." />
                     </SelectTrigger>
                     <SelectContent className="max-h-[300px]">
-                      {getActivityOptions().map(option => (
-                        <SelectItem key={option.value} value={option.value}>
+                      {getActivityOptions().map(option => <SelectItem key={option.value} value={option.value}>
                           {option.label}
-                        </SelectItem>
-                      ))}
+                        </SelectItem>)}
                     </SelectContent>
                   </Select>
                 </div>
@@ -756,21 +666,14 @@ const FormularioErro = () => {
                     <ArrowLeft className="w-4 h-4" />
                     Voltar
                   </Button>
-                  <Button
-                    size="lg"
-                    disabled={!age || !secretMessage.trim() || !secretAdvice.trim() || !activity || !characteristic}
-                    onClick={() => setCurrentStep(3)}
-                    className="bg-primary hover:bg-primary/90 gap-2"
-                  >
+                  <Button size="lg" disabled={!age || !secretMessage.trim() || !secretAdvice.trim() || !activity || !characteristic} onClick={() => setCurrentStep(3)} className="bg-primary hover:bg-primary/90 gap-2">
                     Próximo
                     <ArrowRight className="w-4 h-4" />
                   </Button>
                 </div>
-              </div>
-            )}
+              </div>}
 
-            {currentStep === 3 && (
-              <div className="space-y-8">
+            {currentStep === 3 && <div className="space-y-8">
                 <h2 className="text-2xl md:text-3xl font-bold text-foreground mb-8">
                   {steps[2].number}<sub className="text-lg">/3</sub> {steps[2].title}
                 </h2>
@@ -784,11 +687,7 @@ const FormularioErro = () => {
                     Adicione uma foto da criança para personalizar o vídeo
                   </p>
                   
-                  {!photoPreview ? (
-                    <div
-                      onClick={() => fileInputRef.current?.click()}
-                      className="border-2 border-dashed border-accent/50 rounded-xl p-8 md:p-12 hover:border-accent transition-all cursor-pointer bg-accent/5 hover:bg-accent/10"
-                    >
+                  {!photoPreview ? <div onClick={() => fileInputRef.current?.click()} className="border-2 border-dashed border-accent/50 rounded-xl p-8 md:p-12 hover:border-accent transition-all cursor-pointer bg-accent/5 hover:bg-accent/10">
                       <div className="flex flex-col items-center gap-4">
                         <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center">
                           <Upload className="w-8 h-8 text-primary" />
@@ -802,32 +701,18 @@ const FormularioErro = () => {
                           </p>
                         </div>
                       </div>
-                    </div>
-                  ) : (
-                    <div className="relative rounded-xl overflow-hidden border-2 border-accent/30">
+                    </div> : <div className="relative rounded-xl overflow-hidden border-2 border-accent/30">
                       <img src={photoPreview} alt="Preview da foto" className="w-full h-64 object-cover" />
                       <Button onClick={removePhoto} variant="destructive" size="icon" className="absolute top-2 right-2">
                         <X className="w-4 h-4" />
                       </Button>
-                    </div>
-                  )}
+                    </div>}
                   
-                  <input
-                    ref={fileInputRef}
-                    type="file"
-                    accept="image/jpeg,image/png,image/webp"
-                    onChange={handlePhotoChange}
-                    className="hidden"
-                  />
+                  <input ref={fileInputRef} type="file" accept="image/jpeg,image/png,image/webp" onChange={handlePhotoChange} className="hidden" />
 
                   {/* Terms checkbox for image upload */}
                   <div className="flex items-start gap-3 mt-4 p-4 bg-muted/50 rounded-xl border border-border/50">
-                    <Checkbox
-                      id="imageTerms"
-                      checked={acceptedImageTerms}
-                      onCheckedChange={checked => setAcceptedImageTerms(checked as boolean)}
-                      className="mt-0.5"
-                    />
+                    <Checkbox id="imageTerms" checked={acceptedImageTerms} onCheckedChange={checked => setAcceptedImageTerms(checked as boolean)} className="mt-0.5" />
                     <label htmlFor="imageTerms" className="text-xs text-muted-foreground leading-relaxed cursor-pointer">
                       Confirmo que tenho autorização legal para enviar estas imagens e dados, e concordo com os{" "}
                       <Link to="/politicas" className="text-primary hover:underline" target="_blank">
@@ -845,14 +730,7 @@ const FormularioErro = () => {
                   <p className="text-sm text-muted-foreground">
                     Para qual email devemos enviar o vídeo?
                   </p>
-                  <Input
-                    id="email"
-                    type="email"
-                    placeholder="seu@email.com"
-                    value={email}
-                    onChange={e => setEmail(e.target.value)}
-                    className="text-base py-6 rounded-xl border-2 border-accent/30 focus:border-accent"
-                  />
+                  <Input id="email" type="email" placeholder="seu@email.com" value={email} onChange={e => setEmail(e.target.value)} className="text-base py-6 rounded-xl border-2 border-accent/30 focus:border-accent" />
                 </div>
 
                 {/* Nome Completo */}
@@ -860,85 +738,47 @@ const FormularioErro = () => {
                   <Label htmlFor="fullName" className="text-base md:text-lg font-semibold">
                     Nome Completo
                   </Label>
-                  <Input
-                    id="fullName"
-                    type="text"
-                    placeholder="Digite seu nome completo"
-                    value={fullName}
-                    onChange={e => setFullName(e.target.value)}
-                    className="text-base py-6 rounded-xl border-2 border-accent/30 focus:border-accent"
-                  />
+                  <Input id="fullName" type="text" placeholder="Digite seu nome completo" value={fullName} onChange={e => setFullName(e.target.value)} className="text-base py-6 rounded-xl border-2 border-accent/30 focus:border-accent" />
                 </div>
 
                 {/* Telefone - Shows after email and fullName are filled */}
-                {email && fullName && (
-                  <div className="space-y-3">
+                {email && fullName && <div className="space-y-3">
                     <Label htmlFor="phone" className="text-base md:text-lg font-semibold">
                       Telefone
                     </Label>
-                    <p className="text-xs text-muted-foreground">Seu numero de telefone. Com +55 e DDD</p>
-                    <Input
-                      id="phone"
-                      type="tel"
-                      placeholder="(00) 00000-0000"
-                      value={phone}
-                      onChange={e => setPhone(e.target.value)}
-                      className="text-base py-6 rounded-xl border-2 border-accent/30 focus:border-accent"
-                    />
-                  </div>
-                )}
+                    <p className="text-xs text-muted-foreground">Seu numero de telefone.</p>
+                    <Input id="phone" type="tel" placeholder="(00) 00000-0000" value={phone} onChange={e => setPhone(e.target.value)} className="text-base py-6 rounded-xl border-2 border-accent/30 focus:border-accent" />
+                  </div>}
 
                 {/* CPF/CNPJ - Shows after email and fullName are filled */}
-                {email && fullName && (
-                  <div className="space-y-3">
+                {email && fullName && <div className="space-y-3">
                     <Label htmlFor="cpfCnpj" className="text-base md:text-lg font-semibold">
                       CPF ou CNPJ
                     </Label>
                     <p className="text-xs text-muted-foreground">
                       Para segurança e integridade dos dados da criança
                     </p>
-                    <Input
-                      id="cpfCnpj"
-                      type="text"
-                      placeholder="000.000.000-00"
-                      value={cpfCnpj}
-                      onChange={e => setCpfCnpj(e.target.value)}
-                      className="text-base py-6 rounded-xl border-2 border-accent/30 focus:border-accent"
-                    />
-                  </div>
-                )}
+                    <Input id="cpfCnpj" type="text" placeholder="000.000.000-00" value={cpfCnpj} onChange={e => setCpfCnpj(e.target.value)} className="text-base py-6 rounded-xl border-2 border-accent/30 focus:border-accent" />
+                  </div>}
 
                 {/* Create Video Button - Shows when all fields are filled */}
-                {email && fullName && phone && cpfCnpj && acceptedImageTerms && (
-                  <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    className="space-y-4"
-                  >
-                    <Button
-                      size="lg"
-                      className="w-full bg-primary hover:bg-primary/90 text-lg py-6"
-                      disabled={!acceptedFinalTerms || isSubmitting}
-                      onClick={handleSubmitForm}
-                    >
-                      {isSubmitting ? (
-                        <>
+                {email && fullName && phone && cpfCnpj && acceptedImageTerms && <motion.div initial={{
+              opacity: 0,
+              y: 20
+            }} animate={{
+              opacity: 1,
+              y: 0
+            }} className="space-y-4">
+                    <Button size="lg" className="w-full bg-primary hover:bg-primary/90 text-lg py-6" disabled={!acceptedFinalTerms || isSubmitting} onClick={handleSubmitForm}>
+                      {isSubmitting ? <>
                           <Loader2 className="w-5 h-5 mr-2 animate-spin" />
                           Enviando...
-                        </>
-                      ) : (
-                        "Criar Vídeo"
-                      )}
+                        </> : "Criar Vídeo"}
                     </Button>
 
                     {/* Terms checkbox for final submission */}
                     <div className="flex items-start gap-3 p-4 bg-muted/50 rounded-xl border border-border/50">
-                      <Checkbox
-                        id="finalTerms"
-                        checked={acceptedFinalTerms}
-                        onCheckedChange={checked => setAcceptedFinalTerms(checked as boolean)}
-                        className="mt-0.5"
-                      />
+                      <Checkbox id="finalTerms" checked={acceptedFinalTerms} onCheckedChange={checked => setAcceptedFinalTerms(checked as boolean)} className="mt-0.5" />
                       <label htmlFor="finalTerms" className="text-xs text-muted-foreground leading-relaxed cursor-pointer">
                         Confirmo que li e aceito os{" "}
                         <Link to="/politicas" className="text-primary hover:underline" target="_blank">
@@ -946,8 +786,7 @@ const FormularioErro = () => {
                         </Link>
                       </label>
                     </div>
-                  </motion.div>
-                )}
+                  </motion.div>}
 
                 {/* Navigation */}
                 <div className="flex flex-col sm:flex-row gap-3 sm:justify-between pt-6">
@@ -956,13 +795,10 @@ const FormularioErro = () => {
                     Voltar
                   </Button>
                 </div>
-              </div>
-            )}
+              </div>}
           </motion.div>
         </div>
       </div>
-    </div>
-  );
+    </div>;
 };
-
 export default FormularioErro;
