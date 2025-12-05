@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Play, Clock, Sparkles, Heart, Film } from "lucide-react";
+import { Clock, Sparkles, Heart, Film } from "lucide-react";
 const highlights = [{
   icon: Clock,
   stat: "5 min",
@@ -31,71 +31,20 @@ const VideoDemo = () => {
       </div>
 
       <div className="container mx-auto px-4 relative z-10">
-        <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-center">
-          {/* Left: Video Preview */}
+        <div className="max-w-3xl mx-auto">
+
+          {/* Content */}
           <motion.div initial={{
           opacity: 0,
-          x: -40
+          y: 40
         }} whileInView={{
           opacity: 1,
-          x: 0
+          y: 0
         }} viewport={{
           once: true
         }} transition={{
           duration: 0.7
-        }} className="relative order-2 lg:order-1">
-            {/* Video Container with elegant frame */}
-            <div className="relative rounded-2xl overflow-hidden shadow-2xl bg-foreground/90 aspect-[4/3]">
-              {/* Video placeholder */}
-              <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-foreground/80 to-foreground">
-                {/* Play button */}
-                <motion.button whileHover={{
-                scale: 1.1
-              }} whileTap={{
-                scale: 0.95
-              }} className="w-20 h-20 md:w-24 md:h-24 rounded-full bg-primary flex items-center justify-center shadow-lg" style={{
-                boxShadow: "0 0 40px rgba(212, 36, 38, 0.5)"
-              }}>
-                  <Play className="w-8 h-8 md:w-10 md:h-10 text-primary-foreground ml-1" fill="currentColor" />
-                </motion.button>
-              </div>
-
-              {/* Badge overlay */}
-              <div className="absolute top-4 left-4 bg-accent text-accent-foreground px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider">
-                Novo 2025
-              </div>
-            </div>
-
-            {/* Floating stat card */}
-            <motion.div initial={{
-            opacity: 0,
-            y: 20
-          }} whileInView={{
-            opacity: 1,
-            y: 0
-          }} viewport={{
-            once: true
-          }} transition={{
-            duration: 0.5,
-            delay: 0.4
-          }} className="absolute -bottom-4 -right-4 md:bottom-8 md:-right-8 bg-background rounded-xl p-4 shadow-xl">
-              <p className="text-3xl md:text-4xl font-heading font-bold text-primary">11.479+</p>
-              <p className="text-xs md:text-sm text-muted-foreground">famílias encantadas</p>
-            </motion.div>
-          </motion.div>
-
-          {/* Right: Content */}
-          <motion.div initial={{
-          opacity: 0,
-          x: 40
-        }} whileInView={{
-          opacity: 1,
-          x: 0
-        }} viewport={{
-          once: true
-        }} transition={{
-          duration: 0.7
-        }} className="order-1 lg:order-2 text-secondary-foreground">
+        }} className="text-secondary-foreground text-center">
             {/* Eyebrow */}
             <span className="inline-block text-accent font-medium text-sm uppercase tracking-wider mb-4">
               A experiência mágica
@@ -108,10 +57,7 @@ const VideoDemo = () => {
             </h2>
 
             {/* Description */}
-            <p className="text-secondary-foreground/80 text-base md:text-lg mb-8 leading-relaxed">O Papai Noel chama pelo nome, mostra sua foto no livro mágico, da conselhos e ainda deixa uma mensagem especial. Tudo em um vídeo cinematográfico feito só para sua criança.   
-
-
-E 100% personalizado por você ou seja</p>
+            <p className="text-secondary-foreground/80 text-base md:text-lg mb-8 leading-relaxed">O Papai Noel chama pelo nome, mostra sua foto no livro mágico, dá conselhos e ainda deixa uma mensagem especial. Tudo em um vídeo cinematográfico feito só para sua criança. E 100% personalizado por você.</p>
 
             {/* Stats Grid */}
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-10">
@@ -136,8 +82,8 @@ E 100% personalizado por você ou seja</p>
             </div>
 
             {/* CTA */}
-            <Link to="/formulario" className="w-full sm:w-auto">
-              <Button size="lg" className="w-full sm:w-auto bg-primary hover:bg-primary/90 text-primary-foreground text-base md:text-lg px-10 py-6 rounded-full font-bold shadow-xl hover:shadow-2xl transition-all" style={{
+            <Link to="/formulario" className="inline-block">
+              <Button size="lg" className="bg-primary hover:bg-primary/90 text-primary-foreground text-base md:text-lg px-10 py-6 rounded-full font-bold shadow-xl hover:shadow-2xl transition-all" style={{
               boxShadow: "0 8px 30px rgba(212, 36, 38, 0.4)"
             }}>
                 Criar vídeo agora

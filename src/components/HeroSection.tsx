@@ -61,14 +61,14 @@ const HeroSection = () => {
               </Button>
             </Link>
             
-            <button className="flex items-center gap-3 text-white hover:text-accent transition-colors">
+            <Link to="/formulario" className="flex items-center gap-3 text-white hover:text-accent transition-colors">
               <div className="w-10 h-10 rounded-full flex items-center justify-center bg-white">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5 ml-0.5 text-primary">
                   <path d="M8 5v14l11-7z" />
                 </svg>
               </div>
               <span className="font-medium">Veja o vídeo</span>
-            </button>
+            </Link>
           </motion.div>
 
           <motion.div initial={{
