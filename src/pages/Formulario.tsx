@@ -710,36 +710,26 @@ const Formulario = () => {
                     
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       {/* Plano Comum */}
-                      <div onClick={() => setSelectedPlan("comum")} className={`relative rounded-2xl p-5 md:p-6 cursor-pointer transition-all border-2 flex flex-col ${selectedPlan === "comum" ? "shadow-lg" : ""}`} style={{
+                      <div onClick={() => setSelectedPlan("comum")} className={`relative rounded-2xl p-5 md:p-6 cursor-pointer transition-all border flex flex-col ${selectedPlan === "comum" ? "shadow-lg" : ""}`} style={{
                   backgroundColor: '#FFFBF2',
-                  borderColor: selectedPlan === "comum" ? '#B08D57' : 'rgba(176, 141, 87, 0.2)'
+                  borderColor: 'rgba(176, 141, 87, 0.3)'
                 }}>
                         <div className="mb-4">
-                          <h4 className="text-lg font-bold uppercase tracking-wide" style={{ color: '#2F3730' }}>Plano Comum</h4>
+                          <h4 className="text-lg font-bold uppercase tracking-wide" style={{ color: '#2F3730' }}>PLANO COMUM</h4>
                           <div className="flex items-baseline gap-2 mt-2">
-                            <span className="text-2xl md:text-3xl font-bold" style={{ color: '#B08D57' }}>R$ 17,90</span>
+                            <span className="text-2xl md:text-3xl font-bold" style={{ color: '#7B2D3A' }}>R$ 17,90</span>
                           </div>
-                          <p className="text-sm mt-1" style={{ color: '#2F3730', opacity: 0.6 }}>Pagamento único</p>
                         </div>
                         
                         <ul className="space-y-3 flex-1">
                           <li className="flex items-center gap-3">
-                            <div className="w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0" style={{ backgroundColor: 'rgba(176, 141, 87, 0.2)' }}>
-                              <Check className="w-3 h-3" style={{ color: '#B08D57' }} />
-                            </div>
-                            <span className="text-sm" style={{ color: '#2F3730' }}>Vídeo personalizado em HD</span>
+                            <span className="text-sm" style={{ color: '#2F3730' }}>• Vídeo personalizado em HD</span>
                           </li>
                           <li className="flex items-center gap-3">
-                            <div className="w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0" style={{ backgroundColor: 'rgba(176, 141, 87, 0.2)' }}>
-                              <Check className="w-3 h-3" style={{ color: '#B08D57' }} />
-                            </div>
-                            <span className="text-sm" style={{ color: '#2F3730' }}>Todas as personalizações anteriores</span>
+                            <span className="text-sm" style={{ color: '#2F3730' }}>• Todas as personalizações anteriores</span>
                           </li>
                           <li className="flex items-center gap-3">
-                            <div className="w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0" style={{ backgroundColor: 'rgba(176, 141, 87, 0.2)' }}>
-                              <Check className="w-3 h-3" style={{ color: '#B08D57' }} />
-                            </div>
-                            <span className="text-sm" style={{ color: '#2F3730' }}>Entrega em até 24h</span>
+                            <span className="text-sm" style={{ color: '#2F3730' }}>• Entrega em até 24h</span>
                           </li>
                         </ul>
 
@@ -770,9 +760,9 @@ const Formulario = () => {
                       </div>
 
                       {/* Plano Exclusivo - Burgundy/Wine */}
-                      <div onClick={() => setSelectedPlan("exclusivo")} className={`relative rounded-2xl p-5 md:p-6 cursor-pointer transition-all border-2 flex flex-col ${selectedPlan === "exclusivo" ? "shadow-lg" : ""}`} style={{
+                      <div onClick={() => setSelectedPlan("exclusivo")} className={`relative rounded-2xl p-5 md:p-6 cursor-pointer transition-all border flex flex-col ${selectedPlan === "exclusivo" ? "shadow-lg" : ""}`} style={{
                   backgroundColor: '#5C1A2E',
-                  borderColor: selectedPlan === "exclusivo" ? '#B08D57' : 'rgba(176, 141, 87, 0.3)'
+                  borderColor: '#5C1A2E'
                 }}>
                         {/* Popular Badge */}
                         <div className="absolute -top-3 right-4">
@@ -782,66 +772,47 @@ const Formulario = () => {
                         </div>
                         
                         <div className="mb-4 mt-2">
-                          <h4 className="text-lg font-bold italic" style={{ color: '#FFFBF2' }}>PLANO EXCLUSIVO</h4>
+                          <h4 className="text-lg font-bold italic uppercase" style={{ color: '#FFFBF2' }}>PLANO EXCLUSIVO</h4>
                           <div className="flex items-baseline gap-2 mt-2">
                             <span className="text-2xl md:text-3xl font-bold" style={{ color: '#B08D57' }}>R$ 24,90</span>
                             <span className="text-sm line-through" style={{ color: 'rgba(255, 251, 242, 0.5)' }}>R$ 49,90</span>
                           </div>
-                          <p className="text-sm mt-1" style={{ color: 'rgba(255, 251, 242, 0.7)' }}>Pagamento único</p>
                         </div>
                         
-                        <ul className="space-y-3">
+                        <ul className="space-y-2">
                           <li className="flex items-center gap-3">
-                            <div className="w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0" style={{ backgroundColor: 'rgba(176, 141, 87, 0.3)' }}>
-                              <Check className="w-3 h-3" style={{ color: '#B08D57' }} />
-                            </div>
+                            <Check className="w-4 h-4" style={{ color: '#B08D57' }} />
                             <span className="text-sm" style={{ color: '#FFFBF2' }}>Tudo do plano comum</span>
                           </li>
                           <li className="flex items-center gap-3">
-                            <div className="w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0" style={{ backgroundColor: 'rgba(176, 141, 87, 0.3)' }}>
-                              <Check className="w-3 h-3" style={{ color: '#B08D57' }} />
-                            </div>
+                            <Check className="w-4 h-4" style={{ color: '#B08D57' }} />
                             <span className="text-sm" style={{ color: '#FFFBF2' }}>Vídeo em qualidade 4K</span>
                           </li>
                           <li className="flex items-center gap-3">
-                            <div className="w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0" style={{ backgroundColor: 'rgba(176, 141, 87, 0.3)' }}>
-                              <Check className="w-3 h-3" style={{ color: '#B08D57' }} />
-                            </div>
+                            <Check className="w-4 h-4" style={{ color: '#B08D57' }} />
                             <span className="text-sm" style={{ color: '#FFFBF2' }}>Música de fundo</span>
                           </li>
                           <li className="flex items-center gap-3">
-                            <div className="w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0" style={{ backgroundColor: 'rgba(176, 141, 87, 0.3)' }}>
-                              <Check className="w-3 h-3" style={{ color: '#B08D57' }} />
-                            </div>
+                            <Check className="w-4 h-4" style={{ color: '#B08D57' }} />
                             <span className="text-sm" style={{ color: '#FFFBF2' }}>Entrega expressa full</span>
                           </li>
                           <li className="flex items-center gap-3">
-                            <div className="w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0" style={{ backgroundColor: 'rgba(176, 141, 87, 0.3)' }}>
-                              <Check className="w-3 h-3" style={{ color: '#B08D57' }} />
-                            </div>
+                            <Check className="w-4 h-4" style={{ color: '#B08D57' }} />
                             <span className="text-sm" style={{ color: '#FFFBF2' }}>Suporte prioritário</span>
                           </li>
                         </ul>
 
                         {/* Bônus Section */}
-                        <div className="mt-6 pt-4 rounded-lg p-3" style={{ backgroundColor: 'rgba(176, 141, 87, 0.15)' }}>
-                          <p className="text-sm font-semibold mb-3 flex items-center gap-2" style={{ color: '#B08D57' }}>
+                        <div className="mt-4 pt-3 rounded-lg p-3" style={{ backgroundColor: 'rgba(176, 141, 87, 0.15)' }}>
+                          <p className="text-sm font-semibold mb-2 flex items-center gap-2" style={{ color: '#B08D57' }}>
                             <Gift className="w-4 h-4" style={{ color: '#B08D57' }} />
                             BÔNUS:
                           </p>
-                          <ul className="space-y-2">
-                            <li className="flex items-center gap-3">
-                              <span className="text-sm" style={{ color: '#FFFBF2' }}>• Carta personalizada do Papai Noel</span>
-                            </li>
-                            <li className="flex items-center gap-3">
-                              <span className="text-sm" style={{ color: '#FFFBF2' }}>• Certificado oficial criança especial</span>
-                            </li>
-                            <li className="flex items-center gap-3">
-                              <span className="text-sm" style={{ color: '#FFFBF2' }}>• Lista de tarefas natalinas</span>
-                            </li>
-                            <li className="flex items-center gap-3">
-                              <span className="text-sm" style={{ color: '#FFFBF2' }}>• Bilhete para deixar na árvore</span>
-                            </li>
+                          <ul className="space-y-1">
+                            <li><span className="text-sm" style={{ color: '#FFFBF2' }}>• Carta personalizada do Papai Noel</span></li>
+                            <li><span className="text-sm" style={{ color: '#FFFBF2' }}>• Certificado oficial criança especial</span></li>
+                            <li><span className="text-sm" style={{ color: '#FFFBF2' }}>• Lista de tarefas natalinas</span></li>
+                            <li><span className="text-sm" style={{ color: '#FFFBF2' }}>• Bilhete para deixar na árvore</span></li>
                           </ul>
                         </div>
 
