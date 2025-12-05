@@ -1,22 +1,28 @@
 import { motion } from "framer-motion";
 import { FileVideo, Palette, PartyPopper, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import stepChooseImg from "@/assets/step-01-choose.jpg";
+import stepPersonalizeImg from "@/assets/step-02-personalize.jpg";
+import stepEnchantImg from "@/assets/step-03-enchant.jpg";
 
 const steps = [{
   number: "01",
   icon: FileVideo,
   title: "Escolha",
-  description: "Selecione o roteiro perfeito para a idade do seu filho"
+  description: "Selecione o roteiro perfeito para a idade do seu filho",
+  image: stepChooseImg
 }, {
   number: "02",
   icon: Palette,
   title: "Personalize",
-  description: "Nome, foto, idade e uma mensagem especial em 5 minutos"
+  description: "Nome, foto, idade e uma mensagem especial em 5 minutos",
+  image: stepPersonalizeImg
 }, {
   number: "03",
   icon: PartyPopper,
   title: "Encante",
-  description: "Receba o vídeo e veja a magia acontecer"
+  description: "Receba o vídeo e veja a magia acontecer",
+  image: stepEnchantImg
 }];
 const HowToOrder = () => {
   return <section className="bg-background relative overflow-hidden">
@@ -66,28 +72,37 @@ const HowToOrder = () => {
             delay: index * 0.15
           }} className="relative">
               {/* Card */}
-                <div className="bg-card rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 h-full border-0 p-6 md:p-8">
-                  {/* Icon */}
-                  <div className="w-14 h-14 md:w-16 md:h-16 rounded-full bg-gradient-to-br from-primary to-primary/80 flex items-center justify-center shadow-lg mx-auto md:mx-0 mb-4" style={{
-                    boxShadow: "0 8px 24px rgba(212, 36, 38, 0.25)"
-                  }}>
-                    <step.icon className="w-6 h-6 md:w-7 md:h-7 text-primary-foreground" />
+                <div className="bg-card rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 h-full border-0">
+                  {/* Image */}
+                  <div className="relative h-48 md:h-56 overflow-hidden">
+                    <img 
+                      src={step.image} 
+                      alt={step.title}
+                      className="w-full h-full object-cover"
+                    />
+                    <div className="absolute top-4 left-4 w-12 h-12 md:w-14 md:h-14 rounded-full bg-gradient-to-br from-primary to-primary/80 flex items-center justify-center shadow-lg" style={{
+                      boxShadow: "0 8px 24px rgba(212, 36, 38, 0.25)"
+                    }}>
+                      <step.icon className="w-5 h-5 md:w-6 md:h-6 text-primary-foreground" />
+                    </div>
                   </div>
 
-                  {/* Step number */}
-                  <span className="text-xs font-bold text-accent uppercase tracking-widest mb-2 block text-center md:text-left">
-                    Passo {step.number}
-                  </span>
+                  <div className="p-6 md:p-8">
+                    {/* Step number */}
+                    <span className="text-xs font-bold text-accent uppercase tracking-widest mb-2 block text-center md:text-left">
+                      Passo {step.number}
+                    </span>
 
-                  {/* Title */}
-                  <h3 className="font-heading text-xl md:text-2xl text-foreground mb-3 text-center md:text-left">
-                    {step.title}
-                  </h3>
+                    {/* Title */}
+                    <h3 className="font-heading text-xl md:text-2xl text-foreground mb-3 text-center md:text-left">
+                      {step.title}
+                    </h3>
 
-                  {/* Description */}
-                  <p className="text-muted-foreground text-sm md:text-base leading-relaxed text-center md:text-left">
-                    {step.description}
-                  </p>
+                    {/* Description */}
+                    <p className="text-muted-foreground text-sm md:text-base leading-relaxed text-center md:text-left">
+                      {step.description}
+                    </p>
+                  </div>
                 </div>
 
                 {/* Arrow connector - mobile only */}

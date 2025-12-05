@@ -21,11 +21,13 @@ const HeroSection = () => {
       }} transition={{
         duration: 0.8
       }} className="max-w-3xl mx-auto">
+          <p className="text-sm md:text-base font-semibold mb-3 tracking-wide uppercase py-0 my-0 text-primary-foreground">
+            Novo Vídeo 2025!
+          </p>
           
-          
-          <h1 className="sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-3 leading-tight text-primary-foreground text-2xl">A melhor  e inesquecível surpresa    
+          <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-accent mb-3 leading-tight">Black Friday Com -40%
           <br />
-            <span className="sm:text-6xl md:text-7xl lg:text-8xl text-4xl text-accent"> de natal </span>
+            <span className="sm:text-6xl md:text-7xl lg:text-8xl text-4xl text-primary-foreground">​OFF em tudo </span>
             <br />
             
           </h1>
@@ -61,14 +63,14 @@ const HeroSection = () => {
               </Button>
             </Link>
             
-            <Link to="/formulario" className="flex items-center gap-3 text-white hover:text-accent transition-colors">
+            <button className="flex items-center gap-3 text-white hover:text-accent transition-colors">
               <div className="w-10 h-10 rounded-full flex items-center justify-center bg-white">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5 ml-0.5 text-primary">
                   <path d="M8 5v14l11-7z" />
                 </svg>
               </div>
               <span className="font-medium">Veja o vídeo</span>
-            </Link>
+            </button>
           </motion.div>
 
           <motion.div initial={{

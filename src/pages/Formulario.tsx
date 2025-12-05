@@ -4,7 +4,6 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
-import { Checkbox } from "@/components/ui/checkbox";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Volume2, Loader2, ArrowLeft, ArrowRight, Upload, X, Check, Star, Gift } from "lucide-react";
@@ -112,13 +111,8 @@ const Formulario = () => {
   const [photoPreview, setPhotoPreview] = useState<string | null>(null);
   const [email, setEmail] = useState("");
   const [fullName, setFullName] = useState("");
-  const [phone, setPhone] = useState("");
-  const [cpfCnpj, setCpfCnpj] = useState("");
   const [isGiftCard, setIsGiftCard] = useState(false);
   const [selectedPlan, setSelectedPlan] = useState<"comum" | "exclusivo" | null>(null);
-  const [acceptedImageTerms, setAcceptedImageTerms] = useState(false);
-  const [acceptedPurchaseTermsComum, setAcceptedPurchaseTermsComum] = useState(false);
-  const [acceptedPurchaseTermsExclusivo, setAcceptedPurchaseTermsExclusivo] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const {
@@ -238,15 +232,15 @@ const Formulario = () => {
       setIsGenerating(false);
     }
   };
-  return <div className="min-h-screen" style={{ background: 'linear-gradient(180deg, #590D13 0%, #8C1C26 100%)' }}>
+  return <div className="min-h-screen bg-background">
       {/* Header */}
-      <header className="border-b border-border/50 sticky top-0 z-50" style={{ backgroundColor: 'rgba(89, 13, 19, 0.95)' }}>
+      <header className="border-b border-border/50 bg-background/95 backdrop-blur-sm sticky top-0 z-50">
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-          <Link to="/" className="flex items-center gap-2 text-white hover:text-[#B08D57] transition-colors">
+          <Link to="/" className="flex items-center gap-2 text-foreground hover:text-primary transition-colors">
             <ArrowLeft className="w-5 h-5" />
             <span className="font-medium">Voltar</span>
           </Link>
-          <h1 className="font-heading text-xl md:text-2xl font-bold mx-[70px]" style={{ color: '#B08D57' }}>
+          <h1 className="font-heading text-xl md:text-2xl font-bold text-primary mx-[70px]">
             Criar Vídeo Personalizado
           </h1>
           <div className="w-24" /> {/* Spacer for centering */}
@@ -294,18 +288,18 @@ const Formulario = () => {
         }} exit={{
           opacity: 0,
           x: -20
-        }} className="rounded-2xl p-6 md:p-10 shadow-gold border-2" style={{ backgroundColor: '#FFFBF2', borderColor: 'rgba(176, 141, 87, 0.2)' }}>
+        }} className="glass rounded-2xl p-6 md:p-10 shadow-gold border-2 border-accent/20">
             {currentStep === 1 && <div className="space-y-8">
                 <div className="flex flex-col gap-4 mb-8">
                   <div className="flex justify-between items-center">
-                    <h2 className="md:text-3xl font-bold text-base" style={{ color: '#2F3730' }}>
+                    <h2 className="text-xl md:text-3xl font-bold text-foreground">
                       {steps[0].number}
                       <sub className="text-lg">/2</sub> {steps[0].title}
                     </h2>
                     <button onClick={() => {
                   setIsGiftCard(true);
                   setCurrentStep(3);
-                }} className="flex items-center gap-1.5 rounded-full border border-border bg-background hover:bg-accent/10 transition-colors text-xs md:text-sm font-medium px-[7px] py-[5px] mx-[40px]">
+                }} className="flex items-center gap-1.5 rounded-full border border-border bg-background hover:bg-accent/10 transition-colors text-xs md:text-sm font-medium mx-[7px] px-[7px] py-[5px]">
                       <span className="hidden md:inline text-muted-foreground">Sem tempo?</span>
                       <span className="flex items-center gap-1.5 bg-secondary px-2 py-1 rounded-full">
                         <Gift className="w-3 h-3 md:w-4 md:h-4 bg-primary border-primary text-primary" />
@@ -317,17 +311,17 @@ const Formulario = () => {
 
                 {/* Nome da Criança */}
                 <div className="space-y-3">
-                  <Label htmlFor="childName" className="text-base md:text-lg font-semibold" style={{ color: '#2F3730' }}>
+                  <Label htmlFor="childName" className="text-base md:text-lg font-semibold">
                     Adicione o nome da criança:
                   </Label>
                   <div className="flex gap-3 items-start">
                     <div className="flex-1">
-                      <Input id="childName" type="text" placeholder="Digite o nome..." value={childName} onChange={e => setChildName(e.target.value.slice(0, 10))} className="text-base md:text-lg py-6 rounded-xl border-2" style={{ borderColor: 'rgba(176, 141, 87, 0.3)', color: '#2F3730' }} maxLength={10} />
+                      <Input id="childName" type="text" placeholder="Digite o nome..." value={childName} onChange={e => setChildName(e.target.value.slice(0, 10))} className="text-base md:text-lg py-6 rounded-xl border-2 border-accent/30 focus:border-accent" maxLength={10} />
                       <p className="text-xs text-muted-foreground mt-1">
                         {childName.length}/10 caracteres
                       </p>
                     </div>
-                    <Button onClick={handleGenerateVoice} disabled={isGenerating || !childName.trim()} variant="outline" size="lg" className="border-2 px-4 py-6" style={{ borderColor: '#1E592F', color: '#1E592F', backgroundColor: 'transparent' }} onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = 'rgba(30, 89, 47, 0.1)')} onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = 'transparent')}>
+                    <Button onClick={handleGenerateVoice} disabled={isGenerating || !childName.trim()} variant="outline" size="lg" className="border-2 border-primary/30 hover:bg-primary/10 hover:border-primary text-primary px-4 py-6">
                       {isGenerating ? <Loader2 className="w-5 h-5 animate-spin" /> : <>
                           <Volume2 className="w-5 h-5 mr-2" />
                           <span className="hidden md:inline">Escute</span>
@@ -339,7 +333,7 @@ const Formulario = () => {
 
                 {/* Gênero */}
                 <div className="space-y-4">
-                  <Label className="text-base md:text-lg font-semibold" style={{ color: '#2F3730' }}>
+                  <Label className="text-base md:text-lg font-semibold">
                     A criança é menino ou menina:
                   </Label>
                   <RadioGroup value={gender} onValueChange={setGender} className="flex gap-4">
@@ -370,7 +364,7 @@ const Formulario = () => {
 
                 {/* Comportamento */}
                 <div className="space-y-4">
-                  <Label className="text-base md:text-lg font-semibold" style={{ color: '#2F3730' }}>
+                  <Label className="text-base md:text-lg font-semibold">
                     A criança se comportou bem?
                   </Label>
                   <RadioGroup value={behavior} onValueChange={setBehavior} className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -412,7 +406,7 @@ const Formulario = () => {
                       Voltar
                     </Button>
                   </Link>
-                  <Button size="lg" disabled={!childName.trim() || !gender || !behavior} onClick={() => setCurrentStep(2)} className="gap-2" style={{ backgroundColor: '#1E592F', color: 'white' }} onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#184620')} onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = '#1E592F')}>
+                  <Button size="lg" disabled={!childName.trim() || !gender || !behavior} onClick={() => setCurrentStep(2)} className="bg-primary hover:bg-primary/90 gap-2">
                     Próximo
                     <ArrowRight className="w-4 h-4" />
                   </Button>
@@ -420,18 +414,18 @@ const Formulario = () => {
               </div>}
 
             {currentStep === 2 && <div className="space-y-8">
-                <h2 className="text-2xl md:text-3xl font-bold mb-8" style={{ color: '#2F3730' }}>
+                <h2 className="text-2xl md:text-3xl font-bold text-foreground mb-8">
                   {steps[1].number}
                   <sub className="text-lg">/3</sub> {steps[1].title}
                 </h2>
 
                 {/* Idade */}
                 <div className="space-y-3">
-                  <Label htmlFor="age" className="text-base md:text-lg font-semibold" style={{ color: '#2F3730' }}>
+                  <Label htmlFor="age" className="text-base md:text-lg font-semibold">
                     Qual a idade da criança?
                   </Label>
                   <div className="relative">
-                    <Input id="age" type="text" placeholder="Digite para buscar ou selecione..." value={ageSearch} onChange={e => setAgeSearch(e.target.value)} onFocus={() => setIsAgeDropdownOpen(true)} onBlur={() => setTimeout(() => setIsAgeDropdownOpen(false), 200)} className="text-base md:text-lg py-6 rounded-xl border-2" style={{ borderColor: 'rgba(176, 141, 87, 0.3)', color: '#2F3730' }} />
+                    <Input id="age" type="text" placeholder="Digite para buscar ou selecione..." value={ageSearch} onChange={e => setAgeSearch(e.target.value)} onFocus={() => setIsAgeDropdownOpen(true)} onBlur={() => setTimeout(() => setIsAgeDropdownOpen(false), 200)} className="text-base md:text-lg py-6 rounded-xl border-2 border-accent/30 focus:border-accent" />
                     {isAgeDropdownOpen && <div className="absolute z-10 w-full mt-2 bg-background border-2 border-accent/30 rounded-xl shadow-lg max-h-60 overflow-y-auto">
                         {filteredAgeOptions.length > 0 ? filteredAgeOptions.map((option, index) => <div key={index} onClick={() => {
                     setAge(option);
@@ -448,107 +442,27 @@ const Formulario = () => {
 
                 {/* Mensagem Secreta */}
                 <div className="space-y-3">
-                  <Label htmlFor="secretMessage" className="text-base md:text-lg font-semibold" style={{ color: '#2F3730' }}>
+                  <Label htmlFor="secretMessage" className="text-base md:text-lg font-semibold">
                     Mensagem Secreta
                   </Label>
                   <p className="text-sm text-muted-foreground">
-                    O que o Papai Noel deve dizer sobre a criança?
+                    O que o Papai Noel deve ler como uma mensagem particular (gratidão, apoio, ou um momento especial do ano)?
                   </p>
-                  <Select value={secretMessage} onValueChange={setSecretMessage}>
-                    <SelectTrigger className="text-base py-6 rounded-xl border-2" style={{ borderColor: 'rgba(176, 141, 87, 0.3)', color: '#2F3730' }}>
-                      <SelectValue placeholder="Selecione uma opção..." />
-                    </SelectTrigger>
-                    <SelectContent className="max-h-[300px]">
-                      <SelectItem value="É o melhor irmão.">É o melhor irmão.</SelectItem>
-                      <SelectItem value="É a melhor irmã.">É a melhor irmã.</SelectItem>
-                      <SelectItem value="É o melhor filho.">É o melhor filho.</SelectItem>
-                      <SelectItem value="É a melhor filha.">É a melhor filha.</SelectItem>
-                      <SelectItem value="É o melhor neto.">É o melhor neto.</SelectItem>
-                      <SelectItem value="É a melhor neta.">É a melhor neta.</SelectItem>
-                      <SelectItem value="É o melhor sobrinho.">É o melhor sobrinho.</SelectItem>
-                      <SelectItem value="É a melhor sobrinha.">É a melhor sobrinha.</SelectItem>
-                      <SelectItem value="É o melhor amigo do mundo.">É o melhor amigo do mundo.</SelectItem>
-                      <SelectItem value="É a melhor amiga do mundo.">É a melhor amiga do mundo.</SelectItem>
-                      <SelectItem value="É o melhor dançarino do mundo.">É o melhor dançarino do mundo.</SelectItem>
-                      <SelectItem value="É a melhor dançarina do mundo.">É a melhor dançarina do mundo.</SelectItem>
-                      <SelectItem value="É o melhor cantor do mundo.">É o melhor cantor do mundo.</SelectItem>
-                      <SelectItem value="É a melhor cantora do mundo.">É a melhor cantora do mundo.</SelectItem>
-                      <SelectItem value="É muito divertido.">É muito divertido.</SelectItem>
-                      <SelectItem value="É muito divertida.">É muito divertida.</SelectItem>
-                      <SelectItem value="É muito minucioso.">É muito minucioso.</SelectItem>
-                      <SelectItem value="É muito minuciosa.">É muito minuciosa.</SelectItem>
-                      <SelectItem value="É muito valente.">É muito valente.</SelectItem>
-                      <SelectItem value="É muito respeitoso.">É muito respeitoso.</SelectItem>
-                      <SelectItem value="É muito respeitosa.">É muito respeitosa.</SelectItem>
-                      <SelectItem value="É muito bom em tecnologia.">É muito bom em tecnologia.</SelectItem>
-                      <SelectItem value="É muito boa em tecnologia.">É muito boa em tecnologia.</SelectItem>
-                      <SelectItem value="É um mestre na cozinha.">É um mestre na cozinha.</SelectItem>
-                      <SelectItem value="É uma mestra na cozinha.">É uma mestra na cozinha.</SelectItem>
-                      <SelectItem value="É um artista incrível.">É um artista incrível.</SelectItem>
-                      <SelectItem value="É uma artista incrível.">É uma artista incrível.</SelectItem>
-                      <SelectItem value="É o melhor colega de classe.">É o melhor colega de classe.</SelectItem>
-                      <SelectItem value="É a melhor colega de classe.">É a melhor colega de classe.</SelectItem>
-                      <SelectItem value="É muito dedicado ao que faz.">É muito dedicado ao que faz.</SelectItem>
-                      <SelectItem value="É muito dedicada ao que faz.">É muito dedicada ao que faz.</SelectItem>
-                      <SelectItem value="É muito bom em desenhar.">É muito bom em desenhar.</SelectItem>
-                      <SelectItem value="É muito boa em desenhar.">É muito boa em desenhar.</SelectItem>
-                      <SelectItem value="É muito criativo com as histórias.">É muito criativo com as histórias.</SelectItem>
-                      <SelectItem value="É muito criativa com as histórias.">É muito criativa com as histórias.</SelectItem>
-                      <SelectItem value="É muito honesto.">É muito honesto.</SelectItem>
-                      <SelectItem value="É muito honesta.">É muito honesta.</SelectItem>
-                      <SelectItem value="É muito gentil.">É muito gentil.</SelectItem>
-                      <SelectItem value="É muito amigável.">É muito amigável.</SelectItem>
-                      <SelectItem value="É muito inteligente.">É muito inteligente.</SelectItem>
-                      <SelectItem value="É um bom líder.">É um bom líder.</SelectItem>
-                      <SelectItem value="É uma boa líder.">É uma boa líder.</SelectItem>
-                      <SelectItem value="É muito amoroso.">É muito amoroso.</SelectItem>
-                      <SelectItem value="É muito amorosa.">É muito amorosa.</SelectItem>
-                      <SelectItem value="É um excelente ouvinte.">É um excelente ouvinte.</SelectItem>
-                      <SelectItem value="É uma excelente ouvinte.">É uma excelente ouvinte.</SelectItem>
-                      <SelectItem value="Adora ler muito bem.">Adora ler muito bem.</SelectItem>
-                      <SelectItem value="Cresce muito rápido.">Cresce muito rápido.</SelectItem>
-                      <SelectItem value="Conta lindas histórias.">Conta lindas histórias.</SelectItem>
-                      <SelectItem value="Adora fazer esportes.">Adora fazer esportes.</SelectItem>
-                      <SelectItem value="Adora jogar jogos.">Adora jogar jogos.</SelectItem>
-                      <SelectItem value="Adora rir.">Adora rir.</SelectItem>
-                      <SelectItem value="Gosta de contar piadas.">Gosta de contar piadas.</SelectItem>
-                      <SelectItem value="Gosta de tocar música.">Gosta de tocar música.</SelectItem>
-                      <SelectItem value="Vai muito bem na escola.">Vai muito bem na escola.</SelectItem>
-                      <SelectItem value="Sabe andar de bicicleta.">Sabe andar de bicicleta.</SelectItem>
-                      <SelectItem value="Tem uma grande imaginação.">Tem uma grande imaginação.</SelectItem>
-                      <SelectItem value="Tem um sorriso lindo.">Tem um sorriso lindo.</SelectItem>
-                      <SelectItem value="Está atento(a) aos outros.">Está atento(a) aos outros.</SelectItem>
-                      <SelectItem value="Estuda bastante.">Estuda bastante.</SelectItem>
-                      <SelectItem value="Tem um senso de justiça admirável.">Tem um senso de justiça admirável.</SelectItem>
-                      <SelectItem value="Gosta de cuidar dos animais.">Gosta de cuidar dos animais.</SelectItem>
-                      <SelectItem value="Tem uma risada muito contagiante.">Tem uma risada muito contagiante.</SelectItem>
-                      <SelectItem value="Consegue ver o lado bom das coisas.">Consegue ver o lado bom das coisas.</SelectItem>
-                      <SelectItem value="É muito minucioso(a) com os detalhes.">É muito minucioso(a) com os detalhes.</SelectItem>
-                      <SelectItem value="Adora passar tempo com o vovô.">Adora passar tempo com o vovô.</SelectItem>
-                      <SelectItem value="Adora passar tempo com a vovó.">Adora passar tempo com a vovó.</SelectItem>
-                      <SelectItem value="É um presente para todos nós.">É um presente para todos nós.</SelectItem>
-                      <SelectItem value="Tem um coração muito generoso.">Tem um coração muito generoso.</SelectItem>
-                      <SelectItem value="É o sol da nossa casa.">É o sol da nossa casa.</SelectItem>
-                      <SelectItem value="Tem um senso de humor único.">Tem um senso de humor único.</SelectItem>
-                      <SelectItem value="Escreve lindas histórias.">Escreve lindas histórias.</SelectItem>
-                    </SelectContent>
-                  </Select>
+                  <Textarea id="secretMessage" placeholder="Digite a mensagem secreta..." value={secretMessage} onChange={e => setSecretMessage(e.target.value.slice(0, 150))} className="min-h-[100px] text-base rounded-xl border-2 border-accent/30 focus:border-accent resize-none" maxLength={150} />
+                  <p className="text-xs text-muted-foreground text-right">
+                    {secretMessage.length}/150 caracteres
+                  </p>
                 </div>
 
                 {/* Conselho Secreto */}
                 <div className="space-y-3">
-                  <Label htmlFor="secretAdvice" className="text-base md:text-lg font-semibold" style={{ color: '#2F3730' }}>
+                  <Label htmlFor="secretAdvice" className="text-base md:text-lg font-semibold">
                     Conselho Secreto
                   </Label>
                   <p className="text-sm text-muted-foreground">
                     Qual deve ser o conselho final do Papai Noel para a criança?
                   </p>
-                  <div className="bg-amber-500/10 border border-amber-500/30 rounded-lg p-3 mb-2">
-                    <p className="text-xs text-amber-600 dark:text-amber-400">
-                      ⚠️ <strong>Atenção:</strong> Escreva exatamente o que o Papai Noel vai falar. Preste atenção na ortografia e pontuação, pois será lido da forma que você escrever.
-                    </p>
-                  </div>
-                  <Textarea id="secretAdvice" placeholder="Ex: Continue sendo essa criança maravilhosa e nunca deixe de sonhar!" value={secretAdvice} onChange={e => setSecretAdvice(e.target.value.slice(0, 80))} className="min-h-[80px] text-base rounded-xl border-2 resize-none" style={{ borderColor: 'rgba(176, 141, 87, 0.3)', color: '#2F3730' }} maxLength={80} />
+                  <Textarea id="secretAdvice" placeholder="Digite o conselho secreto..." value={secretAdvice} onChange={e => setSecretAdvice(e.target.value.slice(0, 80))} className="min-h-[80px] text-base rounded-xl border-2 border-accent/30 focus:border-accent resize-none" maxLength={80} />
                   <p className="text-xs text-muted-foreground text-right">
                     {secretAdvice.length}/80 caracteres
                   </p>
@@ -556,11 +470,11 @@ const Formulario = () => {
 
                 {/* Atividade ou Elogio */}
                 <div className="space-y-3">
-                  <Label htmlFor="activity" className="text-base md:text-lg font-semibold" style={{ color: '#2F3730' }}>
+                  <Label htmlFor="activity" className="text-base md:text-lg font-semibold">
                     Opções de Atividade ou Elogio
                   </Label>
                   <Select value={activity} onValueChange={setActivity}>
-                    <SelectTrigger className="text-base py-6 rounded-xl border-2" style={{ borderColor: 'rgba(176, 141, 87, 0.3)', color: '#2F3730' }}>
+                    <SelectTrigger className="text-base py-6 rounded-xl border-2 border-accent/30">
                       <SelectValue placeholder="Selecione uma opção..." />
                     </SelectTrigger>
                     <SelectContent className="max-h-[300px]">
@@ -573,11 +487,11 @@ const Formulario = () => {
 
                 {/* Característica Principal */}
                 <div className="space-y-3">
-                  <Label htmlFor="characteristic" className="text-base md:text-lg font-semibold" style={{ color: '#2F3730' }}>
+                  <Label htmlFor="characteristic" className="text-base md:text-lg font-semibold">
                     Característica Principal
                   </Label>
                   <Select value={characteristic} onValueChange={setCharacteristic}>
-                    <SelectTrigger className="text-base py-6 rounded-xl border-2" style={{ borderColor: 'rgba(176, 141, 87, 0.3)', color: '#2F3730' }}>
+                    <SelectTrigger className="text-base py-6 rounded-xl border-2 border-accent/30">
                       <SelectValue placeholder="Selecione uma característica..." />
                     </SelectTrigger>
                     <SelectContent>
@@ -598,7 +512,7 @@ const Formulario = () => {
                     <ArrowLeft className="w-4 h-4" />
                     Voltar
                   </Button>
-                  <Button size="lg" disabled={!age || !secretMessage.trim() || !secretAdvice.trim() || !activity || !characteristic} onClick={() => setCurrentStep(3)} className="gap-2" style={{ backgroundColor: '#1E592F', color: 'white' }} onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#184620')} onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = '#1E592F')}>
+                  <Button size="lg" disabled={!age || !secretMessage.trim() || !secretAdvice.trim() || !activity || !characteristic} onClick={() => setCurrentStep(3)} className="bg-primary hover:bg-primary/90 gap-2">
                     Próximo
                     <ArrowRight className="w-4 h-4" />
                   </Button>
@@ -606,13 +520,13 @@ const Formulario = () => {
               </div>}
 
             {currentStep === 3 && <div className="space-y-8">
-                <h2 className="text-2xl md:text-3xl font-bold mb-8" style={{ color: '#2F3730' }}>
+                <h2 className="text-2xl md:text-3xl font-bold text-foreground mb-8">
                   {isGiftCard ? "Vale Presente" : <>{steps[2].number}<sub className="text-lg">/3</sub> {steps[2].title}</>}
                 </h2>
 
                 {/* Upload de Foto - Hidden in gift card mode */}
                 {!isGiftCard && <div className="space-y-3">
-                  <Label className="text-base md:text-lg font-semibold" style={{ color: '#2F3730' }}>
+                  <Label className="text-base md:text-lg font-semibold">
                     Foto da Criança
                   </Label>
                   <p className="text-sm text-muted-foreground mb-3">
@@ -641,67 +555,36 @@ const Formulario = () => {
                     </div>}
                   
                   <input ref={fileInputRef} type="file" accept="image/jpeg,image/png,image/webp" onChange={handlePhotoChange} className="hidden" />
-
-                  {/* Terms checkbox for image upload */}
-                  <div className="flex items-start gap-3 mt-4 p-4 bg-muted/50 rounded-xl border border-border/50">
-                    <Checkbox id="imageTerms" checked={acceptedImageTerms} onCheckedChange={checked => setAcceptedImageTerms(checked as boolean)} className="mt-0.5" />
-                    <label htmlFor="imageTerms" className="text-xs text-muted-foreground leading-relaxed cursor-pointer">
-                      Confirmo que tenho autorização legal para enviar estas imagens e dados, e concordo com os{" "}
-                      <Link to="/politicas" className="text-primary hover:underline" target="_blank">
-                        Termos de Uso e Política de Privacidade
-                      </Link>.
-                    </label>
-                  </div>
                 </div>}
 
                 {/* Email */}
                 <div className="space-y-3">
-                  <Label htmlFor="email" className="text-base md:text-lg font-semibold" style={{ color: '#2F3730' }}>
+                  <Label htmlFor="email" className="text-base md:text-lg font-semibold">
                     Email
                   </Label>
                   <p className="text-sm text-muted-foreground">
                     Para qual email devemos enviar o vídeo?
                   </p>
-                  <Input id="email" type="email" placeholder="seu@email.com" value={email} onChange={e => setEmail(e.target.value)} className="text-base py-6 rounded-xl border-2" style={{ borderColor: 'rgba(176, 141, 87, 0.3)', color: '#2F3730' }} />
+                  <Input id="email" type="email" placeholder="seu@email.com" value={email} onChange={e => setEmail(e.target.value)} className="text-base py-6 rounded-xl border-2 border-accent/30 focus:border-accent" />
                 </div>
 
                 {/* Nome Completo */}
                 <div className="space-y-3">
-                  <Label htmlFor="fullName" className="text-base md:text-lg font-semibold" style={{ color: '#2F3730' }}>
+                  <Label htmlFor="fullName" className="text-base md:text-lg font-semibold">
                     Nome Completo
                   </Label>
-                  <Input id="fullName" type="text" placeholder="Digite seu nome completo" value={fullName} onChange={e => setFullName(e.target.value)} className="text-base py-6 rounded-xl border-2" style={{ borderColor: 'rgba(176, 141, 87, 0.3)', color: '#2F3730' }} />
+                  <Input id="fullName" type="text" placeholder="Digite seu nome completo" value={fullName} onChange={e => setFullName(e.target.value)} className="text-base py-6 rounded-xl border-2 border-accent/30 focus:border-accent" />
                 </div>
 
-                {/* Telefone - Shows after email and fullName are filled */}
-                {email && fullName && <div className="space-y-3">
-                    <Label htmlFor="phone" className="text-base md:text-lg font-semibold" style={{ color: '#2F3730' }}>
-                      Telefone
-                    </Label>
-                    <p className="text-xs text-muted-foreground">Seu numero de telefone. Com +55 e DDD</p>
-                    <Input id="phone" type="tel" placeholder="(00) 00000-0000" value={phone} onChange={e => setPhone(e.target.value)} className="text-base py-6 rounded-xl border-2" style={{ borderColor: 'rgba(176, 141, 87, 0.3)', color: '#2F3730' }} />
-                  </div>}
-
-                {/* CPF/CNPJ - Shows after email and fullName are filled */}
-                {email && fullName && <div className="space-y-3">
-                    <Label htmlFor="cpfCnpj" className="text-base md:text-lg font-semibold" style={{ color: '#2F3730' }}>
-                      CPF ou CNPJ
-                    </Label>
-                    <p className="text-xs text-muted-foreground">
-                      Para segurança e integridade dos dados da criança
-                    </p>
-                    <Input id="cpfCnpj" type="text" placeholder="000.000.000-00" value={cpfCnpj} onChange={e => setCpfCnpj(e.target.value)} className="text-base py-6 rounded-xl border-2" style={{ borderColor: 'rgba(176, 141, 87, 0.3)', color: '#2F3730' }} />
-                  </div>}
-
-                {/* Plans Section - Shows when all fields are filled */}
-                {email && fullName && phone && cpfCnpj && (isGiftCard || acceptedImageTerms) && <motion.div initial={{
+                {/* Plans Section - Shows when email and fullName are filled */}
+                {email && fullName && <motion.div initial={{
               opacity: 0,
               y: 20
             }} animate={{
               opacity: 1,
               y: 0
             }} className="space-y-4">
-                    <h3 className="text-xl font-bold mb-2" style={{ color: '#2F3730' }}>
+                    <h3 className="text-xl font-bold text-foreground mb-2">
                       🎄 Escolha seu Plano
                     </h3>
                     <p className="text-muted-foreground mb-6">
@@ -716,7 +599,7 @@ const Formulario = () => {
                         <div className="mb-4">
                           <h4 className="text-lg font-bold text-white">Plano Comum</h4>
                           <div className="flex items-baseline gap-2 mt-2">
-                            <span className="text-2xl md:text-3xl font-bold text-accent">R$ 17,90</span>
+                            <span className="text-2xl md:text-3xl font-bold text-accent">R$ 14,90</span>
                           </div>
                           <p className="text-sm text-white/70 mt-1">Pagamento único</p>
                         </div>
@@ -746,34 +629,13 @@ const Formulario = () => {
                             <div className="w-5 h-5 rounded-full bg-accent/20 flex items-center justify-center flex-shrink-0">
                               <Check className="w-3 h-3 text-accent" />
                             </div>
-                            <span className="text-sm text-white">Entrega em até 24h</span>
+                            <span className="text-sm text-white">Entrega em até 12h</span>
                           </li>
                         </ul>
 
-                        <Button size="lg" disabled={!acceptedPurchaseTermsComum} onClick={() => {
-                    const phoneClean = phone.replace(/\D/g, '');
-                    const phoneWithCountry = phoneClean.startsWith('55') ? phoneClean : `55${phoneClean}`;
-                    const params = new URLSearchParams({
-                      'customer.name': fullName,
-                      'customer.email': email,
-                      'customer.document': cpfCnpj.replace(/\D/g, ''),
-                      'customer.phone': phoneWithCountry
-                    });
-                    window.location.href = `https://pay.kirvano.com/4e00c8b4-2d7b-4243-9ac6-0774f6b2fd57?${params.toString()}`;
-                  }} className="w-full mt-4 font-semibold" style={{ backgroundColor: '#1E592F', color: 'white' }} onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#184620')} onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = '#1E592F')}>
+                        <Button className="w-full mt-6 bg-accent hover:bg-accent/90 text-accent-foreground font-semibold" size="lg">
                           Comprar Plano Comum
                         </Button>
-
-                        {/* Terms checkbox for purchase - Below button */}
-                        <div className="flex items-start gap-3 mt-4 p-3 bg-white/10 rounded-lg">
-                          <Checkbox id="purchaseTermsComum" checked={acceptedPurchaseTermsComum} onCheckedChange={checked => setAcceptedPurchaseTermsComum(checked as boolean)} className="mt-0.5 border-white/50" />
-                          <label htmlFor="purchaseTermsComum" className="text-[10px] text-white/70 leading-relaxed cursor-pointer">
-                            Confirmo que li e aceito os{" "}
-                            <Link to="/politicas" className="text-accent hover:underline" target="_blank">
-                              Termos e Políticas
-                            </Link>
-                          </label>
-                        </div>
                       </div>
 
                       {/* Plano Exclusivo - Verde escuro */}
@@ -782,7 +644,7 @@ const Formulario = () => {
                 }}>
                         {/* Popular Badge */}
                         <div className="absolute -top-3 left-4">
-                          <span className="text-xs font-bold px-3 py-1 rounded-full flex items-center gap-1" style={{ backgroundColor: '#B08D57', color: '#FFFBF2' }}>
+                          <span className="bg-accent text-accent-foreground text-xs font-bold px-3 py-1 rounded-full flex items-center gap-1">
                             <Star className="w-3 h-3" /> Mais Popular
                           </span>
                         </div>
@@ -791,7 +653,7 @@ const Formulario = () => {
                           <h4 className="text-lg font-bold text-white">Plano Exclusivo</h4>
                           <div className="flex items-baseline gap-2 mt-2">
                             <span className="text-sm line-through text-white/50">R$ 49,90</span>
-                            <span className="text-2xl md:text-3xl font-bold text-accent">R$ 24,90</span>
+                            <span className="text-2xl md:text-3xl font-bold text-accent">R$ 19,90</span>
                           </div>
                           <p className="text-sm text-white/70 mt-1">Pagamento único</p>
                         </div>
@@ -821,7 +683,7 @@ const Formulario = () => {
                             <div className="w-5 h-5 rounded-full bg-accent/20 flex items-center justify-center flex-shrink-0">
                               <Check className="w-3 h-3 text-accent" />
                             </div>
-                            <span className="text-sm text-white">Entrega expressa em até 12h</span>
+                            <span className="text-sm text-white">Entrega expressa em até 1h</span>
                           </li>
                           <li className="flex items-center gap-3">
                             <div className="w-5 h-5 rounded-full bg-accent/20 flex items-center justify-center flex-shrink-0">
@@ -865,30 +727,9 @@ const Formulario = () => {
                           </ul>
                         </div>
 
-                        <Button className="w-full mt-4 font-semibold" size="lg" disabled={!acceptedPurchaseTermsExclusivo} onClick={() => {
-                    const phoneClean = phone.replace(/\D/g, '');
-                    const phoneWithCountry = phoneClean.startsWith('55') ? phoneClean : `55${phoneClean}`;
-                    const params = new URLSearchParams({
-                      'customer.name': fullName,
-                      'customer.email': email,
-                      'customer.document': cpfCnpj.replace(/\D/g, ''),
-                      'customer.phone': phoneWithCountry
-                    });
-                    window.location.href = `https://pay.kirvano.com/0055690f-e505-4609-8c00-913c29b3536b?${params.toString()}`;
-                  }} style={{ backgroundColor: '#1E592F', color: 'white' }} onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#184620')} onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = '#1E592F')}>
+                        <Button className="w-full mt-6 bg-accent hover:bg-accent/90 text-accent-foreground font-semibold" size="lg">
                           Comprar Plano Exclusivo
                         </Button>
-
-                        {/* Terms checkbox for purchase - Below button */}
-                        <div className="flex items-start gap-3 mt-4 p-3 bg-white/10 rounded-lg">
-                          <Checkbox id="purchaseTermsExclusivo" checked={acceptedPurchaseTermsExclusivo} onCheckedChange={checked => setAcceptedPurchaseTermsExclusivo(checked as boolean)} className="mt-0.5 border-white/50" />
-                          <label htmlFor="purchaseTermsExclusivo" className="text-[10px] text-white/70 leading-relaxed cursor-pointer">
-                            Confirmo que li e aceito os{" "}
-                            <Link to="/politicas" className="text-accent hover:underline" target="_blank">
-                              Termos e Políticas
-                            </Link>
-                          </label>
-                        </div>
                       </div>
                     </div>
                   </motion.div>}
