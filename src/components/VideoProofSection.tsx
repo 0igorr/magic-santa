@@ -1,4 +1,4 @@
-import { Star, ChevronLeft, ChevronRight, Play, Pause } from "lucide-react";
+import { Star, ChevronLeft, ChevronRight, Play, Pause, Volume2, VolumeX } from "lucide-react";
 import { useState, useRef } from "react";
 
 const videoProofs = [
@@ -32,6 +32,7 @@ const videoProofs = [
 const VideoProofSection = () => {
   const [currentIndex, setCurrentIndex] = useState(2);
   const [playingVideos, setPlayingVideos] = useState<Record<number, boolean>>({});
+  const [volumes, setVolumes] = useState<Record<number, number>>({});
   const videoRefs = useRef<Record<number, HTMLVideoElement | null>>({});
 
   const scrollPrev = () => {
@@ -47,6 +48,7 @@ const VideoProofSection = () => {
     if (video) {
       if (playingVideos[id]) {
         video.pause();
+        setPlayingVideos(prev => ({ ...prev, [id]: false }));
       } else {
         // Pause all other videos
         Object.keys(videoRefs.current).forEach(key => {
@@ -55,10 +57,32 @@ const VideoProofSection = () => {
             videoRefs.current[otherId]?.pause();
           }
         });
-        setPlayingVideos({});
+        setPlayingVideos({ [id]: true });
+        video.muted = false;
+        video.volume = volumes[id] ?? 0.5;
         video.play();
       }
-      setPlayingVideos(prev => ({ ...prev, [id]: !prev[id] }));
+    }
+  };
+
+  const handleVolumeChange = (id: number, value: number) => {
+    const video = videoRefs.current[id];
+    if (video) {
+      video.volume = value;
+      video.muted = value === 0;
+    }
+    setVolumes(prev => ({ ...prev, [id]: value }));
+  };
+
+  const toggleMute = (id: number, e: React.MouseEvent) => {
+    e.stopPropagation();
+    const video = videoRefs.current[id];
+    if (video) {
+      if (video.volume > 0) {
+        handleVolumeChange(id, 0);
+      } else {
+        handleVolumeChange(id, 0.5);
+      }
     }
   };
 
@@ -73,6 +97,34 @@ const VideoProofSection = () => {
   };
 
   const visibleVideos = getVisibleVideos();
+
+  const VolumeControl = ({ videoId }: { videoId: number }) => {
+    const volume = volumes[videoId] ?? 0.5;
+    
+    return (
+      <div 
+        className="absolute bottom-12 left-2 right-2 flex items-center gap-2 bg-black/60 rounded-full px-3 py-2"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <button onClick={(e) => toggleMute(videoId, e)} className="text-white">
+          {volume === 0 ? (
+            <VolumeX className="w-4 h-4" />
+          ) : (
+            <Volume2 className="w-4 h-4" />
+          )}
+        </button>
+        <input
+          type="range"
+          min="0"
+          max="1"
+          step="0.1"
+          value={volume}
+          onChange={(e) => handleVolumeChange(videoId, parseFloat(e.target.value))}
+          className="flex-1 h-1 bg-white/30 rounded-full appearance-none cursor-pointer [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-3 [&::-webkit-slider-thumb]:h-3 [&::-webkit-slider-thumb]:bg-white [&::-webkit-slider-thumb]:rounded-full"
+        />
+      </div>
+    );
+  };
 
   return (
     <section className="py-12 md:py-16 bg-background">
@@ -151,10 +203,17 @@ const VideoProofSection = () => {
                   />
                   
                   {/* Play/Pause Button */}
-                  {!playingVideos[videoProofs[visibleVideos.current].id] && (
-                    <button className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-14 h-14 bg-destructive rounded-full flex items-center justify-center shadow-lg hover:scale-110 transition-transform">
+                  <button className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-14 h-14 bg-destructive rounded-full flex items-center justify-center shadow-lg hover:scale-110 transition-transform">
+                    {playingVideos[videoProofs[visibleVideos.current].id] ? (
+                      <Pause className="w-6 h-6 text-destructive-foreground fill-destructive-foreground" />
+                    ) : (
                       <Play className="w-6 h-6 text-destructive-foreground fill-destructive-foreground ml-1" />
-                    </button>
+                    )}
+                  </button>
+                  
+                  {/* Volume Control */}
+                  {playingVideos[videoProofs[visibleVideos.current].id] && (
+                    <VolumeControl videoId={videoProofs[visibleVideos.current].id} />
                   )}
                   
                   {/* Username */}
@@ -201,10 +260,17 @@ const VideoProofSection = () => {
                 />
                 
                 {/* Play/Pause Button */}
-                {!playingVideos[video.id] && (
-                  <button className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-12 h-12 lg:w-14 lg:h-14 bg-destructive rounded-full flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
+                <button className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-12 h-12 lg:w-14 lg:h-14 bg-destructive rounded-full flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
+                  {playingVideos[video.id] ? (
+                    <Pause className="w-5 h-5 lg:w-6 lg:h-6 text-destructive-foreground fill-destructive-foreground" />
+                  ) : (
                     <Play className="w-5 h-5 lg:w-6 lg:h-6 text-destructive-foreground fill-destructive-foreground ml-1" />
-                  </button>
+                  )}
+                </button>
+                
+                {/* Volume Control */}
+                {playingVideos[video.id] && (
+                  <VolumeControl videoId={video.id} />
                 )}
                 
                 {/* Username */}
