@@ -56,13 +56,25 @@ const VideoProofSection = () => {
           if (otherId !== id && videoRefs.current[otherId]) {
             videoRefs.current[otherId]?.pause();
             videoRefs.current[otherId]!.currentTime = 0;
+            videoRefs.current[otherId]!.muted = true;
           }
         });
         setPlayingVideos({ [id]: true });
+        
+        // Load and play the video
+        video.load();
         video.muted = false;
         video.volume = volumes[id] ?? 0.5;
-        video.currentTime = 0;
-        video.play().catch(console.error);
+        
+        const playVideo = () => {
+          video.play().catch(console.error);
+        };
+        
+        if (video.readyState >= 3) {
+          playVideo();
+        } else {
+          video.addEventListener('canplay', playVideo, { once: true });
+        }
       }
     }
   };
@@ -180,11 +192,11 @@ const VideoProofSection = () => {
                   <video
                     ref={el => videoRefs.current[videoProofs[visibleVideos.prev].id] = el}
                     src={videoProofs[visibleVideos.prev].video}
-                    className="w-full h-full object-cover"
+                    className="absolute inset-0 w-full h-full object-cover"
                     loop
                     playsInline
                     muted
-                    preload="metadata"
+                    preload="auto"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent pointer-events-none" />
                 </div>
@@ -199,10 +211,10 @@ const VideoProofSection = () => {
                   <video
                     ref={el => videoRefs.current[videoProofs[visibleVideos.current].id] = el}
                     src={videoProofs[visibleVideos.current].video}
-                    className="w-full h-full object-cover"
+                    className="absolute inset-0 w-full h-full object-cover"
                     loop
                     playsInline
-                    preload="metadata"
+                    preload="auto"
                   />
                   
                   {/* Play/Pause Button */}
@@ -234,11 +246,11 @@ const VideoProofSection = () => {
                   <video
                     ref={el => videoRefs.current[videoProofs[visibleVideos.next].id] = el}
                     src={videoProofs[visibleVideos.next].video}
-                    className="w-full h-full object-cover"
+                    className="absolute inset-0 w-full h-full object-cover"
                     loop
                     playsInline
                     muted
-                    preload="metadata"
+                    preload="auto"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent pointer-events-none" />
                 </div>
@@ -257,10 +269,10 @@ const VideoProofSection = () => {
                 <video
                   ref={el => videoRefs.current[video.id] = el}
                   src={video.video}
-                  className="w-full h-full object-cover"
+                  className="absolute inset-0 w-full h-full object-cover"
                   loop
                   playsInline
-                  preload="metadata"
+                  preload="auto"
                 />
                 
                 {/* Play/Pause Button */}
