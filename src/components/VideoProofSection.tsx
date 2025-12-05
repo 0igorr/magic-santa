@@ -55,12 +55,14 @@ const VideoProofSection = () => {
           const otherId = parseInt(key);
           if (otherId !== id && videoRefs.current[otherId]) {
             videoRefs.current[otherId]?.pause();
+            videoRefs.current[otherId]!.currentTime = 0;
           }
         });
         setPlayingVideos({ [id]: true });
         video.muted = false;
         video.volume = volumes[id] ?? 0.5;
-        video.play();
+        video.currentTime = 0;
+        video.play().catch(console.error);
       }
     }
   };
@@ -182,6 +184,7 @@ const VideoProofSection = () => {
                     loop
                     playsInline
                     muted
+                    preload="metadata"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent pointer-events-none" />
                 </div>
@@ -199,7 +202,7 @@ const VideoProofSection = () => {
                     className="w-full h-full object-cover"
                     loop
                     playsInline
-                    muted
+                    preload="metadata"
                   />
                   
                   {/* Play/Pause Button */}
@@ -235,6 +238,7 @@ const VideoProofSection = () => {
                     loop
                     playsInline
                     muted
+                    preload="metadata"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent pointer-events-none" />
                 </div>
@@ -256,7 +260,7 @@ const VideoProofSection = () => {
                   className="w-full h-full object-cover"
                   loop
                   playsInline
-                  muted
+                  preload="metadata"
                 />
                 
                 {/* Play/Pause Button */}
