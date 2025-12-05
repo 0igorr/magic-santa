@@ -605,35 +605,35 @@ const Formulario = () => {
                 </div>
               </div>}
 
-            {currentStep === 3 && <div className="space-y-8">
-                <h2 className="text-2xl md:text-3xl font-bold text-foreground mb-8">
+            {currentStep === 3 && <div className="space-y-8" style={{ backgroundColor: '#FFFBF2' }}>
+                <h2 className="text-2xl md:text-3xl font-bold mb-8" style={{ color: '#2F3730' }}>
                   {isGiftCard ? "Vale Presente" : <>{steps[2].number}<sub className="text-lg">/3</sub> {steps[2].title}</>}
                 </h2>
 
                 {/* Upload de Foto - Hidden in gift card mode */}
                 {!isGiftCard && <div className="space-y-3">
-                  <Label className="text-base md:text-lg font-semibold">
+                  <Label className="text-base md:text-lg font-semibold" style={{ color: '#2F3730' }}>
                     Foto da Criança
                   </Label>
-                  <p className="text-sm text-muted-foreground mb-3">
+                  <p className="text-sm mb-3" style={{ color: '#2F3730', opacity: 0.7 }}>
                     Adicione uma foto da criança para personalizar o vídeo
                   </p>
                   
-                  {!photoPreview ? <div onClick={() => fileInputRef.current?.click()} className="border-2 border-dashed border-accent/50 rounded-xl p-8 md:p-12 hover:border-accent transition-all cursor-pointer bg-accent/5 hover:bg-accent/10">
+                  {!photoPreview ? <div onClick={() => fileInputRef.current?.click()} className="border-2 border-dashed rounded-xl p-8 md:p-12 hover:border-opacity-50 transition-all cursor-pointer" style={{ borderColor: 'rgba(176, 141, 87, 0.5)', backgroundColor: 'rgba(176, 141, 87, 0.05)' }}>
                       <div className="flex flex-col items-center gap-4">
-                        <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center">
-                          <Upload className="w-8 h-8 text-primary" />
+                        <div className="w-16 h-16 rounded-full flex items-center justify-center" style={{ backgroundColor: 'rgba(30, 89, 47, 0.1)' }}>
+                          <Upload className="w-8 h-8" style={{ color: '#1E592F' }} />
                         </div>
                         <div className="text-center">
-                          <p className="font-semibold text-foreground mb-1">
+                          <p className="font-semibold mb-1" style={{ color: '#2F3730' }}>
                             Clique para fazer upload
                           </p>
-                          <p className="text-sm text-muted-foreground">
+                          <p className="text-sm" style={{ color: '#2F3730', opacity: 0.6 }}>
                             JPG, PNG ou WEBP (máx. 10MB)
                           </p>
                         </div>
                       </div>
-                    </div> : <div className="relative rounded-xl overflow-hidden border-2 border-accent/30">
+                    </div> : <div className="relative rounded-xl overflow-hidden border-2" style={{ borderColor: 'rgba(176, 141, 87, 0.3)' }}>
                       <img src={photoPreview} alt="Preview da foto" className="w-full h-64 object-cover" />
                       <Button onClick={removePhoto} variant="destructive" size="icon" className="absolute top-2 right-2">
                         <X className="w-4 h-4" />
@@ -643,11 +643,11 @@ const Formulario = () => {
                   <input ref={fileInputRef} type="file" accept="image/jpeg,image/png,image/webp" onChange={handlePhotoChange} className="hidden" />
 
                   {/* Terms checkbox for image upload */}
-                  <div className="flex items-start gap-3 mt-4 p-4 bg-muted/50 rounded-xl border border-border/50">
-                    <Checkbox id="imageTerms" checked={acceptedImageTerms} onCheckedChange={checked => setAcceptedImageTerms(checked as boolean)} className="mt-0.5" />
-                    <label htmlFor="imageTerms" className="text-xs text-muted-foreground leading-relaxed cursor-pointer">
+                  <div className="flex items-start gap-3 mt-4 p-4 rounded-xl" style={{ backgroundColor: 'rgba(176, 141, 87, 0.1)', border: '1px solid rgba(176, 141, 87, 0.2)' }}>
+                    <Checkbox id="imageTerms" checked={acceptedImageTerms} onCheckedChange={checked => setAcceptedImageTerms(checked as boolean)} className="mt-0.5" style={{ borderColor: '#B08D57' }} />
+                    <label htmlFor="imageTerms" className="text-xs leading-relaxed cursor-pointer" style={{ color: '#2F3730' }}>
                       Confirmo que tenho autorização legal para enviar estas imagens e dados, e concordo com os{" "}
-                      <Link to="/politicas" className="text-primary hover:underline" target="_blank">
+                      <Link to="/politicas" className="hover:underline" style={{ color: '#B08D57' }} target="_blank">
                         Termos de Uso e Política de Privacidade
                       </Link>.
                     </label>
@@ -656,41 +656,41 @@ const Formulario = () => {
 
                 {/* Email */}
                 <div className="space-y-3">
-                  <Label htmlFor="email" className="text-base md:text-lg font-semibold">
+                  <Label htmlFor="email" className="text-base md:text-lg font-semibold" style={{ color: '#2F3730' }}>
                     Email
                   </Label>
-                  <p className="text-sm text-muted-foreground">
+                  <p className="text-sm" style={{ color: '#2F3730', opacity: 0.7 }}>
                     Para qual email devemos enviar o vídeo?
                   </p>
-                  <Input id="email" type="email" placeholder="seu@email.com" value={email} onChange={e => setEmail(e.target.value)} className="text-base py-6 rounded-xl border-2 border-accent/30 focus:border-accent" />
+                  <Input id="email" type="email" placeholder="seu@email.com" value={email} onChange={e => setEmail(e.target.value)} className="text-base py-6 rounded-xl border-2" style={{ borderColor: 'rgba(176, 141, 87, 0.3)', backgroundColor: '#FFFBF2', color: '#2F3730' }} />
                 </div>
 
                 {/* Nome Completo */}
                 <div className="space-y-3">
-                  <Label htmlFor="fullName" className="text-base md:text-lg font-semibold">
+                  <Label htmlFor="fullName" className="text-base md:text-lg font-semibold" style={{ color: '#2F3730' }}>
                     Nome Completo
                   </Label>
-                  <Input id="fullName" type="text" placeholder="Digite seu nome completo" value={fullName} onChange={e => setFullName(e.target.value)} className="text-base py-6 rounded-xl border-2 border-accent/30 focus:border-accent" />
+                  <Input id="fullName" type="text" placeholder="Digite seu nome completo" value={fullName} onChange={e => setFullName(e.target.value)} className="text-base py-6 rounded-xl border-2" style={{ borderColor: 'rgba(176, 141, 87, 0.3)', backgroundColor: '#FFFBF2', color: '#2F3730' }} />
                 </div>
 
                 {/* Telefone - Shows after email and fullName are filled */}
                 {email && fullName && <div className="space-y-3">
-                    <Label htmlFor="phone" className="text-base md:text-lg font-semibold">
+                    <Label htmlFor="phone" className="text-base md:text-lg font-semibold" style={{ color: '#2F3730' }}>
                       Telefone
                     </Label>
-                    <p className="text-xs text-muted-foreground">Seu numero de telefone. Com +55 e DDD</p>
-                    <Input id="phone" type="tel" placeholder="(00) 00000-0000" value={phone} onChange={e => setPhone(e.target.value)} className="text-base py-6 rounded-xl border-2 border-accent/30 focus:border-accent" />
+                    <p className="text-xs" style={{ color: '#2F3730', opacity: 0.7 }}>Seu numero de telefone. Com +55 e DDD</p>
+                    <Input id="phone" type="tel" placeholder="(00) 00000-0000" value={phone} onChange={e => setPhone(e.target.value)} className="text-base py-6 rounded-xl border-2" style={{ borderColor: 'rgba(176, 141, 87, 0.3)', backgroundColor: '#FFFBF2', color: '#2F3730' }} />
                   </div>}
 
                 {/* CPF/CNPJ - Shows after email and fullName are filled */}
                 {email && fullName && <div className="space-y-3">
-                    <Label htmlFor="cpfCnpj" className="text-base md:text-lg font-semibold">
+                    <Label htmlFor="cpfCnpj" className="text-base md:text-lg font-semibold" style={{ color: '#2F3730' }}>
                       CPF ou CNPJ
                     </Label>
-                    <p className="text-xs text-muted-foreground">
+                    <p className="text-xs" style={{ color: '#2F3730', opacity: 0.7 }}>
                       Para segurança e integridade dos dados da criança
                     </p>
-                    <Input id="cpfCnpj" type="text" placeholder="000.000.000-00" value={cpfCnpj} onChange={e => setCpfCnpj(e.target.value)} className="text-base py-6 rounded-xl border-2 border-accent/30 focus:border-accent" />
+                    <Input id="cpfCnpj" type="text" placeholder="000.000.000-00" value={cpfCnpj} onChange={e => setCpfCnpj(e.target.value)} className="text-base py-6 rounded-xl border-2" style={{ borderColor: 'rgba(176, 141, 87, 0.3)', backgroundColor: '#FFFBF2', color: '#2F3730' }} />
                   </div>}
 
                 {/* Plans Section - Shows when all fields are filled */}
@@ -701,52 +701,53 @@ const Formulario = () => {
               opacity: 1,
               y: 0
             }} className="space-y-4">
-                    <h3 className="text-xl font-bold text-foreground mb-2">
-                      🎄 Escolha seu Plano
+                    <h3 className="text-xl font-bold mb-2 flex items-center gap-2" style={{ color: '#2F3730' }}>
+                      <span style={{ color: '#1E592F' }}>🎄</span> ESCOLHA SEU PLANO
                     </h3>
-                    <p className="text-muted-foreground mb-6">
+                    <p className="mb-6" style={{ color: '#2F3730', opacity: 0.7 }}>
                       Selecione o plano ideal para sua experiência mágica
                     </p>
                     
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      {/* Plano Comum - Verde claro */}
-                      <div onClick={() => setSelectedPlan("comum")} className={`relative rounded-2xl p-5 md:p-6 cursor-pointer transition-all border-2 flex flex-col ${selectedPlan === "comum" ? "border-primary shadow-gold" : "border-border hover:border-primary/50"}`} style={{
-                  backgroundColor: 'hsl(120, 25%, 25%)'
+                      {/* Plano Comum */}
+                      <div onClick={() => setSelectedPlan("comum")} className={`relative rounded-2xl p-5 md:p-6 cursor-pointer transition-all border-2 flex flex-col ${selectedPlan === "comum" ? "shadow-lg" : ""}`} style={{
+                  backgroundColor: '#FFFBF2',
+                  borderColor: selectedPlan === "comum" ? '#B08D57' : 'rgba(176, 141, 87, 0.2)'
                 }}>
                         <div className="mb-4">
-                          <h4 className="text-lg font-bold text-white">Plano Comum</h4>
+                          <h4 className="text-lg font-bold uppercase tracking-wide" style={{ color: '#2F3730' }}>Plano Comum</h4>
                           <div className="flex items-baseline gap-2 mt-2">
-                            <span className="text-2xl md:text-3xl font-bold text-accent">R$ 17,90</span>
+                            <span className="text-2xl md:text-3xl font-bold" style={{ color: '#B08D57' }}>R$ 17,90</span>
                           </div>
-                          <p className="text-sm text-white/70 mt-1">Pagamento único</p>
+                          <p className="text-sm mt-1" style={{ color: '#2F3730', opacity: 0.6 }}>Pagamento único</p>
                         </div>
                         
-                        <p className="text-sm text-white/70 mb-4">O plano contém:</p>
+                        <p className="text-sm mb-4" style={{ color: '#2F3730', opacity: 0.7 }}>O plano contém:</p>
                         
                         <ul className="space-y-3 flex-1">
                           <li className="flex items-center gap-3">
-                            <div className="w-5 h-5 rounded-full bg-accent/20 flex items-center justify-center flex-shrink-0">
-                              <Check className="w-3 h-3 text-accent" />
+                            <div className="w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0" style={{ backgroundColor: 'rgba(176, 141, 87, 0.2)' }}>
+                              <Check className="w-3 h-3" style={{ color: '#B08D57' }} />
                             </div>
-                            <span className="text-sm text-white">Vídeo personalizado HD</span>
+                            <span className="text-sm" style={{ color: '#2F3730' }}>Vídeo personalizado HD</span>
                           </li>
                           <li className="flex items-center gap-3">
-                            <div className="w-5 h-5 rounded-full bg-accent/20 flex items-center justify-center flex-shrink-0">
-                              <Check className="w-3 h-3 text-accent" />
+                            <div className="w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0" style={{ backgroundColor: 'rgba(176, 141, 87, 0.2)' }}>
+                              <Check className="w-3 h-3" style={{ color: '#B08D57' }} />
                             </div>
-                            <span className="text-sm text-white">Nome da criança no vídeo</span>
+                            <span className="text-sm" style={{ color: '#2F3730' }}>Nome da criança no vídeo</span>
                           </li>
                           <li className="flex items-center gap-3">
-                            <div className="w-5 h-5 rounded-full bg-accent/20 flex items-center justify-center flex-shrink-0">
-                              <Check className="w-3 h-3 text-accent" />
+                            <div className="w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0" style={{ backgroundColor: 'rgba(176, 141, 87, 0.2)' }}>
+                              <Check className="w-3 h-3" style={{ color: '#B08D57' }} />
                             </div>
-                            <span className="text-sm text-white">Foto no livro mágico</span>
+                            <span className="text-sm" style={{ color: '#2F3730' }}>Foto no livro mágico</span>
                           </li>
                           <li className="flex items-center gap-3">
-                            <div className="w-5 h-5 rounded-full bg-accent/20 flex items-center justify-center flex-shrink-0">
-                              <Check className="w-3 h-3 text-accent" />
+                            <div className="w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0" style={{ backgroundColor: 'rgba(176, 141, 87, 0.2)' }}>
+                              <Check className="w-3 h-3" style={{ color: '#B08D57' }} />
                             </div>
-                            <span className="text-sm text-white">Entrega em até 24h</span>
+                            <span className="text-sm" style={{ color: '#2F3730' }}>Entrega em até 24h</span>
                           </li>
                         </ul>
 
@@ -760,112 +761,75 @@ const Formulario = () => {
                       'customer.phone': phoneWithCountry
                     });
                     window.location.href = `https://pay.kirvano.com/4e00c8b4-2d7b-4243-9ac6-0774f6b2fd57?${params.toString()}`;
-                  }} className="w-full mt-4 font-semibold bg-primary text-primary-foreground">
-                          Comprar Plano Comum
+                  }} className="w-full mt-4 font-semibold border-2" style={{ backgroundColor: 'transparent', color: '#1E592F', borderColor: '#1E592F' }}>
+                          Selecionar
                         </Button>
 
                         {/* Terms checkbox for purchase - Below button */}
-                        <div className="flex items-start gap-3 mt-4 p-3 bg-white/10 rounded-lg">
-                          <Checkbox id="purchaseTermsComum" checked={acceptedPurchaseTermsComum} onCheckedChange={checked => setAcceptedPurchaseTermsComum(checked as boolean)} className="mt-0.5 border-white/50" />
-                          <label htmlFor="purchaseTermsComum" className="text-[10px] text-white/70 leading-relaxed cursor-pointer">
+                        <div className="flex items-start gap-3 mt-4 p-3 rounded-lg" style={{ backgroundColor: 'rgba(176, 141, 87, 0.1)' }}>
+                          <Checkbox id="purchaseTermsComum" checked={acceptedPurchaseTermsComum} onCheckedChange={checked => setAcceptedPurchaseTermsComum(checked as boolean)} className="mt-0.5" style={{ borderColor: '#B08D57' }} />
+                          <label htmlFor="purchaseTermsComum" className="text-[10px] leading-relaxed cursor-pointer" style={{ color: '#2F3730' }}>
                             Confirmo que li e aceito os{" "}
-                            <Link to="/politicas" className="text-accent hover:underline" target="_blank">
+                            <Link to="/politicas" className="hover:underline" style={{ color: '#B08D57' }} target="_blank">
                               Termos e Políticas
                             </Link>
                           </label>
                         </div>
                       </div>
 
-                      {/* Plano Exclusivo - Verde escuro */}
-                      <div onClick={() => setSelectedPlan("exclusivo")} className={`relative rounded-2xl p-5 md:p-6 cursor-pointer transition-all border-2 flex flex-col ${selectedPlan === "exclusivo" ? "border-accent shadow-gold" : "border-border hover:border-accent/50"}`} style={{
-                  backgroundColor: 'hsl(120, 35%, 15%)'
+                      {/* Plano Exclusivo - Burgundy/Wine */}
+                      <div onClick={() => setSelectedPlan("exclusivo")} className={`relative rounded-2xl p-5 md:p-6 cursor-pointer transition-all border-2 flex flex-col ${selectedPlan === "exclusivo" ? "shadow-lg" : ""}`} style={{
+                  backgroundColor: '#5C1A2E',
+                  borderColor: selectedPlan === "exclusivo" ? '#B08D57' : 'rgba(176, 141, 87, 0.3)'
                 }}>
                         {/* Popular Badge */}
-                        <div className="absolute -top-3 left-4">
-                          <span className="bg-accent text-accent-foreground text-xs font-bold px-3 py-1 rounded-full flex items-center gap-1">
-                            <Star className="w-3 h-3" /> Mais Popular
+                        <div className="absolute -top-3 right-4">
+                          <span className="text-xs font-bold px-3 py-1 rounded-sm flex items-center gap-1" style={{ backgroundColor: '#B08D57', color: '#FFFBF2' }}>
+                            <Star className="w-3 h-3" /> POPULAR
                           </span>
                         </div>
                         
                         <div className="mb-4 mt-2">
-                          <h4 className="text-lg font-bold text-white">Plano Exclusivo</h4>
+                          <h4 className="text-lg font-bold italic" style={{ color: '#FFFBF2' }}>PLANO EXCLUSIVO</h4>
                           <div className="flex items-baseline gap-2 mt-2">
-                            <span className="text-sm line-through text-white/50">R$ 49,90</span>
-                            <span className="text-2xl md:text-3xl font-bold text-accent">R$ 24,90</span>
+                            <span className="text-2xl md:text-3xl font-bold" style={{ color: '#B08D57' }}>R$ 24,90</span>
+                            <span className="text-sm line-through" style={{ color: 'rgba(255, 251, 242, 0.5)' }}>R$ 49,90</span>
                           </div>
-                          <p className="text-sm text-white/70 mt-1">Pagamento único</p>
+                          <p className="text-sm mt-1" style={{ color: 'rgba(255, 251, 242, 0.7)' }}>Pagamento único</p>
                         </div>
-                        
-                        <p className="text-sm text-white/70 mb-4">O plano contém:</p>
                         
                         <ul className="space-y-3">
                           <li className="flex items-center gap-3">
-                            <div className="w-5 h-5 rounded-full bg-accent/20 flex items-center justify-center flex-shrink-0">
-                              <Check className="w-3 h-3 text-accent" />
+                            <div className="w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0" style={{ backgroundColor: 'rgba(176, 141, 87, 0.3)' }}>
+                              <Check className="w-3 h-3" style={{ color: '#B08D57' }} />
                             </div>
-                            <span className="text-sm text-white">Tudo do Plano Comum</span>
+                            <span className="text-sm" style={{ color: '#FFFBF2' }}>Qualidade 4K Cinema</span>
                           </li>
                           <li className="flex items-center gap-3">
-                            <div className="w-5 h-5 rounded-full bg-accent/20 flex items-center justify-center flex-shrink-0">
-                              <Check className="w-3 h-3 text-accent" />
+                            <div className="w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0" style={{ backgroundColor: 'rgba(176, 141, 87, 0.3)' }}>
+                              <Check className="w-3 h-3" style={{ color: '#B08D57' }} />
                             </div>
-                            <span className="text-sm text-white">Vídeo em qualidade 4K</span>
-                          </li>
-                          <li className="flex items-center gap-3">
-                            <div className="w-5 h-5 rounded-full bg-accent/20 flex items-center justify-center flex-shrink-0">
-                              <Check className="w-3 h-3 text-accent" />
-                            </div>
-                            <span className="text-sm text-white">Música de fundo</span>
-                          </li>
-                          <li className="flex items-center gap-3">
-                            <div className="w-5 h-5 rounded-full bg-accent/20 flex items-center justify-center flex-shrink-0">
-                              <Check className="w-3 h-3 text-accent" />
-                            </div>
-                            <span className="text-sm text-white">Entrega expressa em até 12h</span>
-                          </li>
-                          <li className="flex items-center gap-3">
-                            <div className="w-5 h-5 rounded-full bg-accent/20 flex items-center justify-center flex-shrink-0">
-                              <Check className="w-3 h-3 text-accent" />
-                            </div>
-                            <span className="text-sm text-white">Suporte prioritário 24h</span>
+                            <span className="text-sm" style={{ color: '#FFFBF2' }}>Música de Fundo</span>
                           </li>
                         </ul>
 
                         {/* Bônus Section */}
-                        <div className="mt-6 pt-4 border-t border-white/20">
-                          <p className="text-sm font-semibold text-white mb-3 flex items-center gap-2">
-                            <Gift className="w-4 h-4 text-red-500" />
-                            Bônus Exclusivos:
+                        <div className="mt-6 pt-4 rounded-lg p-3" style={{ backgroundColor: 'rgba(176, 141, 87, 0.15)' }}>
+                          <p className="text-sm font-semibold mb-3 flex items-center gap-2" style={{ color: '#B08D57' }}>
+                            <Gift className="w-4 h-4" style={{ color: '#B08D57' }} />
+                            BÔNUS:
                           </p>
                           <ul className="space-y-2">
                             <li className="flex items-center gap-3">
-                              <div className="w-5 h-5 rounded-full bg-red-500/20 flex items-center justify-center flex-shrink-0">
-                                <Gift className="w-3 h-3 text-red-500" />
-                              </div>
-                              <span className="text-sm text-white">Carta Personalizada do Papai Noel</span>
+                              <span className="text-sm" style={{ color: '#FFFBF2' }}>• Carta Personalizada</span>
                             </li>
                             <li className="flex items-center gap-3">
-                              <div className="w-5 h-5 rounded-full bg-red-500/20 flex items-center justify-center flex-shrink-0">
-                                <Gift className="w-3 h-3 text-red-500" />
-                              </div>
-                              <span className="text-sm text-white">Certificado Oficial de "Criança Especial"</span>
-                            </li>
-                            <li className="flex items-center gap-3">
-                              <div className="w-5 h-5 rounded-full bg-red-500/20 flex items-center justify-center flex-shrink-0">
-                                <Gift className="w-3 h-3 text-red-500" />
-                              </div>
-                              <span className="text-sm text-white">Lista de tarefas natalinas</span>
-                            </li>
-                            <li className="flex items-center gap-3">
-                              <div className="w-5 h-5 rounded-full bg-red-500/20 flex items-center justify-center flex-shrink-0">
-                                <Gift className="w-3 h-3 text-red-500" />
-                              </div>
-                              <span className="text-sm text-white">Bilhete para deixar na árvore</span>
+                              <span className="text-sm" style={{ color: '#FFFBF2' }}>• Certificado Oficial</span>
                             </li>
                           </ul>
                         </div>
 
-                        <Button className="w-full mt-4 bg-accent hover:bg-accent/90 text-accent-foreground font-semibold" size="lg" disabled={!acceptedPurchaseTermsExclusivo} onClick={() => {
+                        <Button className="w-full mt-4 font-bold uppercase tracking-wide" size="lg" disabled={!acceptedPurchaseTermsExclusivo} onClick={() => {
                     const phoneClean = phone.replace(/\D/g, '');
                     const phoneWithCountry = phoneClean.startsWith('55') ? phoneClean : `55${phoneClean}`;
                     const params = new URLSearchParams({
@@ -875,16 +839,16 @@ const Formulario = () => {
                       'customer.phone': phoneWithCountry
                     });
                     window.location.href = `https://pay.kirvano.com/0055690f-e505-4609-8c00-913c29b3536b?${params.toString()}`;
-                  }}>
-                          Comprar Plano Exclusivo
+                  }} style={{ backgroundColor: '#1E592F', color: '#FFFFFF' }}>
+                          QUERO ESTE PLANO
                         </Button>
 
                         {/* Terms checkbox for purchase - Below button */}
-                        <div className="flex items-start gap-3 mt-4 p-3 bg-white/10 rounded-lg">
-                          <Checkbox id="purchaseTermsExclusivo" checked={acceptedPurchaseTermsExclusivo} onCheckedChange={checked => setAcceptedPurchaseTermsExclusivo(checked as boolean)} className="mt-0.5 border-white/50" />
-                          <label htmlFor="purchaseTermsExclusivo" className="text-[10px] text-white/70 leading-relaxed cursor-pointer">
+                        <div className="flex items-start gap-3 mt-4 p-3 rounded-lg" style={{ backgroundColor: 'rgba(176, 141, 87, 0.15)' }}>
+                          <Checkbox id="purchaseTermsExclusivo" checked={acceptedPurchaseTermsExclusivo} onCheckedChange={checked => setAcceptedPurchaseTermsExclusivo(checked as boolean)} className="mt-0.5" style={{ borderColor: '#B08D57' }} />
+                          <label htmlFor="purchaseTermsExclusivo" className="text-[10px] leading-relaxed cursor-pointer" style={{ color: 'rgba(255, 251, 242, 0.8)' }}>
                             Confirmo que li e aceito os{" "}
-                            <Link to="/politicas" className="text-accent hover:underline" target="_blank">
+                            <Link to="/politicas" className="hover:underline" style={{ color: '#B08D57' }} target="_blank">
                               Termos e Políticas
                             </Link>
                           </label>
@@ -895,13 +859,13 @@ const Formulario = () => {
 
                 {/* Navigation */}
                 <div className="flex flex-col sm:flex-row gap-3 sm:justify-between pt-6">
-                  {!isGiftCard ? <Button variant="outline" size="lg" className="gap-2 w-full sm:w-auto" onClick={() => setCurrentStep(2)}>
+                  {!isGiftCard ? <Button variant="outline" size="lg" className="gap-2 w-full sm:w-auto" onClick={() => setCurrentStep(2)} style={{ borderColor: '#1E592F', color: '#1E592F' }}>
                       <ArrowLeft className="w-4 h-4" />
                       Voltar
                     </Button> : <Button variant="outline" size="lg" className="gap-2 w-full sm:w-auto" onClick={() => {
                 setIsGiftCard(false);
                 setCurrentStep(1);
-              }}>
+              }} style={{ borderColor: '#1E592F', color: '#1E592F' }}>
                       <ArrowLeft className="w-4 h-4" />
                       Voltar ao formulário
                     </Button>}
