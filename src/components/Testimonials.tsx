@@ -38,7 +38,7 @@ const benefits = [
   },
   {
     icon: Clock,
-    title: "Você tem 180 dias para solicitar o reembolso do valor pago",
+    title: "Você tem 7 dias para solicitar o reembolso do valor pago",
     description: "Comprar livremente e devolver a qualquer momento. Sem qualquer justificativa.",
   },
   {
