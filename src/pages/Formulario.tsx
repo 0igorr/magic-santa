@@ -238,15 +238,15 @@ const Formulario = () => {
       setIsGenerating(false);
     }
   };
-  return <div className="min-h-screen bg-background">
+  return <div className="min-h-screen" style={{ background: 'linear-gradient(180deg, #590D13 0%, #8C1C26 100%)' }}>
       {/* Header */}
-      <header className="border-b border-border/50 bg-background/95 backdrop-blur-sm sticky top-0 z-50">
+      <header className="border-b border-border/50 sticky top-0 z-50" style={{ backgroundColor: 'rgba(89, 13, 19, 0.95)' }}>
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-          <Link to="/" className="flex items-center gap-2 text-foreground hover:text-primary transition-colors">
+          <Link to="/" className="flex items-center gap-2 text-white hover:text-[#B08D57] transition-colors">
             <ArrowLeft className="w-5 h-5" />
             <span className="font-medium">Voltar</span>
           </Link>
-          <h1 className="font-heading text-xl md:text-2xl font-bold text-primary mx-[70px]">
+          <h1 className="font-heading text-xl md:text-2xl font-bold mx-[70px]" style={{ color: '#B08D57' }}>
             Criar Vídeo Personalizado
           </h1>
           <div className="w-24" /> {/* Spacer for centering */}
@@ -294,11 +294,11 @@ const Formulario = () => {
         }} exit={{
           opacity: 0,
           x: -20
-        }} className="glass rounded-2xl p-6 md:p-10 shadow-gold border-2 border-accent/20">
+        }} className="rounded-2xl p-6 md:p-10 shadow-gold border-2" style={{ backgroundColor: '#FFFBF2', borderColor: 'rgba(176, 141, 87, 0.2)' }}>
             {currentStep === 1 && <div className="space-y-8">
                 <div className="flex flex-col gap-4 mb-8">
                   <div className="flex justify-between items-center">
-                    <h2 className="md:text-3xl font-bold text-foreground text-base">
+                    <h2 className="md:text-3xl font-bold text-base" style={{ color: '#2F3730' }}>
                       {steps[0].number}
                       <sub className="text-lg">/2</sub> {steps[0].title}
                     </h2>
@@ -317,17 +317,17 @@ const Formulario = () => {
 
                 {/* Nome da Criança */}
                 <div className="space-y-3">
-                  <Label htmlFor="childName" className="text-base md:text-lg font-semibold">
+                  <Label htmlFor="childName" className="text-base md:text-lg font-semibold" style={{ color: '#2F3730' }}>
                     Adicione o nome da criança:
                   </Label>
                   <div className="flex gap-3 items-start">
                     <div className="flex-1">
-                      <Input id="childName" type="text" placeholder="Digite o nome..." value={childName} onChange={e => setChildName(e.target.value.slice(0, 10))} className="text-base md:text-lg py-6 rounded-xl border-2 border-accent/30 focus:border-accent" maxLength={10} />
+                      <Input id="childName" type="text" placeholder="Digite o nome..." value={childName} onChange={e => setChildName(e.target.value.slice(0, 10))} className="text-base md:text-lg py-6 rounded-xl border-2" style={{ borderColor: 'rgba(176, 141, 87, 0.3)', color: '#2F3730' }} maxLength={10} />
                       <p className="text-xs text-muted-foreground mt-1">
                         {childName.length}/10 caracteres
                       </p>
                     </div>
-                    <Button onClick={handleGenerateVoice} disabled={isGenerating || !childName.trim()} variant="outline" size="lg" className="border-2 border-primary/30 hover:bg-primary/10 hover:border-primary text-primary px-4 py-6">
+                    <Button onClick={handleGenerateVoice} disabled={isGenerating || !childName.trim()} variant="outline" size="lg" className="border-2 px-4 py-6" style={{ borderColor: '#1E592F', color: '#1E592F', backgroundColor: 'transparent' }} onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = 'rgba(30, 89, 47, 0.1)')} onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = 'transparent')}>
                       {isGenerating ? <Loader2 className="w-5 h-5 animate-spin" /> : <>
                           <Volume2 className="w-5 h-5 mr-2" />
                           <span className="hidden md:inline">Escute</span>
@@ -339,7 +339,7 @@ const Formulario = () => {
 
                 {/* Gênero */}
                 <div className="space-y-4">
-                  <Label className="text-base md:text-lg font-semibold">
+                  <Label className="text-base md:text-lg font-semibold" style={{ color: '#2F3730' }}>
                     A criança é menino ou menina:
                   </Label>
                   <RadioGroup value={gender} onValueChange={setGender} className="flex gap-4">
@@ -370,7 +370,7 @@ const Formulario = () => {
 
                 {/* Comportamento */}
                 <div className="space-y-4">
-                  <Label className="text-base md:text-lg font-semibold">
+                  <Label className="text-base md:text-lg font-semibold" style={{ color: '#2F3730' }}>
                     A criança se comportou bem?
                   </Label>
                   <RadioGroup value={behavior} onValueChange={setBehavior} className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -412,7 +412,7 @@ const Formulario = () => {
                       Voltar
                     </Button>
                   </Link>
-                  <Button size="lg" disabled={!childName.trim() || !gender || !behavior} onClick={() => setCurrentStep(2)} className="bg-primary hover:bg-primary/90 gap-2">
+                  <Button size="lg" disabled={!childName.trim() || !gender || !behavior} onClick={() => setCurrentStep(2)} className="gap-2" style={{ backgroundColor: '#1E592F', color: 'white' }} onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#184620')} onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = '#1E592F')}>
                     Próximo
                     <ArrowRight className="w-4 h-4" />
                   </Button>
@@ -420,18 +420,18 @@ const Formulario = () => {
               </div>}
 
             {currentStep === 2 && <div className="space-y-8">
-                <h2 className="text-2xl md:text-3xl font-bold text-foreground mb-8">
+                <h2 className="text-2xl md:text-3xl font-bold mb-8" style={{ color: '#2F3730' }}>
                   {steps[1].number}
                   <sub className="text-lg">/3</sub> {steps[1].title}
                 </h2>
 
                 {/* Idade */}
                 <div className="space-y-3">
-                  <Label htmlFor="age" className="text-base md:text-lg font-semibold">
+                  <Label htmlFor="age" className="text-base md:text-lg font-semibold" style={{ color: '#2F3730' }}>
                     Qual a idade da criança?
                   </Label>
                   <div className="relative">
-                    <Input id="age" type="text" placeholder="Digite para buscar ou selecione..." value={ageSearch} onChange={e => setAgeSearch(e.target.value)} onFocus={() => setIsAgeDropdownOpen(true)} onBlur={() => setTimeout(() => setIsAgeDropdownOpen(false), 200)} className="text-base md:text-lg py-6 rounded-xl border-2 border-accent/30 focus:border-accent" />
+                    <Input id="age" type="text" placeholder="Digite para buscar ou selecione..." value={ageSearch} onChange={e => setAgeSearch(e.target.value)} onFocus={() => setIsAgeDropdownOpen(true)} onBlur={() => setTimeout(() => setIsAgeDropdownOpen(false), 200)} className="text-base md:text-lg py-6 rounded-xl border-2" style={{ borderColor: 'rgba(176, 141, 87, 0.3)', color: '#2F3730' }} />
                     {isAgeDropdownOpen && <div className="absolute z-10 w-full mt-2 bg-background border-2 border-accent/30 rounded-xl shadow-lg max-h-60 overflow-y-auto">
                         {filteredAgeOptions.length > 0 ? filteredAgeOptions.map((option, index) => <div key={index} onClick={() => {
                     setAge(option);
@@ -448,14 +448,14 @@ const Formulario = () => {
 
                 {/* Mensagem Secreta */}
                 <div className="space-y-3">
-                  <Label htmlFor="secretMessage" className="text-base md:text-lg font-semibold">
+                  <Label htmlFor="secretMessage" className="text-base md:text-lg font-semibold" style={{ color: '#2F3730' }}>
                     Mensagem Secreta
                   </Label>
                   <p className="text-sm text-muted-foreground">
                     O que o Papai Noel deve dizer sobre a criança?
                   </p>
                   <Select value={secretMessage} onValueChange={setSecretMessage}>
-                    <SelectTrigger className="text-base py-6 rounded-xl border-2 border-accent/30">
+                    <SelectTrigger className="text-base py-6 rounded-xl border-2" style={{ borderColor: 'rgba(176, 141, 87, 0.3)', color: '#2F3730' }}>
                       <SelectValue placeholder="Selecione uma opção..." />
                     </SelectTrigger>
                     <SelectContent className="max-h-[300px]">
@@ -537,7 +537,7 @@ const Formulario = () => {
 
                 {/* Conselho Secreto */}
                 <div className="space-y-3">
-                  <Label htmlFor="secretAdvice" className="text-base md:text-lg font-semibold">
+                  <Label htmlFor="secretAdvice" className="text-base md:text-lg font-semibold" style={{ color: '#2F3730' }}>
                     Conselho Secreto
                   </Label>
                   <p className="text-sm text-muted-foreground">
@@ -548,7 +548,7 @@ const Formulario = () => {
                       ⚠️ <strong>Atenção:</strong> Escreva exatamente o que o Papai Noel vai falar. Preste atenção na ortografia e pontuação, pois será lido da forma que você escrever.
                     </p>
                   </div>
-                  <Textarea id="secretAdvice" placeholder="Ex: Continue sendo essa criança maravilhosa e nunca deixe de sonhar!" value={secretAdvice} onChange={e => setSecretAdvice(e.target.value.slice(0, 80))} className="min-h-[80px] text-base rounded-xl border-2 border-accent/30 focus:border-accent resize-none" maxLength={80} />
+                  <Textarea id="secretAdvice" placeholder="Ex: Continue sendo essa criança maravilhosa e nunca deixe de sonhar!" value={secretAdvice} onChange={e => setSecretAdvice(e.target.value.slice(0, 80))} className="min-h-[80px] text-base rounded-xl border-2 resize-none" style={{ borderColor: 'rgba(176, 141, 87, 0.3)', color: '#2F3730' }} maxLength={80} />
                   <p className="text-xs text-muted-foreground text-right">
                     {secretAdvice.length}/80 caracteres
                   </p>
@@ -556,11 +556,11 @@ const Formulario = () => {
 
                 {/* Atividade ou Elogio */}
                 <div className="space-y-3">
-                  <Label htmlFor="activity" className="text-base md:text-lg font-semibold">
+                  <Label htmlFor="activity" className="text-base md:text-lg font-semibold" style={{ color: '#2F3730' }}>
                     Opções de Atividade ou Elogio
                   </Label>
                   <Select value={activity} onValueChange={setActivity}>
-                    <SelectTrigger className="text-base py-6 rounded-xl border-2 border-accent/30">
+                    <SelectTrigger className="text-base py-6 rounded-xl border-2" style={{ borderColor: 'rgba(176, 141, 87, 0.3)', color: '#2F3730' }}>
                       <SelectValue placeholder="Selecione uma opção..." />
                     </SelectTrigger>
                     <SelectContent className="max-h-[300px]">
@@ -573,11 +573,11 @@ const Formulario = () => {
 
                 {/* Característica Principal */}
                 <div className="space-y-3">
-                  <Label htmlFor="characteristic" className="text-base md:text-lg font-semibold">
+                  <Label htmlFor="characteristic" className="text-base md:text-lg font-semibold" style={{ color: '#2F3730' }}>
                     Característica Principal
                   </Label>
                   <Select value={characteristic} onValueChange={setCharacteristic}>
-                    <SelectTrigger className="text-base py-6 rounded-xl border-2 border-accent/30">
+                    <SelectTrigger className="text-base py-6 rounded-xl border-2" style={{ borderColor: 'rgba(176, 141, 87, 0.3)', color: '#2F3730' }}>
                       <SelectValue placeholder="Selecione uma característica..." />
                     </SelectTrigger>
                     <SelectContent>
@@ -598,7 +598,7 @@ const Formulario = () => {
                     <ArrowLeft className="w-4 h-4" />
                     Voltar
                   </Button>
-                  <Button size="lg" disabled={!age || !secretMessage.trim() || !secretAdvice.trim() || !activity || !characteristic} onClick={() => setCurrentStep(3)} className="bg-primary hover:bg-primary/90 gap-2">
+                  <Button size="lg" disabled={!age || !secretMessage.trim() || !secretAdvice.trim() || !activity || !characteristic} onClick={() => setCurrentStep(3)} className="gap-2" style={{ backgroundColor: '#1E592F', color: 'white' }} onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#184620')} onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = '#1E592F')}>
                     Próximo
                     <ArrowRight className="w-4 h-4" />
                   </Button>
@@ -606,13 +606,13 @@ const Formulario = () => {
               </div>}
 
             {currentStep === 3 && <div className="space-y-8">
-                <h2 className="text-2xl md:text-3xl font-bold text-foreground mb-8">
+                <h2 className="text-2xl md:text-3xl font-bold mb-8" style={{ color: '#2F3730' }}>
                   {isGiftCard ? "Vale Presente" : <>{steps[2].number}<sub className="text-lg">/3</sub> {steps[2].title}</>}
                 </h2>
 
                 {/* Upload de Foto - Hidden in gift card mode */}
                 {!isGiftCard && <div className="space-y-3">
-                  <Label className="text-base md:text-lg font-semibold">
+                  <Label className="text-base md:text-lg font-semibold" style={{ color: '#2F3730' }}>
                     Foto da Criança
                   </Label>
                   <p className="text-sm text-muted-foreground mb-3">
@@ -656,41 +656,41 @@ const Formulario = () => {
 
                 {/* Email */}
                 <div className="space-y-3">
-                  <Label htmlFor="email" className="text-base md:text-lg font-semibold">
+                  <Label htmlFor="email" className="text-base md:text-lg font-semibold" style={{ color: '#2F3730' }}>
                     Email
                   </Label>
                   <p className="text-sm text-muted-foreground">
                     Para qual email devemos enviar o vídeo?
                   </p>
-                  <Input id="email" type="email" placeholder="seu@email.com" value={email} onChange={e => setEmail(e.target.value)} className="text-base py-6 rounded-xl border-2 border-accent/30 focus:border-accent" />
+                  <Input id="email" type="email" placeholder="seu@email.com" value={email} onChange={e => setEmail(e.target.value)} className="text-base py-6 rounded-xl border-2" style={{ borderColor: 'rgba(176, 141, 87, 0.3)', color: '#2F3730' }} />
                 </div>
 
                 {/* Nome Completo */}
                 <div className="space-y-3">
-                  <Label htmlFor="fullName" className="text-base md:text-lg font-semibold">
+                  <Label htmlFor="fullName" className="text-base md:text-lg font-semibold" style={{ color: '#2F3730' }}>
                     Nome Completo
                   </Label>
-                  <Input id="fullName" type="text" placeholder="Digite seu nome completo" value={fullName} onChange={e => setFullName(e.target.value)} className="text-base py-6 rounded-xl border-2 border-accent/30 focus:border-accent" />
+                  <Input id="fullName" type="text" placeholder="Digite seu nome completo" value={fullName} onChange={e => setFullName(e.target.value)} className="text-base py-6 rounded-xl border-2" style={{ borderColor: 'rgba(176, 141, 87, 0.3)', color: '#2F3730' }} />
                 </div>
 
                 {/* Telefone - Shows after email and fullName are filled */}
                 {email && fullName && <div className="space-y-3">
-                    <Label htmlFor="phone" className="text-base md:text-lg font-semibold">
+                    <Label htmlFor="phone" className="text-base md:text-lg font-semibold" style={{ color: '#2F3730' }}>
                       Telefone
                     </Label>
                     <p className="text-xs text-muted-foreground">Seu numero de telefone. Com +55 e DDD</p>
-                    <Input id="phone" type="tel" placeholder="(00) 00000-0000" value={phone} onChange={e => setPhone(e.target.value)} className="text-base py-6 rounded-xl border-2 border-accent/30 focus:border-accent" />
+                    <Input id="phone" type="tel" placeholder="(00) 00000-0000" value={phone} onChange={e => setPhone(e.target.value)} className="text-base py-6 rounded-xl border-2" style={{ borderColor: 'rgba(176, 141, 87, 0.3)', color: '#2F3730' }} />
                   </div>}
 
                 {/* CPF/CNPJ - Shows after email and fullName are filled */}
                 {email && fullName && <div className="space-y-3">
-                    <Label htmlFor="cpfCnpj" className="text-base md:text-lg font-semibold">
+                    <Label htmlFor="cpfCnpj" className="text-base md:text-lg font-semibold" style={{ color: '#2F3730' }}>
                       CPF ou CNPJ
                     </Label>
                     <p className="text-xs text-muted-foreground">
                       Para segurança e integridade dos dados da criança
                     </p>
-                    <Input id="cpfCnpj" type="text" placeholder="000.000.000-00" value={cpfCnpj} onChange={e => setCpfCnpj(e.target.value)} className="text-base py-6 rounded-xl border-2 border-accent/30 focus:border-accent" />
+                    <Input id="cpfCnpj" type="text" placeholder="000.000.000-00" value={cpfCnpj} onChange={e => setCpfCnpj(e.target.value)} className="text-base py-6 rounded-xl border-2" style={{ borderColor: 'rgba(176, 141, 87, 0.3)', color: '#2F3730' }} />
                   </div>}
 
                 {/* Plans Section - Shows when all fields are filled */}
@@ -701,7 +701,7 @@ const Formulario = () => {
               opacity: 1,
               y: 0
             }} className="space-y-4">
-                    <h3 className="text-xl font-bold text-foreground mb-2">
+                    <h3 className="text-xl font-bold mb-2" style={{ color: '#2F3730' }}>
                       🎄 Escolha seu Plano
                     </h3>
                     <p className="text-muted-foreground mb-6">
@@ -760,7 +760,7 @@ const Formulario = () => {
                       'customer.phone': phoneWithCountry
                     });
                     window.location.href = `https://pay.kirvano.com/4e00c8b4-2d7b-4243-9ac6-0774f6b2fd57?${params.toString()}`;
-                  }} className="w-full mt-4 font-semibold bg-primary text-primary-foreground">
+                  }} className="w-full mt-4 font-semibold" style={{ backgroundColor: '#1E592F', color: 'white' }} onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#184620')} onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = '#1E592F')}>
                           Comprar Plano Comum
                         </Button>
 
@@ -782,7 +782,7 @@ const Formulario = () => {
                 }}>
                         {/* Popular Badge */}
                         <div className="absolute -top-3 left-4">
-                          <span className="bg-accent text-accent-foreground text-xs font-bold px-3 py-1 rounded-full flex items-center gap-1">
+                          <span className="text-xs font-bold px-3 py-1 rounded-full flex items-center gap-1" style={{ backgroundColor: '#B08D57', color: '#FFFBF2' }}>
                             <Star className="w-3 h-3" /> Mais Popular
                           </span>
                         </div>
@@ -865,7 +865,7 @@ const Formulario = () => {
                           </ul>
                         </div>
 
-                        <Button className="w-full mt-4 bg-accent hover:bg-accent/90 text-accent-foreground font-semibold" size="lg" disabled={!acceptedPurchaseTermsExclusivo} onClick={() => {
+                        <Button className="w-full mt-4 font-semibold" size="lg" disabled={!acceptedPurchaseTermsExclusivo} onClick={() => {
                     const phoneClean = phone.replace(/\D/g, '');
                     const phoneWithCountry = phoneClean.startsWith('55') ? phoneClean : `55${phoneClean}`;
                     const params = new URLSearchParams({
@@ -875,7 +875,7 @@ const Formulario = () => {
                       'customer.phone': phoneWithCountry
                     });
                     window.location.href = `https://pay.kirvano.com/0055690f-e505-4609-8c00-913c29b3536b?${params.toString()}`;
-                  }}>
+                  }} style={{ backgroundColor: '#1E592F', color: 'white' }} onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#184620')} onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = '#1E592F')}>
                           Comprar Plano Exclusivo
                         </Button>
 
