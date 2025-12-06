@@ -1,39 +1,61 @@
-import { Star, ChevronLeft, ChevronRight, Play, Pause, Volume2, VolumeX } from "lucide-react";
-import { useState, useRef } from "react";
+import { Star, ChevronLeft, ChevronRight, Volume2, VolumeX } from "lucide-react";
+import { useState, useRef, useEffect } from "react";
+import Player from "@vimeo/player";
 
 const videoProofs = [
   {
     id: 1,
     username: "Ana Clara Silva",
-    video: "/videos/prova-1.mp4"
+    vimeoId: "1144177328"
   },
   {
     id: 2,
     username: "Carlos Eduardo",
-    video: "/videos/prova-2.mp4"
+    vimeoId: "1144177393"
   },
   {
     id: 3,
     username: "Juliana Santos",
-    video: "/videos/prova-3.mp4"
+    vimeoId: "1144177403"
   },
   {
     id: 4,
     username: "Rafael Oliveira",
-    video: "/videos/prova-4.mp4"
+    vimeoId: "1144176944"
   },
   {
     id: 5,
     username: "Mariana Costa",
-    video: "/videos/prova-5.mp4"
+    vimeoId: "1144177130"
   }
 ];
 
 const VideoProofSection = () => {
   const [currentIndex, setCurrentIndex] = useState(2);
-  const [playingVideos, setPlayingVideos] = useState<Record<number, boolean>>({});
   const [volumes, setVolumes] = useState<Record<number, number>>({});
-  const videoRefs = useRef<Record<number, HTMLVideoElement | null>>({});
+  const [unmutedVideos, setUnmutedVideos] = useState<Record<number, boolean>>({});
+  const playerRefs = useRef<Record<number, Player | null>>({});
+  const iframeRefs = useRef<Record<number, HTMLIFrameElement | null>>({});
+
+  useEffect(() => {
+    // Initialize Vimeo players
+    videoProofs.forEach((video) => {
+      const iframe = iframeRefs.current[video.id];
+      if (iframe && !playerRefs.current[video.id]) {
+        const player = new Player(iframe);
+        playerRefs.current[video.id] = player;
+      }
+    });
+
+    return () => {
+      // Cleanup players
+      Object.values(playerRefs.current).forEach((player) => {
+        if (player) {
+          player.destroy();
+        }
+      });
+    };
+  }, []);
 
   const scrollPrev = () => {
     setCurrentIndex(prev => prev === 0 ? videoProofs.length - 1 : prev - 1);
@@ -43,59 +65,49 @@ const VideoProofSection = () => {
     setCurrentIndex(prev => prev === videoProofs.length - 1 ? 0 : prev + 1);
   };
 
-  const toggleVideo = async (id: number) => {
-    const video = videoRefs.current[id];
-    if (video) {
-      if (playingVideos[id]) {
-        video.pause();
-        setPlayingVideos(prev => ({ ...prev, [id]: false }));
+  const toggleAudio = async (id: number) => {
+    const player = playerRefs.current[id];
+    if (player) {
+      const isCurrentlyUnmuted = unmutedVideos[id];
+      
+      if (isCurrentlyUnmuted) {
+        // Mute this video
+        await player.setVolume(0);
+        setUnmutedVideos(prev => ({ ...prev, [id]: false }));
       } else {
-        // Pause all other videos
-        Object.keys(videoRefs.current).forEach(key => {
-          const otherId = parseInt(key);
-          if (otherId !== id && videoRefs.current[otherId]) {
-            videoRefs.current[otherId]?.pause();
-            videoRefs.current[otherId]!.currentTime = 0;
-            videoRefs.current[otherId]!.muted = true;
+        // Mute all other videos first
+        for (const videoId of Object.keys(playerRefs.current)) {
+          const otherId = parseInt(videoId);
+          if (otherId !== id && playerRefs.current[otherId]) {
+            await playerRefs.current[otherId]?.setVolume(0);
           }
-        });
-        setPlayingVideos({ [id]: true });
-        
-        // For mobile: start muted first, then unmute after play starts
-        video.muted = true;
-        video.volume = volumes[id] ?? 0.5;
-        
-        try {
-          await video.play();
-          // After play starts successfully, unmute
-          video.muted = false;
-        } catch (error) {
-          console.error('Error playing video:', error);
-          // Fallback: keep playing muted if autoplay with sound fails
-          video.muted = true;
-          video.play().catch(console.error);
         }
+        setUnmutedVideos({ [id]: true });
+        
+        // Unmute this video
+        const volume = volumes[id] ?? 0.5;
+        await player.setVolume(volume);
       }
     }
   };
 
-  const handleVolumeChange = (id: number, value: number) => {
-    const video = videoRefs.current[id];
-    if (video) {
-      video.volume = value;
-      video.muted = value === 0;
-    }
-    setVolumes(prev => ({ ...prev, [id]: value }));
-  };
-
-  const toggleMute = (id: number, e: React.MouseEvent) => {
-    e.stopPropagation();
-    const video = videoRefs.current[id];
-    if (video) {
-      if (video.volume > 0) {
-        handleVolumeChange(id, 0);
-      } else {
-        handleVolumeChange(id, 0.5);
+  const handleVolumeChange = async (id: number, value: number) => {
+    const player = playerRefs.current[id];
+    if (player) {
+      await player.setVolume(value);
+      setVolumes(prev => ({ ...prev, [id]: value }));
+      
+      if (value === 0) {
+        setUnmutedVideos(prev => ({ ...prev, [id]: false }));
+      } else if (!unmutedVideos[id]) {
+        // Mute all other videos first
+        for (const videoId of Object.keys(playerRefs.current)) {
+          const otherId = parseInt(videoId);
+          if (otherId !== id && playerRefs.current[otherId]) {
+            await playerRefs.current[otherId]?.setVolume(0);
+          }
+        }
+        setUnmutedVideos({ [id]: true });
       }
     }
   };
@@ -114,31 +126,63 @@ const VideoProofSection = () => {
 
   const VolumeControl = ({ videoId }: { videoId: number }) => {
     const volume = volumes[videoId] ?? 0.5;
+    const isUnmuted = unmutedVideos[videoId];
     
     return (
       <div 
-        className="absolute bottom-12 left-2 right-2 flex items-center gap-2 bg-black/60 rounded-full px-3 py-2"
+        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex items-center gap-2 z-10"
         onClick={(e) => e.stopPropagation()}
       >
-        <button onClick={(e) => toggleMute(videoId, e)} className="text-white">
-          {volume === 0 ? (
-            <VolumeX className="w-4 h-4" />
+        {/* Play/Audio Button */}
+        <button 
+          onClick={() => toggleAudio(videoId)}
+          className="w-14 h-14 bg-destructive rounded-full flex items-center justify-center shadow-lg hover:scale-110 transition-transform"
+        >
+          {isUnmuted ? (
+            <Volume2 className="w-6 h-6 text-destructive-foreground" />
           ) : (
-            <Volume2 className="w-4 h-4" />
+            <VolumeX className="w-6 h-6 text-destructive-foreground" />
           )}
         </button>
-        <input
-          type="range"
-          min="0"
-          max="1"
-          step="0.1"
-          value={volume}
-          onChange={(e) => handleVolumeChange(videoId, parseFloat(e.target.value))}
-          className="flex-1 h-1 bg-white/30 rounded-full appearance-none cursor-pointer [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-3 [&::-webkit-slider-thumb]:h-3 [&::-webkit-slider-thumb]:bg-white [&::-webkit-slider-thumb]:rounded-full"
-        />
+        
+        {/* Vertical Volume Slider */}
+        <div className="h-24 w-8 bg-black/60 rounded-full flex flex-col items-center justify-center py-2">
+          <input
+            type="range"
+            min="0"
+            max="1"
+            step="0.1"
+            value={volume}
+            onChange={(e) => handleVolumeChange(videoId, parseFloat(e.target.value))}
+            className="h-16 w-1.5 bg-white/30 rounded-full appearance-none cursor-pointer [writing-mode:vertical-lr] [direction:rtl] [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:bg-white [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:shadow-md"
+          />
+        </div>
       </div>
     );
   };
+
+  const VideoCard = ({ video, showControls = true }: { video: typeof videoProofs[0], showControls?: boolean }) => (
+    <div className="relative rounded-2xl overflow-hidden aspect-[9/16]">
+      <iframe
+        ref={el => iframeRefs.current[video.id] = el}
+        src={`https://player.vimeo.com/video/${video.vimeoId}?badge=0&autopause=0&player_id=0&app_id=58479&autoplay=1&muted=1&loop=1&background=1`}
+        frameBorder="0"
+        allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media"
+        referrerPolicy="strict-origin-when-cross-origin"
+        className="absolute inset-0 w-full h-full"
+        title={video.username}
+      />
+      
+      {showControls && <VolumeControl videoId={video.id} />}
+      
+      {/* Username */}
+      <div className="absolute bottom-3 left-3 text-white text-xs lg:text-sm font-medium drop-shadow-lg z-10">
+        {video.username}
+      </div>
+      
+      <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent pointer-events-none" />
+    </div>
+  );
 
   return (
     <section className="py-12 md:py-16 bg-background">
@@ -188,72 +232,17 @@ const VideoProofSection = () => {
             <div className="flex items-center justify-center gap-3">
               {/* Previous Video */}
               <div className="w-[200px] flex-shrink-0 -ml-[160px]">
-                <div className="relative rounded-2xl overflow-hidden aspect-[9/16]">
-                  <video
-                    ref={el => videoRefs.current[videoProofs[visibleVideos.prev].id] = el}
-                    src={videoProofs[visibleVideos.prev].video}
-                    className="absolute inset-0 w-full h-full object-cover"
-                    loop
-                    playsInline
-                    muted
-                    preload="auto"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent pointer-events-none" />
-                </div>
+                <VideoCard video={videoProofs[visibleVideos.prev]} showControls={false} />
               </div>
 
               {/* Current Video */}
               <div className="relative w-[200px] flex-shrink-0">
-                <div 
-                  className="relative rounded-2xl overflow-hidden aspect-[9/16] cursor-pointer"
-                  onClick={() => toggleVideo(videoProofs[visibleVideos.current].id)}
-                >
-                  <video
-                    ref={el => videoRefs.current[videoProofs[visibleVideos.current].id] = el}
-                    src={videoProofs[visibleVideos.current].video}
-                    className="absolute inset-0 w-full h-full object-cover"
-                    loop
-                    playsInline
-                    preload="auto"
-                  />
-                  
-                  {/* Play/Pause Button */}
-                  <button className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-14 h-14 bg-destructive rounded-full flex items-center justify-center shadow-lg hover:scale-110 transition-transform">
-                    {playingVideos[videoProofs[visibleVideos.current].id] ? (
-                      <Pause className="w-6 h-6 text-destructive-foreground fill-destructive-foreground" />
-                    ) : (
-                      <Play className="w-6 h-6 text-destructive-foreground fill-destructive-foreground ml-1" />
-                    )}
-                  </button>
-                  
-                  {/* Volume Control */}
-                  {playingVideos[videoProofs[visibleVideos.current].id] && (
-                    <VolumeControl videoId={videoProofs[visibleVideos.current].id} />
-                  )}
-                  
-                  {/* Username */}
-                  <div className="absolute bottom-4 left-4 text-white text-sm font-medium drop-shadow-lg">
-                    {videoProofs[visibleVideos.current].username}
-                  </div>
-                  
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent pointer-events-none" />
-                </div>
+                <VideoCard video={videoProofs[visibleVideos.current]} showControls={true} />
               </div>
 
               {/* Next Video */}
               <div className="w-[200px] flex-shrink-0 -mr-[160px]">
-                <div className="relative rounded-2xl overflow-hidden aspect-[9/16]">
-                  <video
-                    ref={el => videoRefs.current[videoProofs[visibleVideos.next].id] = el}
-                    src={videoProofs[visibleVideos.next].video}
-                    className="absolute inset-0 w-full h-full object-cover"
-                    loop
-                    playsInline
-                    muted
-                    preload="auto"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent pointer-events-none" />
-                </div>
+                <VideoCard video={videoProofs[visibleVideos.next]} showControls={false} />
               </div>
             </div>
           </div>
@@ -263,38 +252,9 @@ const VideoProofSection = () => {
             {videoProofs.map(video => (
               <div
                 key={video.id}
-                className="relative rounded-2xl overflow-hidden aspect-[9/16] w-[180px] lg:w-[200px] xl:w-[220px] group cursor-pointer flex-shrink-0"
-                onClick={() => toggleVideo(video.id)}
+                className="relative rounded-2xl overflow-hidden aspect-[9/16] w-[180px] lg:w-[200px] xl:w-[220px] group flex-shrink-0"
               >
-                <video
-                  ref={el => videoRefs.current[video.id] = el}
-                  src={video.video}
-                  className="absolute inset-0 w-full h-full object-cover"
-                  loop
-                  playsInline
-                  preload="auto"
-                />
-                
-                {/* Play/Pause Button */}
-                <button className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-12 h-12 lg:w-14 lg:h-14 bg-destructive rounded-full flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
-                  {playingVideos[video.id] ? (
-                    <Pause className="w-5 h-5 lg:w-6 lg:h-6 text-destructive-foreground fill-destructive-foreground" />
-                  ) : (
-                    <Play className="w-5 h-5 lg:w-6 lg:h-6 text-destructive-foreground fill-destructive-foreground ml-1" />
-                  )}
-                </button>
-                
-                {/* Volume Control */}
-                {playingVideos[video.id] && (
-                  <VolumeControl videoId={video.id} />
-                )}
-                
-                {/* Username */}
-                <div className="absolute bottom-3 left-3 text-white text-xs lg:text-sm font-medium drop-shadow-lg">
-                  {video.username}
-                </div>
-                
-                <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent pointer-events-none" />
+                <VideoCard video={video} showControls={true} />
               </div>
             ))}
           </div>
