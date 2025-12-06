@@ -1,5 +1,6 @@
-import { Star, ChevronLeft, ChevronRight, Volume2, Play } from "lucide-react";
-import { useState } from "react";
+import { Star, ChevronLeft, ChevronRight, Volume2, VolumeX, Play } from "lucide-react";
+import { useState, useRef, useEffect } from "react";
+
 const videoProofs = [{
   id: 1,
   username: "Ana Clara Silva",
@@ -21,34 +22,80 @@ const videoProofs = [{
   username: "Mariana Costa",
   vimeoId: "1144177130"
 }];
+
 const VideoProofSection = () => {
   const [currentIndex, setCurrentIndex] = useState(2);
   const [unmutedVideoId, setUnmutedVideoId] = useState<number | null>(null);
   const [volumes, setVolumes] = useState<Record<number, number>>({});
+  const [showVolumeControl, setShowVolumeControl] = useState<number | null>(null);
+  const iframeRefs = useRef<Record<number, HTMLIFrameElement | null>>({});
+
   const scrollPrev = () => {
     setCurrentIndex(prev => prev === 0 ? videoProofs.length - 1 : prev - 1);
   };
+
   const scrollNext = () => {
     setCurrentIndex(prev => prev === videoProofs.length - 1 ? 0 : prev + 1);
   };
+
   const toggleAudio = (id: number) => {
-    if (unmutedVideoId === id) {
-      setUnmutedVideoId(null);
-    } else {
-      setUnmutedVideoId(id);
+    const iframe = iframeRefs.current[id];
+    if (iframe) {
+      const isCurrentlyUnmuted = unmutedVideoId === id;
+      // Use postMessage to control Vimeo player without reloading
+      iframe.contentWindow?.postMessage(JSON.stringify({
+        method: 'setMuted',
+        value: isCurrentlyUnmuted
+      }), '*');
+      
+      if (isCurrentlyUnmuted) {
+        setUnmutedVideoId(null);
+        setShowVolumeControl(null);
+      } else {
+        // Mute all other videos first
+        videoProofs.forEach(v => {
+          if (v.id !== id && iframeRefs.current[v.id]) {
+            iframeRefs.current[v.id]?.contentWindow?.postMessage(JSON.stringify({
+              method: 'setMuted',
+              value: true
+            }), '*');
+          }
+        });
+        setUnmutedVideoId(id);
+        setShowVolumeControl(id);
+      }
     }
   };
+
   const handleVolumeChange = (id: number, value: number) => {
     setVolumes(prev => ({
       ...prev,
       [id]: value
     }));
-    if (value > 0 && unmutedVideoId !== id) {
-      setUnmutedVideoId(id);
-    } else if (value === 0) {
-      setUnmutedVideoId(null);
+    
+    const iframe = iframeRefs.current[id];
+    if (iframe) {
+      iframe.contentWindow?.postMessage(JSON.stringify({
+        method: 'setVolume',
+        value: value
+      }), '*');
+      
+      if (value > 0 && unmutedVideoId !== id) {
+        iframe.contentWindow?.postMessage(JSON.stringify({
+          method: 'setMuted',
+          value: false
+        }), '*');
+        setUnmutedVideoId(id);
+      } else if (value === 0) {
+        iframe.contentWindow?.postMessage(JSON.stringify({
+          method: 'setMuted',
+          value: true
+        }), '*');
+        setUnmutedVideoId(null);
+      }
     }
   };
+
   const getVisibleVideos = () => {
     const prev = currentIndex === 0 ? videoProofs.length - 1 : currentIndex - 1;
     const next = currentIndex === videoProofs.length - 1 ? 0 : currentIndex + 1;
@@ -58,7 +105,9 @@ const VideoProofSection = () => {
       next
     };
   };
+
   const visibleVideos = getVisibleVideos();
+
   const VideoCard = ({
     video,
     showControls = true
@@ -68,23 +117,56 @@ const VideoProofSection = () => {
   }) => {
     const isUnmuted = unmutedVideoId === video.id;
     const volume = volumes[video.id] ?? 0.5;
+    const showVolume = showVolumeControl === video.id;
 
-    // Build the Vimeo URL with proper parameters
-    const vimeoUrl = `https://player.vimeo.com/video/${video.vimeoId}?autoplay=1&loop=1&muted=${isUnmuted ? '0' : '1'}&background=0&badge=0&autopause=0&player_id=${video.id}&app_id=58479&controls=0&playsinline=1`;
-    return <div className="relative rounded-2xl overflow-hidden aspect-[9/16] bg-muted">
-        <iframe key={`${video.id}-${isUnmuted}`} src={vimeoUrl} frameBorder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media" referrerPolicy="strict-origin-when-cross-origin" className="absolute inset-0 w-full h-full pointer-events-none" title={video.username} />
+    // All videos start muted with autoplay - we control audio via postMessage
+    const vimeoUrl = `https://player.vimeo.com/video/${video.vimeoId}?autoplay=1&loop=1&muted=1&background=0&badge=0&autopause=0&player_id=${video.id}&app_id=58479&controls=0&playsinline=1`;
+    
+    return (
+      <div className="relative rounded-2xl overflow-hidden aspect-[9/16] bg-muted">
+        <iframe
+          ref={el => { iframeRefs.current[video.id] = el; }}
+          src={vimeoUrl}
+          frameBorder="0"
+          allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media"
+          referrerPolicy="strict-origin-when-cross-origin"
+          className="absolute inset-0 w-full h-full pointer-events-none"
+          title={video.username}
+        />
         
-        {showControls && <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex items-center gap-2 z-10" onClick={e => e.stopPropagation()}>
-            {/* Audio Toggle Button */}
-            <button onClick={() => toggleAudio(video.id)} className="w-14 h-14 bg-destructive rounded-full flex items-center justify-center shadow-lg hover:scale-110 transition-transform">
-              {isUnmuted ? <Volume2 className="w-6 h-6 text-destructive-foreground" /> : <Play className="w-6 h-6 text-destructive-foreground" />}
-            </button>
-            
-            {/* Vertical Volume Slider */}
-            <div className="h-24 w-8 bg-black/60 rounded-full flex flex-col items-center justify-center py-2">
-              <input type="range" min="0" max="1" step="0.1" value={volume} onChange={e => handleVolumeChange(video.id, parseFloat(e.target.value))} className="h-16 w-1.5 bg-white/30 rounded-full appearance-none cursor-pointer [writing-mode:vertical-lr] [direction:rtl] [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:bg-white [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:shadow-md" />
+        {/* Play/Audio Button - Center */}
+        {showControls && (
+          <button
+            onClick={() => toggleAudio(video.id)}
+            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-14 h-14 bg-destructive rounded-full flex items-center justify-center shadow-lg hover:scale-110 transition-transform z-10"
+          >
+            {isUnmuted ? (
+              <Volume2 className="w-6 h-6 text-destructive-foreground" />
+            ) : (
+              <Play className="w-6 h-6 text-destructive-foreground" />
+            )}
+          </button>
+        )}
+        
+        {/* Volume Control - Bottom Right, only shows when audio is on */}
+        {showControls && showVolume && (
+          <div 
+            className="absolute bottom-3 right-3 z-20 animate-fade-in"
+            onClick={e => e.stopPropagation()}
+          >
+            <div className="h-24 w-8 bg-black/70 rounded-full flex flex-col items-center justify-center py-2 backdrop-blur-sm">
+              <input
+                type="range"
+                min="0"
+                max="1"
+                step="0.1"
+                value={volume}
+                onChange={e => handleVolumeChange(video.id, parseFloat(e.target.value))}
+                className="h-16 w-1.5 bg-white/30 rounded-full appearance-none cursor-pointer [writing-mode:vertical-lr] [direction:rtl] [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:bg-white [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:shadow-md"
+              />
             </div>
-          </div>}
+          </div>
+        )}
         
         {/* Username */}
         <div className="absolute bottom-3 left-3 text-white text-xs lg:text-sm font-medium drop-shadow-lg z-10">
@@ -92,9 +174,12 @@ const VideoProofSection = () => {
         </div>
         
         <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent pointer-events-none" />
-      </div>;
+      </div>
+    );
   };
-  return <section className="py-12 md:py-16 bg-background">
+
+  return (
+    <section className="py-12 md:py-16 bg-background">
       <div className="container mx-auto px-4">
         {/* Header */}
         <div className="text-center mb-8">
@@ -104,7 +189,9 @@ const VideoProofSection = () => {
           
           {/* Stars */}
           <div className="flex justify-center gap-1 mb-4">
-            {[...Array(5)].map((_, i) => <Star key={i} className="w-5 h-5 fill-accent text-accent" />)}
+            {[...Array(5)].map((_, i) => (
+              <Star key={i} className="w-5 h-5 fill-accent text-accent" />
+            ))}
           </div>
           
           {/* Badge */}
@@ -118,11 +205,19 @@ const VideoProofSection = () => {
         {/* Video Carousel */}
         <div className="relative max-w-7xl mx-auto">
           {/* Navigation Arrows */}
-          <button onClick={scrollPrev} className="absolute left-0 md:left-4 top-1/2 -translate-y-1/2 z-10 w-10 h-10 md:w-12 md:h-12 bg-background rounded-full shadow-lg flex items-center justify-center hover:bg-muted transition-colors border border-border" aria-label="Anterior">
+          <button
+            onClick={scrollPrev}
+            className="absolute left-0 md:left-4 top-1/2 -translate-y-1/2 z-10 w-10 h-10 md:w-12 md:h-12 bg-background rounded-full shadow-lg flex items-center justify-center hover:bg-muted transition-colors border border-border"
+            aria-label="Anterior"
+          >
             <ChevronLeft className="w-5 h-5 md:w-6 md:h-6 text-foreground" />
           </button>
           
-          <button onClick={scrollNext} className="absolute right-0 md:right-4 top-1/2 -translate-y-1/2 z-10 w-10 h-10 md:w-12 md:h-12 bg-background rounded-full shadow-lg flex items-center justify-center hover:bg-muted transition-colors border border-border" aria-label="Próximo">
+          <button
+            onClick={scrollNext}
+            className="absolute right-0 md:right-4 top-1/2 -translate-y-1/2 z-10 w-10 h-10 md:w-12 md:h-12 bg-background rounded-full shadow-lg flex items-center justify-center hover:bg-muted transition-colors border border-border"
+            aria-label="Próximo"
+          >
             <ChevronRight className="w-5 h-5 md:w-6 md:h-6 text-foreground" />
           </button>
 
@@ -148,12 +243,16 @@ const VideoProofSection = () => {
 
           {/* Desktop: All 5 videos visible */}
           <div className="hidden md:flex justify-center gap-3 lg:gap-4 px-16">
-            {videoProofs.map(video => <div key={video.id} className="relative w-[180px] lg:w-[200px] xl:w-[220px] flex-shrink-0">
+            {videoProofs.map(video => (
+              <div key={video.id} className="relative w-[180px] lg:w-[200px] xl:w-[220px] flex-shrink-0">
                 <VideoCard video={video} showControls={true} />
-              </div>)}
+              </div>
+            ))}
           </div>
         </div>
       </div>
-    </section>;
+    </section>
+  );
 };
+
 export default VideoProofSection;
