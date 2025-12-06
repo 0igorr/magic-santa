@@ -607,7 +607,7 @@ const Formulario = () => {
 
             {currentStep === 3 && <div style={{
             backgroundColor: '#FFFBF2'
-          }} className="space-y-8 bg-primary-foreground">
+          }} className="space-y-8 bg-white/0">
                 <h2 className="text-2xl md:text-3xl font-bold mb-8" style={{
               color: '#2F3730'
             }}>
