@@ -1,171 +1,191 @@
-import { Star, ChevronLeft, ChevronRight, Play } from "lucide-react";
-import { useState, useRef, useCallback } from "react";
+import { Star, ChevronLeft, ChevronRight, Volume2, VolumeX } from "lucide-react";
+import { useState, useRef, useEffect, useCallback } from "react";
+import useEmblaCarousel from "embla-carousel-react";
+import Autoplay from "embla-carousel-autoplay";
 
-const videoProofs = [{
-  id: 1,
-  username: "Ana Clara Silva",
-  vimeoId: "1144177328"
-}, {
-  id: 2,
-  username: "Carlos Eduardo",
-  vimeoId: "1144177393"
-}, {
-  id: 3,
-  username: "Juliana Santos",
-  vimeoId: "1144177403"
-}, {
-  id: 4,
-  username: "Rafael Oliveira",
-  vimeoId: "1144176944"
-}, {
-  id: 5,
-  username: "Mariana Costa",
-  vimeoId: "1144177130"
-}];
+// Video data with Vimeo IDs
+const videoProofs = [
+  { id: 1, username: "Ana Clara Silva", vimeoId: "1144177328" },
+  { id: 2, username: "Carlos Eduardo", vimeoId: "1144177393" },
+  { id: 3, username: "Juliana Santos", vimeoId: "1144177403" },
+  { id: 4, username: "Rafael Oliveira", vimeoId: "1144176944" },
+  { id: 5, username: "Mariana Costa", vimeoId: "1144177130" },
+];
+
+// Vimeo Player API type
+declare global {
+  interface Window {
+    Vimeo?: {
+      Player: new (element: HTMLIFrameElement, options?: object) => VimeoPlayer;
+    };
+  }
+}
+
+interface VimeoPlayer {
+  setVolume: (volume: number) => Promise<void>;
+  getVolume: () => Promise<number>;
+  play: () => Promise<void>;
+  pause: () => Promise<void>;
+  on: (event: string, callback: (data?: any) => void) => void;
+  ready: () => Promise<void>;
+  destroy: () => void;
+}
 
 const VideoProofSection = () => {
-  const [currentIndex, setCurrentIndex] = useState(2);
   const [activeAudioId, setActiveAudioId] = useState<number | null>(null);
-  const [volumes, setVolumes] = useState<Record<number, number>>(() => 
-    videoProofs.reduce((acc, v) => ({ ...acc, [v.id]: 0.7 }), {})
+  const [loadedVideos, setLoadedVideos] = useState<Set<number>>(new Set([0, 1, 2])); // Preload first 3
+  const [isApiReady, setIsApiReady] = useState(false);
+  const playersRef = useRef<Map<number, VimeoPlayer>>(new Map());
+  const iframeRefs = useRef<Map<number, HTMLIFrameElement>>(new Map());
+  
+  // Autoplay plugin config
+  const autoplayPlugin = useRef(
+    Autoplay({
+      delay: 4000,
+      stopOnInteraction: false,
+      stopOnMouseEnter: true,
+    })
   );
-  const [showVolumeControl, setShowVolumeControl] = useState<number | null>(null);
-  const iframeRefs = useRef<Record<number, HTMLIFrameElement | null>>({});
 
-  // Vimeo postMessage format
-  const sendVimeoCommand = useCallback((iframe: HTMLIFrameElement | null, method: string, value?: any) => {
-    if (!iframe?.contentWindow) return;
-    const data: any = { method };
-    if (value !== undefined) data.value = value;
-    iframe.contentWindow.postMessage(JSON.stringify(data), '*');
+  // Embla carousel with infinite loop
+  const [emblaRef, emblaApi] = useEmblaCarousel(
+    {
+      loop: true,
+      align: "center",
+      skipSnaps: false,
+      dragFree: false,
+    },
+    [autoplayPlugin.current]
+  );
+
+  // Load Vimeo Player API once
+  useEffect(() => {
+    if (window.Vimeo) {
+      setIsApiReady(true);
+      return;
+    }
+
+    const script = document.createElement("script");
+    script.src = "https://player.vimeo.com/api/player.js";
+    script.async = true;
+    script.onload = () => setIsApiReady(true);
+    document.head.appendChild(script);
+
+    return () => {
+      // Cleanup players on unmount
+      playersRef.current.forEach((player) => {
+        try {
+          player.destroy();
+        } catch (e) {
+          // Ignore cleanup errors
+        }
+      });
+    };
   }, []);
 
-  const scrollPrev = () => {
-    setCurrentIndex(prev => prev === 0 ? videoProofs.length - 1 : prev - 1);
-  };
+  // Initialize players when API is ready and iframes are loaded
+  const initializePlayer = useCallback((index: number, iframe: HTMLIFrameElement) => {
+    if (!isApiReady || !window.Vimeo || playersRef.current.has(index)) return;
 
-  const scrollNext = () => {
-    setCurrentIndex(prev => prev === videoProofs.length - 1 ? 0 : prev + 1);
-  };
-
-  const toggleAudio = (id: number) => {
-    const iframe = iframeRefs.current[id];
-    
-    if (activeAudioId === id) {
-      // Turn off audio
-      sendVimeoCommand(iframe, 'setVolume', 0);
-      setActiveAudioId(null);
-      setShowVolumeControl(null);
-    } else {
-      // Mute all others first
-      videoProofs.forEach(v => {
-        if (v.id !== id) {
-          sendVimeoCommand(iframeRefs.current[v.id], 'setVolume', 0);
-        }
+    try {
+      const player = new window.Vimeo.Player(iframe);
+      playersRef.current.set(index, player);
+      
+      player.ready().then(() => {
+        // Ensure video starts muted
+        player.setVolume(0);
+      }).catch(() => {
+        // Ignore ready errors
       });
-      // Enable audio for this one
-      sendVimeoCommand(iframe, 'setVolume', volumes[id] || 0.7);
-      setActiveAudioId(id);
-      setShowVolumeControl(id);
+    } catch (e) {
+      console.warn("Failed to initialize Vimeo player:", e);
     }
-  };
+  }, [isApiReady]);
 
-  const handleVolumeChange = (id: number, value: number) => {
-    setVolumes(prev => ({ ...prev, [id]: value }));
-    sendVimeoCommand(iframeRefs.current[id], 'setVolume', value);
-    
-    if (value > 0 && activeAudioId !== id) {
-      // Mute others
-      videoProofs.forEach(v => {
-        if (v.id !== id) {
-          sendVimeoCommand(iframeRefs.current[v.id], 'setVolume', 0);
-        }
+  // Lazy load videos based on carousel position
+  useEffect(() => {
+    if (!emblaApi) return;
+
+    const onSelect = () => {
+      const selectedIndex = emblaApi.selectedScrollSnap();
+      const totalSlides = videoProofs.length;
+      
+      // Preload current, prev, and next slides
+      const indicesToLoad = [
+        (selectedIndex - 1 + totalSlides) % totalSlides,
+        selectedIndex,
+        (selectedIndex + 1) % totalSlides,
+      ];
+
+      setLoadedVideos((prev) => {
+        const newSet = new Set(prev);
+        indicesToLoad.forEach((i) => newSet.add(i));
+        return newSet;
       });
-      setActiveAudioId(id);
-    } else if (value === 0) {
-      setActiveAudioId(null);
-      setShowVolumeControl(null);
+    };
+
+    emblaApi.on("select", onSelect);
+    onSelect(); // Initial load
+
+    return () => {
+      emblaApi.off("select", onSelect);
+    };
+  }, [emblaApi]);
+
+  // Toggle audio using Vimeo API (no iframe reload)
+  const toggleAudio = useCallback(async (index: number) => {
+    const player = playersRef.current.get(index);
+    if (!player) return;
+
+    try {
+      if (activeAudioId === index) {
+        // Mute this video
+        await player.setVolume(0);
+        setActiveAudioId(null);
+      } else {
+        // Mute all other videos first
+        for (const [idx, p] of playersRef.current.entries()) {
+          if (idx !== index) {
+            await p.setVolume(0);
+          }
+        }
+        // Unmute and play this video
+        await player.setVolume(1);
+        await player.play();
+        setActiveAudioId(index);
+      }
+    } catch (e) {
+      console.warn("Audio toggle failed:", e);
     }
-  };
+  }, [activeAudioId]);
 
-  const getVisibleVideos = () => {
-    const prev = currentIndex === 0 ? videoProofs.length - 1 : currentIndex - 1;
-    const next = currentIndex === videoProofs.length - 1 ? 0 : currentIndex + 1;
-    return { prev, current: currentIndex, next };
-  };
+  const scrollPrev = useCallback(() => {
+    emblaApi?.scrollPrev();
+  }, [emblaApi]);
 
-  const visibleVideos = getVisibleVideos();
+  const scrollNext = useCallback(() => {
+    emblaApi?.scrollNext();
+  }, [emblaApi]);
 
-  const VideoCard = ({
-    video,
-    showControls = true
-  }: {
-    video: typeof videoProofs[0];
-    showControls?: boolean;
-  }) => {
-    const isActive = activeAudioId === video.id;
-    const volume = volumes[video.id] ?? 0.7;
-    const showVolume = showVolumeControl === video.id;
-
-    // Static URL - videos always autoplay muted, we control volume via postMessage
-    const vimeoUrl = `https://player.vimeo.com/video/${video.vimeoId}?autoplay=1&loop=1&muted=1&background=0&badge=0&autopause=0&player_id=${video.id}&app_id=58479&controls=0&playsinline=1&dnt=1`;
-    
-    return (
-      <div className="relative rounded-2xl overflow-hidden aspect-[9/16] bg-muted">
-        <iframe
-          ref={el => { iframeRefs.current[video.id] = el; }}
-          src={vimeoUrl}
-          frameBorder="0"
-          allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media"
-          referrerPolicy="strict-origin-when-cross-origin"
-          className="absolute inset-0 w-full h-full pointer-events-none"
-          title={video.username}
-        />
-        
-        {/* Play Button - Always visible, always Play icon */}
-        {showControls && (
-          <button
-            onClick={() => toggleAudio(video.id)}
-            className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-14 h-14 rounded-full flex items-center justify-center shadow-lg hover:scale-110 transition-all z-10 ${
-              isActive ? 'bg-destructive/80' : 'bg-destructive'
-            }`}
-          >
-            <Play className={`w-6 h-6 text-destructive-foreground ${isActive ? 'opacity-70' : ''}`} />
-          </button>
-        )}
-        
-        {/* Volume Control - Bottom Right */}
-        {showControls && showVolume && (
-          <div 
-            className="absolute bottom-12 right-3 z-20 animate-fade-in"
-            onClick={e => e.stopPropagation()}
-          >
-            <div className="h-24 w-8 bg-black/80 rounded-full flex flex-col items-center justify-center py-2 backdrop-blur-sm border border-white/10">
-              <input
-                type="range"
-                min="0"
-                max="1"
-                step="0.1"
-                value={volume}
-                onChange={e => handleVolumeChange(video.id, parseFloat(e.target.value))}
-                className="h-16 w-1.5 bg-white/30 rounded-full appearance-none cursor-pointer [writing-mode:vertical-lr] [direction:rtl] [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:bg-white [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:shadow-md"
-              />
-            </div>
-          </div>
-        )}
-        
-        {/* Username */}
-        <div className="absolute bottom-3 left-3 text-white text-xs lg:text-sm font-medium drop-shadow-lg z-10">
-          {video.username}
-        </div>
-        
-        <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent pointer-events-none" />
-      </div>
-    );
+  // Build iframe URL with proper params for autoplay muted
+  const getVimeoUrl = (vimeoId: string) => {
+    const params = new URLSearchParams({
+      autoplay: "1",
+      loop: "1",
+      muted: "1",
+      background: "0",
+      badge: "0",
+      autopause: "0",
+      controls: "0",
+      playsinline: "1",
+      dnt: "1",
+      quality: "auto",
+    });
+    return `https://player.vimeo.com/video/${vimeoId}?${params.toString()}`;
   };
 
   return (
-    <section className="py-12 md:py-16 bg-background">
+    <section className="py-12 md:py-16 bg-background overflow-hidden">
       <div className="container mx-auto px-4">
         {/* Header */}
         <div className="text-center mb-8">
@@ -173,14 +193,12 @@ const VideoProofSection = () => {
             O presente que ficará na memória de quem você mais ama
           </h2>
           
-          {/* Stars */}
           <div className="flex justify-center gap-1 mb-4">
             {[...Array(5)].map((_, i) => (
               <Star key={i} className="w-5 h-5 fill-accent text-accent" />
             ))}
           </div>
           
-          {/* Badge */}
           <div className="inline-block bg-accent/20 px-6 py-3 rounded-full">
             <p className="text-foreground text-sm md:text-base">
               Junte-se a <span className="font-bold">450.000</span> clientes sorridentes
@@ -188,46 +206,108 @@ const VideoProofSection = () => {
           </div>
         </div>
 
-        {/* Video Carousel */}
+        {/* Carousel Container */}
         <div className="relative max-w-7xl mx-auto">
           {/* Navigation Arrows */}
           <button
             onClick={scrollPrev}
-            className="absolute left-0 md:left-4 top-1/2 -translate-y-1/2 z-10 w-10 h-10 md:w-12 md:h-12 bg-background rounded-full shadow-lg flex items-center justify-center hover:bg-muted transition-colors border border-border"
-            aria-label="Anterior"
+            className="absolute left-0 md:left-4 top-1/2 -translate-y-1/2 z-20 w-10 h-10 md:w-12 md:h-12 bg-background rounded-full shadow-lg flex items-center justify-center hover:bg-muted transition-colors border border-border"
+            aria-label="Vídeo anterior"
           >
             <ChevronLeft className="w-5 h-5 md:w-6 md:h-6 text-foreground" />
           </button>
           
           <button
             onClick={scrollNext}
-            className="absolute right-0 md:right-4 top-1/2 -translate-y-1/2 z-10 w-10 h-10 md:w-12 md:h-12 bg-background rounded-full shadow-lg flex items-center justify-center hover:bg-muted transition-colors border border-border"
-            aria-label="Próximo"
+            className="absolute right-0 md:right-4 top-1/2 -translate-y-1/2 z-20 w-10 h-10 md:w-12 md:h-12 bg-background rounded-full shadow-lg flex items-center justify-center hover:bg-muted transition-colors border border-border"
+            aria-label="Próximo vídeo"
           >
             <ChevronRight className="w-5 h-5 md:w-6 md:h-6 text-foreground" />
           </button>
 
-          {/* Mobile Carousel */}
-          <div className="md:hidden overflow-hidden">
-            <div className="flex items-center justify-center gap-3">
-              <div className="w-[200px] flex-shrink-0 -ml-[160px]">
-                <VideoCard video={videoProofs[visibleVideos.prev]} showControls={false} />
-              </div>
-              <div className="relative w-[200px] flex-shrink-0">
-                <VideoCard video={videoProofs[visibleVideos.current]} showControls={true} />
-              </div>
-              <div className="w-[200px] flex-shrink-0 -mr-[160px]">
-                <VideoCard video={videoProofs[visibleVideos.next]} showControls={false} />
-              </div>
+          {/* Embla Carousel */}
+          <div className="overflow-hidden px-8 md:px-16" ref={emblaRef}>
+            <div className="flex gap-3 lg:gap-4">
+              {videoProofs.map((video, index) => {
+                const isLoaded = loadedVideos.has(index);
+                const hasAudio = activeAudioId === index;
+
+                return (
+                  <div
+                    key={video.id}
+                    className="flex-none w-[200px] lg:w-[220px] xl:w-[240px]"
+                  >
+                    <div className="relative rounded-2xl overflow-hidden aspect-[9/16] bg-muted">
+                      {/* Lazy loaded iframe */}
+                      {isLoaded ? (
+                        <iframe
+                          ref={(el) => {
+                            if (el) {
+                              iframeRefs.current.set(index, el);
+                              initializePlayer(index, el);
+                            }
+                          }}
+                          src={getVimeoUrl(video.vimeoId)}
+                          className="absolute inset-0 w-full h-full"
+                          frameBorder="0"
+                          allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media"
+                          referrerPolicy="strict-origin-when-cross-origin"
+                          title={`Vídeo de ${video.username}`}
+                          loading="lazy"
+                        />
+                      ) : (
+                        <div className="absolute inset-0 bg-muted animate-pulse flex items-center justify-center">
+                          <div className="w-12 h-12 rounded-full bg-muted-foreground/20" />
+                        </div>
+                      )}
+                      
+                      {/* Audio Toggle Button - Bottom Right */}
+                      <button
+                        onClick={() => toggleAudio(index)}
+                        className={`absolute bottom-12 right-3 w-10 h-10 rounded-full flex items-center justify-center shadow-lg transition-all z-10 ${
+                          hasAudio 
+                            ? "bg-destructive hover:bg-destructive/90" 
+                            : "bg-background/90 hover:bg-background border border-border"
+                        }`}
+                        aria-label={hasAudio ? "Desativar som" : "Ativar som"}
+                        aria-pressed={hasAudio}
+                      >
+                        {hasAudio ? (
+                          <Volume2 className="w-5 h-5 text-destructive-foreground" />
+                        ) : (
+                          <VolumeX className="w-5 h-5 text-foreground" />
+                        )}
+                      </button>
+                      
+                      {/* Username Badge */}
+                      <div className="absolute bottom-3 left-3 right-14 z-10">
+                        <span className="text-white text-xs lg:text-sm font-medium drop-shadow-lg line-clamp-1">
+                          {video.username}
+                        </span>
+                      </div>
+                      
+                      {/* Gradient Overlay */}
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent pointer-events-none" />
+                    </div>
+                  </div>
+                );
+              })}
             </div>
           </div>
 
-          {/* Desktop */}
-          <div className="hidden md:flex justify-center gap-3 lg:gap-4 px-16">
-            {videoProofs.map(video => (
-              <div key={video.id} className="relative w-[180px] lg:w-[200px] xl:w-[220px] flex-shrink-0">
-                <VideoCard video={video} showControls={true} />
-              </div>
+          {/* Carousel Dots */}
+          <div className="flex justify-center gap-2 mt-6">
+            {videoProofs.map((_, index) => (
+              <button
+                key={index}
+                onClick={() => emblaApi?.scrollTo(index)}
+                className={`w-2 h-2 rounded-full transition-all ${
+                  loadedVideos.has(index) && emblaApi?.selectedScrollSnap() === index
+                    ? "bg-primary w-6"
+                    : "bg-muted-foreground/30 hover:bg-muted-foreground/50"
+                }`}
+                aria-label={`Ir para vídeo ${index + 1}`}
+              />
             ))}
           </div>
         </div>
