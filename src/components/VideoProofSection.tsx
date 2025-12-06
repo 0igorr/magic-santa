@@ -1,5 +1,5 @@
-import { Star, ChevronLeft, ChevronRight, Volume2, VolumeX, Play } from "lucide-react";
-import { useState, useRef, useEffect } from "react";
+import { Star, ChevronLeft, ChevronRight, Play } from "lucide-react";
+import { useState, useRef, useCallback } from "react";
 
 const videoProofs = [{
   id: 1,
@@ -25,10 +25,20 @@ const videoProofs = [{
 
 const VideoProofSection = () => {
   const [currentIndex, setCurrentIndex] = useState(2);
-  const [unmutedVideoId, setUnmutedVideoId] = useState<number | null>(null);
-  const [volumes, setVolumes] = useState<Record<number, number>>({});
+  const [activeAudioId, setActiveAudioId] = useState<number | null>(null);
+  const [volumes, setVolumes] = useState<Record<number, number>>(() => 
+    videoProofs.reduce((acc, v) => ({ ...acc, [v.id]: 0.7 }), {})
+  );
   const [showVolumeControl, setShowVolumeControl] = useState<number | null>(null);
   const iframeRefs = useRef<Record<number, HTMLIFrameElement | null>>({});
+
+  // Vimeo postMessage format
+  const sendVimeoCommand = useCallback((iframe: HTMLIFrameElement | null, method: string, value?: any) => {
+    if (!iframe?.contentWindow) return;
+    const data: any = { method };
+    if (value !== undefined) data.value = value;
+    iframe.contentWindow.postMessage(JSON.stringify(data), '*');
+  }, []);
 
   const scrollPrev = () => {
     setCurrentIndex(prev => prev === 0 ? videoProofs.length - 1 : prev - 1);
@@ -40,70 +50,48 @@ const VideoProofSection = () => {
 
   const toggleAudio = (id: number) => {
     const iframe = iframeRefs.current[id];
-    if (iframe) {
-      const isCurrentlyUnmuted = unmutedVideoId === id;
-      // Use postMessage to control Vimeo player without reloading
-      iframe.contentWindow?.postMessage(JSON.stringify({
-        method: 'setMuted',
-        value: isCurrentlyUnmuted
-      }), '*');
-      
-      if (isCurrentlyUnmuted) {
-        setUnmutedVideoId(null);
-        setShowVolumeControl(null);
-      } else {
-        // Mute all other videos first
-        videoProofs.forEach(v => {
-          if (v.id !== id && iframeRefs.current[v.id]) {
-            iframeRefs.current[v.id]?.contentWindow?.postMessage(JSON.stringify({
-              method: 'setMuted',
-              value: true
-            }), '*');
-          }
-        });
-        setUnmutedVideoId(id);
-        setShowVolumeControl(id);
-      }
+    
+    if (activeAudioId === id) {
+      // Turn off audio
+      sendVimeoCommand(iframe, 'setVolume', 0);
+      setActiveAudioId(null);
+      setShowVolumeControl(null);
+    } else {
+      // Mute all others first
+      videoProofs.forEach(v => {
+        if (v.id !== id) {
+          sendVimeoCommand(iframeRefs.current[v.id], 'setVolume', 0);
+        }
+      });
+      // Enable audio for this one
+      sendVimeoCommand(iframe, 'setVolume', volumes[id] || 0.7);
+      setActiveAudioId(id);
+      setShowVolumeControl(id);
     }
   };
 
   const handleVolumeChange = (id: number, value: number) => {
-    setVolumes(prev => ({
-      ...prev,
-      [id]: value
-    }));
+    setVolumes(prev => ({ ...prev, [id]: value }));
+    sendVimeoCommand(iframeRefs.current[id], 'setVolume', value);
     
-    const iframe = iframeRefs.current[id];
-    if (iframe) {
-      iframe.contentWindow?.postMessage(JSON.stringify({
-        method: 'setVolume',
-        value: value
-      }), '*');
-      
-      if (value > 0 && unmutedVideoId !== id) {
-        iframe.contentWindow?.postMessage(JSON.stringify({
-          method: 'setMuted',
-          value: false
-        }), '*');
-        setUnmutedVideoId(id);
-      } else if (value === 0) {
-        iframe.contentWindow?.postMessage(JSON.stringify({
-          method: 'setMuted',
-          value: true
-        }), '*');
-        setUnmutedVideoId(null);
-      }
+    if (value > 0 && activeAudioId !== id) {
+      // Mute others
+      videoProofs.forEach(v => {
+        if (v.id !== id) {
+          sendVimeoCommand(iframeRefs.current[v.id], 'setVolume', 0);
+        }
+      });
+      setActiveAudioId(id);
+    } else if (value === 0) {
+      setActiveAudioId(null);
+      setShowVolumeControl(null);
     }
   };
 
   const getVisibleVideos = () => {
     const prev = currentIndex === 0 ? videoProofs.length - 1 : currentIndex - 1;
     const next = currentIndex === videoProofs.length - 1 ? 0 : currentIndex + 1;
-    return {
-      prev,
-      current: currentIndex,
-      next
-    };
+    return { prev, current: currentIndex, next };
   };
 
   const visibleVideos = getVisibleVideos();
@@ -115,12 +103,12 @@ const VideoProofSection = () => {
     video: typeof videoProofs[0];
     showControls?: boolean;
   }) => {
-    const isUnmuted = unmutedVideoId === video.id;
-    const volume = volumes[video.id] ?? 0.5;
+    const isActive = activeAudioId === video.id;
+    const volume = volumes[video.id] ?? 0.7;
     const showVolume = showVolumeControl === video.id;
 
-    // All videos start muted with autoplay - we control audio via postMessage
-    const vimeoUrl = `https://player.vimeo.com/video/${video.vimeoId}?autoplay=1&loop=1&muted=1&background=0&badge=0&autopause=0&player_id=${video.id}&app_id=58479&controls=0&playsinline=1`;
+    // Static URL - videos always autoplay muted, we control volume via postMessage
+    const vimeoUrl = `https://player.vimeo.com/video/${video.vimeoId}?autoplay=1&loop=1&muted=1&background=0&badge=0&autopause=0&player_id=${video.id}&app_id=58479&controls=0&playsinline=1&dnt=1`;
     
     return (
       <div className="relative rounded-2xl overflow-hidden aspect-[9/16] bg-muted">
@@ -134,27 +122,25 @@ const VideoProofSection = () => {
           title={video.username}
         />
         
-        {/* Play/Audio Button - Center */}
+        {/* Play Button - Always visible, always Play icon */}
         {showControls && (
           <button
             onClick={() => toggleAudio(video.id)}
-            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-14 h-14 bg-destructive rounded-full flex items-center justify-center shadow-lg hover:scale-110 transition-transform z-10"
+            className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-14 h-14 rounded-full flex items-center justify-center shadow-lg hover:scale-110 transition-all z-10 ${
+              isActive ? 'bg-destructive/80' : 'bg-destructive'
+            }`}
           >
-            {isUnmuted ? (
-              <Volume2 className="w-6 h-6 text-destructive-foreground" />
-            ) : (
-              <Play className="w-6 h-6 text-destructive-foreground" />
-            )}
+            <Play className={`w-6 h-6 text-destructive-foreground ${isActive ? 'opacity-70' : ''}`} />
           </button>
         )}
         
-        {/* Volume Control - Bottom Right, only shows when audio is on */}
+        {/* Volume Control - Bottom Right */}
         {showControls && showVolume && (
           <div 
-            className="absolute bottom-3 right-3 z-20 animate-fade-in"
+            className="absolute bottom-12 right-3 z-20 animate-fade-in"
             onClick={e => e.stopPropagation()}
           >
-            <div className="h-24 w-8 bg-black/70 rounded-full flex flex-col items-center justify-center py-2 backdrop-blur-sm">
+            <div className="h-24 w-8 bg-black/80 rounded-full flex flex-col items-center justify-center py-2 backdrop-blur-sm border border-white/10">
               <input
                 type="range"
                 min="0"
@@ -224,24 +210,19 @@ const VideoProofSection = () => {
           {/* Mobile Carousel */}
           <div className="md:hidden overflow-hidden">
             <div className="flex items-center justify-center gap-3">
-              {/* Previous Video */}
               <div className="w-[200px] flex-shrink-0 -ml-[160px]">
                 <VideoCard video={videoProofs[visibleVideos.prev]} showControls={false} />
               </div>
-
-              {/* Current Video */}
               <div className="relative w-[200px] flex-shrink-0">
                 <VideoCard video={videoProofs[visibleVideos.current]} showControls={true} />
               </div>
-
-              {/* Next Video */}
               <div className="w-[200px] flex-shrink-0 -mr-[160px]">
                 <VideoCard video={videoProofs[visibleVideos.next]} showControls={false} />
               </div>
             </div>
           </div>
 
-          {/* Desktop: All 5 videos visible */}
+          {/* Desktop */}
           <div className="hidden md:flex justify-center gap-3 lg:gap-4 px-16">
             {videoProofs.map(video => (
               <div key={video.id} className="relative w-[180px] lg:w-[200px] xl:w-[220px] flex-shrink-0">
