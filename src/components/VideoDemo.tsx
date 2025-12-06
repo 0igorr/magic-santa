@@ -52,7 +52,7 @@ const VideoDemo = () => {
 
             {/* Headline */}
             <h2 className="font-heading text-3xl md:text-4xl lg:text-5xl mb-6 leading-tight">
-              Um vídeo que seu filho 
+              Um vídeo que a criança    
               <span className="text-accent"> nunca vai esquecer</span>
             </h2>
 
