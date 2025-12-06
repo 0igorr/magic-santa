@@ -1,51 +1,39 @@
 import { Clock, Gift, Video, Star, Heart } from "lucide-react";
+import { memo } from "react";
 
 const trustItems = [
-  {
-    icon: Clock,
-    text: "Entrega a partir de 10 minutos"
-  },
-  {
-    icon: Gift,
-    text: "Surpresa de natal perfeita"
-  },
-  {
-    icon: Video,
-    text: "Personalize seu vídeo em 5 minutos"
-  },
-  {
-    icon: Star,
-    text: "Nota 4,8 de 11.479 comentários"
-  },
-  {
-    icon: Heart,
-    text: "O presente perfeito para uma criança querida"
-  }
+  { icon: Clock, text: "Entrega a partir de 10 minutos" },
+  { icon: Gift, text: "Surpresa de natal perfeita" },
+  { icon: Video, text: "Personalize seu vídeo em 5 minutos" },
+  { icon: Star, text: "Nota 4,8 de 11.479 comentários" },
+  { icon: Heart, text: "O presente perfeito para uma criança querida" },
 ];
 
+// Memoized item component for better performance
+const TrustItem = memo(({ icon: Icon, text }: { icon: typeof Clock; text: string }) => (
+  <div className="flex-shrink-0 w-[240px] sm:w-[280px] md:w-[320px] px-4 sm:px-6 flex flex-col items-center justify-center text-center">
+    <Icon className="w-7 h-7 sm:w-8 sm:h-8 mb-2 sm:mb-3 text-accent" strokeWidth={1.5} />
+    <p className="text-xs sm:text-sm font-medium text-foreground leading-tight">{text}</p>
+  </div>
+));
+
+TrustItem.displayName = "TrustItem";
+
 const TrustCarousel = () => {
-  // Duplicate items 2 times for seamless infinite loop
+  // Duplicate items for seamless infinite loop
   const duplicatedItems = [...trustItems, ...trustItems];
   
   return (
     <section className="py-8 bg-background overflow-hidden border-y border-accent/20">
       <div className="relative">
         <div className="overflow-hidden">
-          <div className="flex animate-scroll-infinite w-max">
-            {duplicatedItems.map((item, index) => {
-              const Icon = item.icon;
-              return (
-                <div
-                  key={index}
-                  className="flex-shrink-0 w-[240px] sm:w-[280px] md:w-[320px] px-4 sm:px-6 flex flex-col items-center justify-center text-center"
-                >
-                  <Icon className="w-7 h-7 sm:w-8 sm:h-8 mb-2 sm:mb-3 text-accent" strokeWidth={1.5} />
-                  <p className="text-xs sm:text-sm font-medium text-foreground leading-tight">
-                    {item.text}
-                  </p>
-                </div>
-              );
-            })}
+          <div 
+            className="flex animate-scroll-infinite w-max"
+            style={{ willChange: 'transform' }}
+          >
+            {duplicatedItems.map((item, index) => (
+              <TrustItem key={index} icon={item.icon} text={item.text} />
+            ))}
           </div>
         </div>
       </div>
