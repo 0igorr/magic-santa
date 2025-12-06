@@ -251,7 +251,7 @@ const VideoProofSection = () => {
           </button>
 
           {/* Mobile Carousel with swipe support */}
-          <div
+          <div 
             className="md:hidden overflow-hidden touch-pan-y"
             onTouchStart={handleTouchStart}
             onTouchMove={handleTouchMove}
@@ -259,73 +259,73 @@ const VideoProofSection = () => {
           >
             <div className="flex items-center justify-center gap-3 transition-transform duration-300">
               {/* Previous Video */}
-              <div className="w-[200px] h-[355px] flex-shrink-0 -ml-[160px] opacity-50 scale-90 transition-all duration-300">
-                <div className="relative rounded-2xl overflow-hidden w-full h-full">
+              <div className="w-[200px] flex-shrink-0 -ml-[160px] opacity-50 scale-90 transition-all duration-300">
+                <div className="relative rounded-2xl overflow-hidden aspect-[9/16]">
                   <video
                     ref={el => videoRefs.current[videoProofs[visibleVideos.prev].id] = el}
                     src={videoProofs[visibleVideos.prev].video}
-                    className="w-full h-full object-cover block"
-                    style={{ width: '200px', height: '355px' }}
+                    className="w-full h-full object-cover"
                     loop
                     playsInline
+                    webkit-playsinline="true"
                     muted
-                    preload="auto"
+                    preload="metadata"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent pointer-events-none" />
                 </div>
               </div>
 
               {/* Current Video */}
-              <div className="relative w-[200px] h-[355px] flex-shrink-0 z-10">
-                <div
-                  className="relative rounded-2xl overflow-hidden w-full h-full cursor-pointer shadow-xl"
+              <div className="relative w-[200px] flex-shrink-0 z-10">
+                <div 
+                  className="relative rounded-2xl overflow-hidden aspect-[9/16] cursor-pointer shadow-xl"
                   onClick={() => toggleVideo(videoProofs[visibleVideos.current].id)}
                 >
                   <video
                     ref={el => videoRefs.current[videoProofs[visibleVideos.current].id] = el}
                     src={videoProofs[visibleVideos.current].video}
-                    className="w-full h-full object-cover block"
-                    style={{ width: '200px', height: '355px' }}
+                    className="w-full h-full object-cover"
                     loop
                     playsInline
-                    preload="auto"
+                    webkit-playsinline="true"
+                    preload="metadata"
                   />
-
+                  
                   {/* Play/Pause Button */}
-                  <button className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-14 h-14 bg-destructive rounded-full flex items-center justify-center shadow-lg hover:scale-110 transition-transform z-20 pointer-events-auto">
+                  <button className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-14 h-14 bg-destructive rounded-full flex items-center justify-center shadow-lg hover:scale-110 transition-transform z-20">
                     {playingVideos[videoProofs[visibleVideos.current].id] ? (
                       <Pause className="w-6 h-6 text-destructive-foreground fill-destructive-foreground" />
                     ) : (
                       <Play className="w-6 h-6 text-destructive-foreground fill-destructive-foreground ml-1" />
                     )}
                   </button>
-
+                  
                   {/* Volume Control */}
                   {playingVideos[videoProofs[visibleVideos.current].id] && (
                     <VolumeControl videoId={videoProofs[visibleVideos.current].id} />
                   )}
-
+                  
                   {/* Username */}
                   <div className="absolute bottom-4 left-4 text-white text-sm font-medium drop-shadow-lg z-10">
                     {videoProofs[visibleVideos.current].username}
                   </div>
-
+                  
                   <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent pointer-events-none" />
                 </div>
               </div>
 
               {/* Next Video */}
-              <div className="w-[200px] h-[355px] flex-shrink-0 -mr-[160px] opacity-50 scale-90 transition-all duration-300">
-                <div className="relative rounded-2xl overflow-hidden w-full h-full">
+              <div className="w-[200px] flex-shrink-0 -mr-[160px] opacity-50 scale-90 transition-all duration-300">
+                <div className="relative rounded-2xl overflow-hidden aspect-[9/16]">
                   <video
                     ref={el => videoRefs.current[videoProofs[visibleVideos.next].id] = el}
                     src={videoProofs[visibleVideos.next].video}
-                    className="w-full h-full object-cover block"
-                    style={{ width: '200px', height: '355px' }}
+                    className="w-full h-full object-cover"
                     loop
                     playsInline
+                    webkit-playsinline="true"
                     muted
-                    preload="auto"
+                    preload="metadata"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent pointer-events-none" />
                 </div>
