@@ -34,7 +34,7 @@ const VideoProofSection = () => {
   const scrollPrev = useCallback(() => emblaApi?.scrollPrev(), [emblaApi]);
   const scrollNext = useCallback(() => emblaApi?.scrollNext(), [emblaApi]);
 
-  // Fetch Vimeo thumbnails on mount - much lighter than loading iframes
+  // Fetch high-resolution Vimeo thumbnails on mount
   useEffect(() => {
     const fetchThumbnails = async () => {
       const thumbs: Record<string, string> = {};
@@ -42,16 +42,21 @@ const VideoProofSection = () => {
       await Promise.all(
         videoProofs.map(async (video) => {
           try {
-            // Use Vimeo oEmbed API to get thumbnail
+            // Request larger thumbnail (1280px width for high quality)
             const response = await fetch(
-              `https://vimeo.com/api/oembed.json?url=https://vimeo.com/${video.vimeoId}&width=480`
+              `https://vimeo.com/api/oembed.json?url=https://vimeo.com/${video.vimeoId}&width=1280`
             );
             if (response.ok) {
               const data = await response.json();
-              thumbs[video.vimeoId] = data.thumbnail_url;
+              // Get the base thumbnail URL and request a larger size
+              // Replace the size suffix to get full resolution
+              let thumbUrl = data.thumbnail_url;
+              // Vimeo thumbnails can be resized by changing the dimensions in URL
+              // Replace _295x166 or similar with _960x540 for better quality
+              thumbUrl = thumbUrl.replace(/_\d+x\d+/, '_960x540');
+              thumbs[video.vimeoId] = thumbUrl;
             }
           } catch {
-            // Fallback to placeholder if fetch fails
             thumbs[video.vimeoId] = '';
           }
         })
@@ -67,7 +72,6 @@ const VideoProofSection = () => {
     setLoadedThumbnails(prev => new Set(prev).add(vimeoId));
   };
 
-  // Full video URL - with sound and controls for popup
   const getFullVideoUrl = (vimeoId: string) => 
     `https://player.vimeo.com/video/${vimeoId}?autoplay=1&loop=1&muted=0&badge=0&autopause=0&controls=1&playsinline=1&dnt=1`;
 
@@ -133,15 +137,16 @@ const VideoProofSection = () => {
                     className="relative rounded-2xl overflow-hidden aspect-[9/16] bg-secondary cursor-pointer group"
                     onClick={() => handleVideoClick(video)}
                   >
-                    {/* Thumbnail Image - Much faster than iframe */}
+                    {/* Thumbnail Image - Full resolution, no zoom */}
                     {thumbnails[video.vimeoId] ? (
                       <img
                         src={thumbnails[video.vimeoId]}
                         alt={`Vídeo de ${video.username}`}
-                        className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-300 ${
+                        className={`absolute inset-0 w-full h-full object-contain bg-black transition-opacity duration-300 ${
                           loadedThumbnails.has(video.vimeoId) ? 'opacity-100' : 'opacity-0'
                         }`}
                         loading="lazy"
+                        decoding="async"
                         onLoad={() => handleThumbnailLoad(video.vimeoId)}
                       />
                     ) : null}
@@ -190,7 +195,6 @@ const VideoProofSection = () => {
       {/* Video Popup Modal */}
       <Dialog open={!!selectedVideo} onOpenChange={(open) => !open && handleClose()}>
         <DialogContent className="max-w-lg p-0 bg-card border-border overflow-hidden gap-0">
-          {/* Close button */}
           <button
             onClick={handleClose}
             className="absolute top-3 right-3 z-50 w-8 h-8 bg-background/80 backdrop-blur-sm rounded-full flex items-center justify-center hover:bg-background transition-colors border border-border"
@@ -201,7 +205,6 @@ const VideoProofSection = () => {
 
           {selectedVideo && (
             <div className="flex flex-col">
-              {/* Video container */}
               <div className="relative aspect-[9/16] w-full max-h-[60vh] bg-black">
                 <iframe
                   src={getFullVideoUrl(selectedVideo.vimeoId)}
@@ -213,7 +216,6 @@ const VideoProofSection = () => {
                 />
               </div>
 
-              {/* CTA Section */}
               <div className="p-4 bg-card">
                 <p className="text-center text-sm text-muted-foreground mb-3">
                   Vídeo de <span className="font-semibold text-foreground">{selectedVideo.username}</span>
