@@ -1,7 +1,9 @@
-import { Star, ChevronLeft, ChevronRight, Volume2, VolumeX } from "lucide-react";
-import { useState, useRef, useEffect, useCallback } from "react";
+import { Star, ChevronLeft, ChevronRight, Play, X } from "lucide-react";
+import { useState, useRef, useCallback } from "react";
 import useEmblaCarousel from "embla-carousel-react";
 import Autoplay from "embla-carousel-autoplay";
+import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
 
 const videoProofs = [
   { id: 1, username: "Ana Clara Silva", vimeoId: "1144177328" },
@@ -12,8 +14,7 @@ const videoProofs = [
 ];
 
 const VideoProofSection = () => {
-  const [activeAudioId, setActiveAudioId] = useState<number | null>(null);
-  const iframeRefs = useRef<Map<number, HTMLIFrameElement>>(new Map());
+  const [selectedVideo, setSelectedVideo] = useState<typeof videoProofs[0] | null>(null);
   
   const autoplayPlugin = useRef(
     Autoplay({
@@ -28,35 +29,35 @@ const VideoProofSection = () => {
     [autoplayPlugin.current]
   );
 
-  // Simple postMessage to control Vimeo volume - no API loading needed
-  const setVimeoVolume = useCallback((iframe: HTMLIFrameElement | null, volume: number) => {
-    if (!iframe?.contentWindow) return;
-    const data = JSON.stringify({ method: "setVolume", value: volume });
-    iframe.contentWindow.postMessage(data, "*");
-  }, []);
-
-  const toggleAudio = useCallback((index: number) => {
-    if (activeAudioId === index) {
-      // Mute this video
-      setVimeoVolume(iframeRefs.current.get(index) || null, 0);
-      setActiveAudioId(null);
-    } else {
-      // Mute all others
-      iframeRefs.current.forEach((iframe, idx) => {
-        if (idx !== index) setVimeoVolume(iframe, 0);
-      });
-      // Unmute selected
-      setVimeoVolume(iframeRefs.current.get(index) || null, 1);
-      setActiveAudioId(index);
-    }
-  }, [activeAudioId, setVimeoVolume]);
-
   const scrollPrev = useCallback(() => emblaApi?.scrollPrev(), [emblaApi]);
   const scrollNext = useCallback(() => emblaApi?.scrollNext(), [emblaApi]);
 
-  // Static URL - never changes, prevents reloads
-  const getVimeoUrl = (vimeoId: string, id: number) => 
-    `https://player.vimeo.com/video/${vimeoId}?autoplay=1&loop=1&muted=1&background=0&badge=0&autopause=0&controls=0&playsinline=1&dnt=1&player_id=${id}`;
+  // Preview URL - muted autoplay for carousel thumbnails
+  const getPreviewUrl = (vimeoId: string) => 
+    `https://player.vimeo.com/video/${vimeoId}?autoplay=1&loop=1&muted=1&background=1&badge=0&autopause=0&controls=0&playsinline=1&dnt=1&preload=auto`;
+
+  // Full video URL - with sound and controls for popup
+  const getFullVideoUrl = (vimeoId: string) => 
+    `https://player.vimeo.com/video/${vimeoId}?autoplay=1&loop=1&muted=0&badge=0&autopause=0&controls=1&playsinline=1&dnt=1`;
+
+  const handleVideoClick = (video: typeof videoProofs[0]) => {
+    setSelectedVideo(video);
+  };
+
+  const handleClose = () => {
+    setSelectedVideo(null);
+  };
+
+  const handleCTA = () => {
+    // Navigate to form or scroll to form section
+    const formSection = document.getElementById('formulario');
+    if (formSection) {
+      formSection.scrollIntoView({ behavior: 'smooth' });
+    } else {
+      window.location.href = '/formulario';
+    }
+    handleClose();
+  };
 
   return (
     <section className="py-12 md:py-16 bg-background overflow-hidden">
@@ -96,51 +97,42 @@ const VideoProofSection = () => {
 
           <div className="overflow-hidden px-8 md:px-16" ref={emblaRef}>
             <div className="flex gap-3 lg:gap-4">
-              {videoProofs.map((video, index) => {
-                const hasAudio = activeAudioId === index;
-
-                return (
-                  <div key={video.id} className="flex-none w-[200px] lg:w-[220px] xl:w-[240px]">
-                    <div className="relative rounded-2xl overflow-hidden aspect-[9/16] bg-muted">
-                      <iframe
-                        ref={(el) => {
-                          if (el) iframeRefs.current.set(index, el);
-                        }}
-                        src={getVimeoUrl(video.vimeoId, video.id)}
-                        className="absolute inset-0 w-full h-full pointer-events-none"
-                        frameBorder="0"
-                        allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media"
-                        referrerPolicy="strict-origin-when-cross-origin"
-                        title={`Vídeo de ${video.username}`}
-                      />
-                      
-                      <button
-                        onClick={() => toggleAudio(index)}
-                        className={`absolute bottom-12 right-3 w-10 h-10 rounded-full flex items-center justify-center shadow-lg transition-all z-10 ${
-                          hasAudio 
-                            ? "bg-destructive hover:bg-destructive/90" 
-                            : "bg-background/90 hover:bg-background border border-border"
-                        }`}
-                        aria-label={hasAudio ? "Desativar som" : "Ativar som"}
-                      >
-                        {hasAudio ? (
-                          <Volume2 className="w-5 h-5 text-destructive-foreground" />
-                        ) : (
-                          <VolumeX className="w-5 h-5 text-foreground" />
-                        )}
-                      </button>
-                      
-                      <div className="absolute bottom-3 left-3 right-14 z-10">
-                        <span className="text-white text-xs lg:text-sm font-medium drop-shadow-lg line-clamp-1">
-                          {video.username}
-                        </span>
-                      </div>
-                      
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent pointer-events-none" />
+              {videoProofs.map((video) => (
+                <div key={video.id} className="flex-none w-[200px] lg:w-[220px] xl:w-[240px]">
+                  <div 
+                    className="relative rounded-2xl overflow-hidden aspect-[9/16] bg-muted cursor-pointer group"
+                    onClick={() => handleVideoClick(video)}
+                  >
+                    {/* Preview iframe - muted background video */}
+                    <iframe
+                      src={getPreviewUrl(video.vimeoId)}
+                      className="absolute inset-0 w-full h-full pointer-events-none"
+                      frameBorder="0"
+                      allow="autoplay; fullscreen; picture-in-picture"
+                      loading="eager"
+                      title={`Preview de ${video.username}`}
+                    />
+                    
+                    {/* Play button overlay */}
+                    <button
+                      className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-14 h-14 bg-destructive rounded-full flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform z-10"
+                      aria-label={`Assistir vídeo de ${video.username}`}
+                    >
+                      <Play className="w-6 h-6 text-destructive-foreground ml-1" fill="currentColor" />
+                    </button>
+                    
+                    {/* Username */}
+                    <div className="absolute bottom-3 left-3 right-3 z-10">
+                      <span className="text-white text-xs lg:text-sm font-medium drop-shadow-lg line-clamp-1">
+                        {video.username}
+                      </span>
                     </div>
+                    
+                    {/* Gradient overlay */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent pointer-events-none" />
                   </div>
-                );
-              })}
+                </div>
+              ))}
             </div>
           </div>
 
@@ -156,6 +148,49 @@ const VideoProofSection = () => {
           </div>
         </div>
       </div>
+
+      {/* Video Popup Modal */}
+      <Dialog open={!!selectedVideo} onOpenChange={(open) => !open && handleClose()}>
+        <DialogContent className="max-w-lg p-0 bg-card border-border overflow-hidden gap-0">
+          {/* Close button */}
+          <button
+            onClick={handleClose}
+            className="absolute top-3 right-3 z-50 w-8 h-8 bg-background/80 backdrop-blur-sm rounded-full flex items-center justify-center hover:bg-background transition-colors border border-border"
+            aria-label="Fechar vídeo"
+          >
+            <X className="w-4 h-4 text-foreground" />
+          </button>
+
+          {selectedVideo && (
+            <div className="flex flex-col">
+              {/* Video container */}
+              <div className="relative aspect-[9/16] w-full max-h-[60vh] bg-black">
+                <iframe
+                  src={getFullVideoUrl(selectedVideo.vimeoId)}
+                  className="absolute inset-0 w-full h-full"
+                  frameBorder="0"
+                  allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media"
+                  allowFullScreen
+                  title={`Vídeo de ${selectedVideo.username}`}
+                />
+              </div>
+
+              {/* CTA Section */}
+              <div className="p-4 bg-card">
+                <p className="text-center text-sm text-muted-foreground mb-3">
+                  Vídeo de <span className="font-semibold text-foreground">{selectedVideo.username}</span>
+                </p>
+                <Button 
+                  onClick={handleCTA}
+                  className="w-full bg-destructive hover:bg-destructive/90 text-destructive-foreground font-semibold py-6 text-base"
+                >
+                  🎅 Criar o vídeo mágico
+                </Button>
+              </div>
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
     </section>
   );
 };
