@@ -1,4 +1,4 @@
-import { motion } from "framer-motion";
+import { memo } from "react";
 import { Star, Download, Clock, MessageCircle, CreditCard } from "lucide-react";
 import { Card } from "@/components/ui/card";
 
@@ -53,28 +53,22 @@ const benefits = [
   },
 ];
 
-const Testimonials = () => {
+const Testimonials = memo(() => {
   return (
     <section id="testimonials" className="py-12 md:py-20 px-4 bg-secondary text-white overflow-hidden">
       <div className="container mx-auto">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-10 md:mb-16 px-4"
-        >
+        <div className="text-center mb-10 md:mb-16 px-4 animate-fade-in-up">
           <h2 className="text-2xl sm:text-3xl md:text-5xl font-bold mb-3 md:mb-4">
             Quem Fez, Se Emocionou ❤️
           </h2>
           <p className="text-base md:text-lg text-white/80">
             Mais de 10.000 famílias já viveram essa magia
           </p>
-        </motion.div>
+        </div>
 
-        {/* Infinite Scroll Marquee */}
+        {/* Infinite Scroll Marquee - CSS only */}
         <div className="relative">
-          <div className="flex animate-[scroll_30s_linear_infinite] hover:pause">
+          <div className="flex animate-scroll-infinite hover:pause">
             {[...testimonials, ...testimonials].map((testimonial, index) => (
               <Card
                 key={index}
@@ -101,13 +95,10 @@ const Testimonials = () => {
           {benefits.map((benefit, index) => {
             const Icon = benefit.icon;
             return (
-              <motion.div
+              <div
                 key={index}
-                initial={{ opacity: 0, x: -20 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.4, delay: index * 0.1 }}
-                className="flex gap-4 items-start"
+                className="flex gap-4 items-start animate-fade-in-up"
+                style={{ animationDelay: `${index * 100}ms` }}
               >
                 <div className="flex-shrink-0 w-12 h-12 md:w-14 md:h-14 rounded-full bg-white/20 flex items-center justify-center">
                   <Icon className="w-6 h-6 md:w-7 md:h-7 text-white" strokeWidth={1.5} />
@@ -116,27 +107,23 @@ const Testimonials = () => {
                   <h3 className="font-display text-lg md:text-xl font-semibold text-white mb-2">
                     {benefit.title}
                   </h3>
-                  <p className="text-white/90 text-sm md:text-base">
-                    {benefit.description}
-                  </p>
+                  <p className="text-white/90 text-sm md:text-base">{benefit.description}</p>
                 </div>
-              </motion.div>
+              </div>
             );
           })}
         </div>
       </div>
 
       <style>{`
-        @keyframes scroll {
-          0% { transform: translateX(0); }
-          100% { transform: translateX(-50%); }
-        }
         .hover\\:pause:hover {
           animation-play-state: paused;
         }
       `}</style>
     </section>
   );
-};
+});
+
+Testimonials.displayName = "Testimonials";
 
 export default Testimonials;
