@@ -43,7 +43,7 @@ const VideoProofSection = () => {
     setCurrentIndex(prev => prev === videoProofs.length - 1 ? 0 : prev + 1);
   };
 
-  const toggleVideo = (id: number) => {
+  const toggleVideo = async (id: number) => {
     const video = videoRefs.current[id];
     if (video) {
       if (playingVideos[id]) {
@@ -61,19 +61,19 @@ const VideoProofSection = () => {
         });
         setPlayingVideos({ [id]: true });
         
-        // Load and play the video
-        video.load();
-        video.muted = false;
+        // For mobile: start muted first, then unmute after play starts
+        video.muted = true;
         video.volume = volumes[id] ?? 0.5;
         
-        const playVideo = () => {
+        try {
+          await video.play();
+          // After play starts successfully, unmute
+          video.muted = false;
+        } catch (error) {
+          console.error('Error playing video:', error);
+          // Fallback: keep playing muted if autoplay with sound fails
+          video.muted = true;
           video.play().catch(console.error);
-        };
-        
-        if (video.readyState >= 3) {
-          playVideo();
-        } else {
-          video.addEventListener('canplay', playVideo, { once: true });
         }
       }
     }

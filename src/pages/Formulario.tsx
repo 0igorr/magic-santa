@@ -815,7 +815,15 @@ const Formulario = () => {
                           </li>
                         </ul>
 
-                        <Button size="lg" disabled={!acceptedPurchaseTermsComum} onClick={() => {
+                        <Button size="lg" onClick={() => {
+                    if (!acceptedPurchaseTermsComum) {
+                      toast({
+                        title: "Atenção",
+                        description: "Você precisa aceitar os Termos e Políticas para continuar.",
+                        variant: "destructive"
+                      });
+                      return;
+                    }
                     const phoneClean = phone.replace(/\D/g, '');
                     const phoneWithCountry = phoneClean.startsWith('55') ? phoneClean : `55${phoneClean}`;
                     const params = new URLSearchParams({
@@ -953,7 +961,15 @@ const Formulario = () => {
                           </ul>
                         </div>
 
-                        <Button className="w-full mt-4 font-bold uppercase tracking-wide" size="lg" disabled={!acceptedPurchaseTermsExclusivo} onClick={() => {
+                        <Button className="w-full mt-4 font-bold uppercase tracking-wide" size="lg" onClick={() => {
+                    if (!acceptedPurchaseTermsExclusivo) {
+                      toast({
+                        title: "Atenção",
+                        description: "Você precisa aceitar os Termos e Políticas para continuar.",
+                        variant: "destructive"
+                      });
+                      return;
+                    }
                     const phoneClean = phone.replace(/\D/g, '');
                     const phoneWithCountry = phoneClean.startsWith('55') ? phoneClean : `55${phoneClean}`;
                     const params = new URLSearchParams({
