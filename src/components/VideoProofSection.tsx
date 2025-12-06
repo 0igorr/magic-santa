@@ -1,5 +1,5 @@
 import { Star, ChevronLeft, ChevronRight, Play, Pause, Volume2, VolumeX } from "lucide-react";
-import { useState, useRef, useCallback } from "react";
+import { useState, useRef } from "react";
 
 const videoProofs = [
   {
@@ -34,65 +34,13 @@ const VideoProofSection = () => {
   const [playingVideos, setPlayingVideos] = useState<Record<number, boolean>>({});
   const [volumes, setVolumes] = useState<Record<number, number>>({});
   const videoRefs = useRef<Record<number, HTMLVideoElement | null>>({});
-  
-  // Touch/swipe handling
-  const touchStartX = useRef<number>(0);
-  const touchEndX = useRef<number>(0);
-  const isDragging = useRef<boolean>(false);
 
-  const scrollPrev = useCallback(() => {
-    // Stop all videos when changing slides
-    Object.keys(videoRefs.current).forEach(key => {
-      const id = parseInt(key);
-      if (videoRefs.current[id]) {
-        videoRefs.current[id]?.pause();
-        videoRefs.current[id]!.currentTime = 0;
-      }
-    });
-    setPlayingVideos({});
+  const scrollPrev = () => {
     setCurrentIndex(prev => prev === 0 ? videoProofs.length - 1 : prev - 1);
-  }, []);
+  };
 
-  const scrollNext = useCallback(() => {
-    // Stop all videos when changing slides
-    Object.keys(videoRefs.current).forEach(key => {
-      const id = parseInt(key);
-      if (videoRefs.current[id]) {
-        videoRefs.current[id]?.pause();
-        videoRefs.current[id]!.currentTime = 0;
-      }
-    });
-    setPlayingVideos({});
+  const scrollNext = () => {
     setCurrentIndex(prev => prev === videoProofs.length - 1 ? 0 : prev + 1);
-  }, []);
-
-  // Touch handlers for swipe
-  const handleTouchStart = (e: React.TouchEvent) => {
-    touchStartX.current = e.touches[0].clientX;
-    isDragging.current = true;
-  };
-
-  const handleTouchMove = (e: React.TouchEvent) => {
-    if (!isDragging.current) return;
-    touchEndX.current = e.touches[0].clientX;
-  };
-
-  const handleTouchEnd = () => {
-    if (!isDragging.current) return;
-    isDragging.current = false;
-    
-    const diff = touchStartX.current - touchEndX.current;
-    const minSwipeDistance = 50;
-    
-    if (Math.abs(diff) > minSwipeDistance) {
-      if (diff > 0) {
-        // Swipe left -> next
-        scrollNext();
-      } else {
-        // Swipe right -> prev
-        scrollPrev();
-      }
-    }
   };
 
   const toggleVideo = async (id: number) => {
@@ -113,34 +61,19 @@ const VideoProofSection = () => {
         });
         setPlayingVideos({ [id]: true });
         
-        // Reset video to start and ensure it's ready
-        video.currentTime = 0;
-        video.muted = false;
+        // For mobile: start muted first, then unmute after play starts
+        video.muted = true;
         video.volume = volumes[id] ?? 0.5;
         
-        // Use webkit-playsinline for iOS
-        video.setAttribute('webkit-playsinline', 'true');
-        video.setAttribute('playsinline', 'true');
-        
         try {
-          // Try to play with sound first
-          const playPromise = video.play();
-          if (playPromise !== undefined) {
-            await playPromise;
-          }
+          await video.play();
+          // After play starts successfully, unmute
+          video.muted = false;
         } catch (error) {
           console.error('Error playing video:', error);
-          // If play fails, try muted first then unmute
+          // Fallback: keep playing muted if autoplay with sound fails
           video.muted = true;
-          try {
-            await video.play();
-            // Small delay then try to unmute
-            setTimeout(() => {
-              video.muted = false;
-            }, 100);
-          } catch (e) {
-            console.error('Video play failed completely:', e);
-          }
+          video.play().catch(console.error);
         }
       }
     }
@@ -250,49 +183,42 @@ const VideoProofSection = () => {
             <ChevronRight className="w-5 h-5 md:w-6 md:h-6 text-foreground" />
           </button>
 
-          {/* Mobile Carousel with swipe support */}
-          <div 
-            className="md:hidden overflow-hidden touch-pan-y"
-            onTouchStart={handleTouchStart}
-            onTouchMove={handleTouchMove}
-            onTouchEnd={handleTouchEnd}
-          >
-            <div className="flex items-center justify-center gap-3 transition-transform duration-300">
+          {/* Mobile Carousel */}
+          <div className="md:hidden overflow-hidden">
+            <div className="flex items-center justify-center gap-3">
               {/* Previous Video */}
-              <div className="w-[200px] flex-shrink-0 -ml-[160px] opacity-50 scale-90 transition-all duration-300">
+              <div className="w-[200px] flex-shrink-0 -ml-[160px]">
                 <div className="relative rounded-2xl overflow-hidden aspect-[9/16]">
                   <video
                     ref={el => videoRefs.current[videoProofs[visibleVideos.prev].id] = el}
                     src={videoProofs[visibleVideos.prev].video}
-                    className="w-full h-full object-cover"
+                    className="absolute inset-0 w-full h-full object-cover"
                     loop
                     playsInline
-                    webkit-playsinline="true"
                     muted
-                    preload="metadata"
+                    preload="auto"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent pointer-events-none" />
                 </div>
               </div>
 
               {/* Current Video */}
-              <div className="relative w-[200px] flex-shrink-0 z-10">
+              <div className="relative w-[200px] flex-shrink-0">
                 <div 
-                  className="relative rounded-2xl overflow-hidden aspect-[9/16] cursor-pointer shadow-xl"
+                  className="relative rounded-2xl overflow-hidden aspect-[9/16] cursor-pointer"
                   onClick={() => toggleVideo(videoProofs[visibleVideos.current].id)}
                 >
                   <video
                     ref={el => videoRefs.current[videoProofs[visibleVideos.current].id] = el}
                     src={videoProofs[visibleVideos.current].video}
-                    className="w-full h-full object-cover"
+                    className="absolute inset-0 w-full h-full object-cover"
                     loop
                     playsInline
-                    webkit-playsinline="true"
-                    preload="metadata"
+                    preload="auto"
                   />
                   
                   {/* Play/Pause Button */}
-                  <button className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-14 h-14 bg-destructive rounded-full flex items-center justify-center shadow-lg hover:scale-110 transition-transform z-20">
+                  <button className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-14 h-14 bg-destructive rounded-full flex items-center justify-center shadow-lg hover:scale-110 transition-transform">
                     {playingVideos[videoProofs[visibleVideos.current].id] ? (
                       <Pause className="w-6 h-6 text-destructive-foreground fill-destructive-foreground" />
                     ) : (
@@ -306,7 +232,7 @@ const VideoProofSection = () => {
                   )}
                   
                   {/* Username */}
-                  <div className="absolute bottom-4 left-4 text-white text-sm font-medium drop-shadow-lg z-10">
+                  <div className="absolute bottom-4 left-4 text-white text-sm font-medium drop-shadow-lg">
                     {videoProofs[visibleVideos.current].username}
                   </div>
                   
@@ -315,35 +241,20 @@ const VideoProofSection = () => {
               </div>
 
               {/* Next Video */}
-              <div className="w-[200px] flex-shrink-0 -mr-[160px] opacity-50 scale-90 transition-all duration-300">
+              <div className="w-[200px] flex-shrink-0 -mr-[160px]">
                 <div className="relative rounded-2xl overflow-hidden aspect-[9/16]">
                   <video
                     ref={el => videoRefs.current[videoProofs[visibleVideos.next].id] = el}
                     src={videoProofs[visibleVideos.next].video}
-                    className="w-full h-full object-cover"
+                    className="absolute inset-0 w-full h-full object-cover"
                     loop
                     playsInline
-                    webkit-playsinline="true"
                     muted
-                    preload="metadata"
+                    preload="auto"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent pointer-events-none" />
                 </div>
               </div>
-            </div>
-            
-            {/* Swipe indicator dots */}
-            <div className="flex justify-center gap-2 mt-4">
-              {videoProofs.map((_, index) => (
-                <button
-                  key={index}
-                  onClick={() => setCurrentIndex(index)}
-                  className={`w-2 h-2 rounded-full transition-all duration-300 ${
-                    index === currentIndex ? 'bg-destructive w-4' : 'bg-muted-foreground/30'
-                  }`}
-                  aria-label={`Ir para vídeo ${index + 1}`}
-                />
-              ))}
             </div>
           </div>
 
@@ -358,11 +269,10 @@ const VideoProofSection = () => {
                 <video
                   ref={el => videoRefs.current[video.id] = el}
                   src={video.video}
-                  className="w-full h-full object-cover"
+                  className="absolute inset-0 w-full h-full object-cover"
                   loop
                   playsInline
-                  webkit-playsinline="true"
-                  preload="metadata"
+                  preload="auto"
                 />
                 
                 {/* Play/Pause Button */}
