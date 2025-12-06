@@ -1,5 +1,5 @@
 import { Star, ChevronLeft, ChevronRight, Play, X } from "lucide-react";
-import { useState, useRef, useCallback } from "react";
+import { useState, useRef, useCallback, useEffect } from "react";
 import useEmblaCarousel from "embla-carousel-react";
 import Autoplay from "embla-carousel-autoplay";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
@@ -15,6 +15,8 @@ const videoProofs = [
 
 const VideoProofSection = () => {
   const [selectedVideo, setSelectedVideo] = useState<typeof videoProofs[0] | null>(null);
+  const [thumbnails, setThumbnails] = useState<Record<string, string>>({});
+  const [loadedThumbnails, setLoadedThumbnails] = useState<Set<string>>(new Set());
   
   const autoplayPlugin = useRef(
     Autoplay({
@@ -32,9 +34,38 @@ const VideoProofSection = () => {
   const scrollPrev = useCallback(() => emblaApi?.scrollPrev(), [emblaApi]);
   const scrollNext = useCallback(() => emblaApi?.scrollNext(), [emblaApi]);
 
-  // Preview URL - muted autoplay for carousel thumbnails
-  const getPreviewUrl = (vimeoId: string) => 
-    `https://player.vimeo.com/video/${vimeoId}?autoplay=1&loop=1&muted=1&background=1&badge=0&autopause=0&controls=0&playsinline=1&dnt=1&preload=auto`;
+  // Fetch Vimeo thumbnails on mount - much lighter than loading iframes
+  useEffect(() => {
+    const fetchThumbnails = async () => {
+      const thumbs: Record<string, string> = {};
+      
+      await Promise.all(
+        videoProofs.map(async (video) => {
+          try {
+            // Use Vimeo oEmbed API to get thumbnail
+            const response = await fetch(
+              `https://vimeo.com/api/oembed.json?url=https://vimeo.com/${video.vimeoId}&width=480`
+            );
+            if (response.ok) {
+              const data = await response.json();
+              thumbs[video.vimeoId] = data.thumbnail_url;
+            }
+          } catch {
+            // Fallback to placeholder if fetch fails
+            thumbs[video.vimeoId] = '';
+          }
+        })
+      );
+      
+      setThumbnails(thumbs);
+    };
+    
+    fetchThumbnails();
+  }, []);
+
+  const handleThumbnailLoad = (vimeoId: string) => {
+    setLoadedThumbnails(prev => new Set(prev).add(vimeoId));
+  };
 
   // Full video URL - with sound and controls for popup
   const getFullVideoUrl = (vimeoId: string) => 
@@ -49,7 +80,6 @@ const VideoProofSection = () => {
   };
 
   const handleCTA = () => {
-    // Navigate to form or scroll to form section
     const formSection = document.getElementById('formulario');
     if (formSection) {
       formSection.scrollIntoView({ behavior: 'smooth' });
@@ -100,18 +130,26 @@ const VideoProofSection = () => {
               {videoProofs.map((video) => (
                 <div key={video.id} className="flex-none w-[200px] lg:w-[220px] xl:w-[240px]">
                   <div 
-                    className="relative rounded-2xl overflow-hidden aspect-[9/16] bg-muted cursor-pointer group"
+                    className="relative rounded-2xl overflow-hidden aspect-[9/16] bg-secondary cursor-pointer group"
                     onClick={() => handleVideoClick(video)}
                   >
-                    {/* Preview iframe - muted background video */}
-                    <iframe
-                      src={getPreviewUrl(video.vimeoId)}
-                      className="absolute inset-0 w-full h-full pointer-events-none"
-                      frameBorder="0"
-                      allow="autoplay; fullscreen; picture-in-picture"
-                      loading="eager"
-                      title={`Preview de ${video.username}`}
-                    />
+                    {/* Thumbnail Image - Much faster than iframe */}
+                    {thumbnails[video.vimeoId] ? (
+                      <img
+                        src={thumbnails[video.vimeoId]}
+                        alt={`Vídeo de ${video.username}`}
+                        className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-300 ${
+                          loadedThumbnails.has(video.vimeoId) ? 'opacity-100' : 'opacity-0'
+                        }`}
+                        loading="lazy"
+                        onLoad={() => handleThumbnailLoad(video.vimeoId)}
+                      />
+                    ) : null}
+                    
+                    {/* Loading skeleton */}
+                    {!loadedThumbnails.has(video.vimeoId) && (
+                      <div className="absolute inset-0 bg-secondary animate-pulse" />
+                    )}
                     
                     {/* Play button overlay */}
                     <button
