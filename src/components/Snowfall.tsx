@@ -1,32 +1,34 @@
-import { useEffect, useState, useMemo } from "react";
+import { memo, useEffect, useState, useMemo } from "react";
 
-// Reduced from 50 to 18 snowflakes for better performance
-const SNOWFLAKE_COUNT = 18;
+// Reduced from 18 to 12 snowflakes for better performance
+const SNOWFLAKE_COUNT = 12;
 
-const Snowfall = () => {
+const Snowfall = memo(() => {
   const [isVisible, setIsVisible] = useState(false);
 
   // Generate snowflakes only once using useMemo
-  const snowflakes = useMemo(() => 
-    Array.from({ length: SNOWFLAKE_COUNT }, (_, i) => ({
-      id: i,
-      left: Math.random() * 100,
-      delay: Math.random() * 10,
-      duration: 12 + Math.random() * 18,
-      size: Math.random() > 0.5 ? 'text-xs' : 'text-sm',
-    })),
-  []);
+  const snowflakes = useMemo(
+    () =>
+      Array.from({ length: SNOWFLAKE_COUNT }, (_, i) => ({
+        id: i,
+        left: Math.random() * 100,
+        delay: Math.random() * 10,
+        duration: 12 + Math.random() * 18,
+        size: Math.random() > 0.5 ? "text-xs" : "text-sm",
+      })),
+    []
+  );
 
-  // Delay snowfall render to prioritize LCP
+  // Delay snowfall render to prioritize LCP (increased to 2.5s)
   useEffect(() => {
-    const timer = setTimeout(() => setIsVisible(true), 1500);
+    const timer = setTimeout(() => setIsVisible(true), 2500);
     return () => clearTimeout(timer);
   }, []);
 
   if (!isVisible) return null;
 
   return (
-    <div 
+    <div
       className="fixed inset-0 pointer-events-none z-10 overflow-hidden"
       aria-hidden="true"
     >
@@ -38,7 +40,7 @@ const Snowfall = () => {
             left: `${flake.left}%`,
             animationDelay: `${flake.delay}s`,
             animationDuration: `${flake.duration}s`,
-            willChange: 'transform',
+            willChange: "transform",
           }}
         >
           ❄
@@ -46,6 +48,8 @@ const Snowfall = () => {
       ))}
     </div>
   );
-};
+});
+
+Snowfall.displayName = "Snowfall";
 
 export default Snowfall;

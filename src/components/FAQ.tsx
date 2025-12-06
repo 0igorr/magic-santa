@@ -1,4 +1,4 @@
-import { motion } from "framer-motion";
+import { memo } from "react";
 import {
   Accordion,
   AccordionContent,
@@ -39,31 +39,20 @@ const faqs = [
   },
 ];
 
-const FAQ = () => {
+const FAQ = memo(() => {
   return (
     <section id="faq" className="py-12 md:py-20 px-4 bg-background">
       <div className="container mx-auto max-w-3xl">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-8 md:mb-12 px-4"
-        >
+        <div className="text-center mb-8 md:mb-12 px-4">
           <h2 className="text-2xl sm:text-3xl md:text-5xl font-bold mb-3 md:mb-4">
             Perguntas Frequentes
           </h2>
           <p className="text-base md:text-lg text-muted-foreground">
             Tudo que você precisa saber sobre o vídeo mágico
           </p>
-        </motion.div>
+        </div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.2 }}
-        >
+        <div className="animate-fade-in-up" style={{ animationDelay: "200ms" }}>
           <Accordion type="single" collapsible className="space-y-3 md:space-y-4">
             {faqs.map((faq, index) => (
               <AccordionItem
@@ -80,10 +69,12 @@ const FAQ = () => {
               </AccordionItem>
             ))}
           </Accordion>
-        </motion.div>
+        </div>
       </div>
     </section>
   );
-};
+});
+
+FAQ.displayName = "FAQ";
 
 export default FAQ;
