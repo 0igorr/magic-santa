@@ -105,7 +105,7 @@ export function SelectWithCustom({
           >
             <span className="flex items-center gap-2">
               <Edit3 className="w-4 h-4" />
-              + Escreva sua mensagem
+              Não achou? Escreva a sua mensagem
             </span>
           </SelectItem>
           {options.map((option) => (
