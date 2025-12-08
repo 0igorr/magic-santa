@@ -4,31 +4,24 @@ import { Button } from "@/components/ui/button";
 import { Star, X } from "lucide-react";
 
 // Lazy load Dialog for better initial bundle size
-const Dialog = lazy(() => import("@/components/ui/dialog").then(m => ({ default: m.Dialog })));
-const DialogContent = lazy(() => import("@/components/ui/dialog").then(m => ({ default: m.DialogContent })));
-
+const Dialog = lazy(() => import("@/components/ui/dialog").then(m => ({
+  default: m.Dialog
+})));
+const DialogContent = lazy(() => import("@/components/ui/dialog").then(m => ({
+  default: m.DialogContent
+})));
 const HeroSection = () => {
   const [isVideoOpen, setIsVideoOpen] = useState(false);
   const navigate = useNavigate();
-
   const handleCTA = () => {
     setIsVideoOpen(false);
     navigate("/formulario");
   };
-
-  return (
-    <>
+  return <>
       <section id="hero" className="relative h-[85vh] flex items-center justify-center overflow-hidden pt-16">
         {/* Background Image - Optimized with native lazy loading disabled for LCP */}
         <div className="absolute inset-0 z-0">
-          <img
-            alt="Santa in cozy workshop"
-            className="w-full h-full object-cover"
-            src="/lovable-uploads/c8bf8993-93fd-4a6b-aa47-459397158fb6.png"
-            loading="eager"
-            decoding="async"
-            fetchPriority="high"
-          />
+          <img alt="Santa in cozy workshop" className="w-full h-full object-cover" loading="eager" decoding="async" fetchPriority="high" src="/lovable-uploads/4abb2f41-013f-4b5f-a3a1-07eb01379fbd.webp" />
           <div className="absolute inset-0 bg-black/50" />
         </div>
 
@@ -42,39 +35,26 @@ const HeroSection = () => {
               <br />
             </h1>
             
-            <p
-              className="text-base sm:text-lg md:text-xl text-white/95 mb-8 leading-relaxed px-4 animate-fade-in-up"
-              style={{ animationDelay: "0.2s" }}
-            >
+            <p className="text-base sm:text-lg md:text-xl text-white/95 mb-8 leading-relaxed px-4 animate-fade-in-up" style={{
+            animationDelay: "0.2s"
+          }}>
               Vídeo <span className="italic font-semibold">personalizado</span> do Papai Noel que irá{" "}
               <span className="font-semibold">encantar as crianças</span>. Leve a real{" "}
               <span className="italic font-semibold">magia do Natal</span> para seu lar!
             </p>
 
-            <div
-              className="flex flex-col items-center gap-4 mb-6 animate-fade-in-up"
-              style={{ animationDelay: "0.4s" }}
-            >
+            <div className="flex flex-col items-center gap-4 mb-6 animate-fade-in-up" style={{
+            animationDelay: "0.4s"
+          }}>
               <Link to="/formulario" className="w-full max-w-md">
-                <Button
-                  size="lg"
-                  className="bg-primary hover:bg-primary/90 text-white text-base md:text-lg px-8 md:px-12 py-6 md:py-7 rounded-full shadow-button font-bold tracking-wide w-full"
-                >
+                <Button size="lg" className="bg-primary hover:bg-primary/90 text-white text-base md:text-lg px-8 md:px-12 py-6 md:py-7 rounded-full shadow-button font-bold tracking-wide w-full">
                   Criar vídeo
                 </Button>
               </Link>
               
-              <button 
-                onClick={() => setIsVideoOpen(true)}
-                className="flex items-center gap-3 text-white hover:text-accent transition-colors"
-              >
+              <button onClick={() => setIsVideoOpen(true)} className="flex items-center gap-3 text-white hover:text-accent transition-colors">
                 <div className="w-10 h-10 rounded-full flex items-center justify-center bg-white">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24"
-                    fill="currentColor"
-                    className="w-5 h-5 ml-0.5 text-primary"
-                  >
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5 ml-0.5 text-primary">
                     <path d="M8 5v14l11-7z" />
                   </svg>
                 </div>
@@ -82,10 +62,9 @@ const HeroSection = () => {
               </button>
             </div>
 
-            <div
-              className="flex flex-col sm:flex-row items-center justify-center gap-4 text-white/90 text-sm animate-fade-in-up"
-              style={{ animationDelay: "0.6s" }}
-            >
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 text-white/90 text-sm animate-fade-in-up" style={{
+            animationDelay: "0.6s"
+          }}>
               {/* Trustpilot Section - Inline SVG for faster render */}
               <div className="flex items-center gap-2 bg-white/10 backdrop-blur-sm px-4 py-2 rounded-lg">
                 <div className="bg-white px-2 py-1 rounded">
@@ -97,9 +76,7 @@ const HeroSection = () => {
                 </div>
                 <div className="flex flex-col">
                   <div className="flex items-center gap-1">
-                    {[...Array(5)].map((_, i) => (
-                      <Star key={i} className="w-3 h-3 fill-accent text-accent" />
-                    ))}
+                    {[...Array(5)].map((_, i) => <Star key={i} className="w-3 h-3 fill-accent text-accent" />)}
                   </div>
                   <span className="text-xs font-medium">4,7 de 1429 avaliações</span>
                 </div>
@@ -110,44 +87,27 @@ const HeroSection = () => {
       </section>
 
       {/* Video Modal - Lazy loaded */}
-      {isVideoOpen && (
-        <Suspense fallback={<div className="fixed inset-0 bg-black/80 z-50 flex items-center justify-center"><div className="animate-spin w-8 h-8 border-4 border-white border-t-transparent rounded-full" /></div>}>
+      {isVideoOpen && <Suspense fallback={<div className="fixed inset-0 bg-black/80 z-50 flex items-center justify-center"><div className="animate-spin w-8 h-8 border-4 border-white border-t-transparent rounded-full" /></div>}>
           <Dialog open={isVideoOpen} onOpenChange={setIsVideoOpen}>
             <DialogContent className="max-w-4xl w-[95vw] p-0 bg-black/95 border-white/10 overflow-hidden">
-              <button
-                onClick={() => setIsVideoOpen(false)}
-                className="absolute right-3 top-3 z-50 p-2 rounded-full bg-black/60 hover:bg-black/80 transition-colors"
-              >
+              <button onClick={() => setIsVideoOpen(false)} className="absolute right-3 top-3 z-50 p-2 rounded-full bg-black/60 hover:bg-black/80 transition-colors">
                 <X className="w-5 h-5 text-white" />
               </button>
 
-              <div className="relative w-full" style={{ paddingTop: "56.25%" }}>
-                <iframe
-                  src="https://player.vimeo.com/video/1144190110?badge=0&autopause=0&player_id=0&app_id=58479&autoplay=1&loop=1"
-                  frameBorder="0"
-                  allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
-                  referrerPolicy="strict-origin-when-cross-origin"
-                  className="absolute inset-0 w-full h-full"
-                  title="Vídeo de apresentação"
-                  loading="lazy"
-                />
+              <div className="relative w-full" style={{
+            paddingTop: "56.25%"
+          }}>
+                <iframe src="https://player.vimeo.com/video/1144190110?badge=0&autopause=0&player_id=0&app_id=58479&autoplay=1&loop=1" frameBorder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" referrerPolicy="strict-origin-when-cross-origin" className="absolute inset-0 w-full h-full" title="Vídeo de apresentação" loading="lazy" />
               </div>
 
               <div className="p-4 flex justify-center">
-                <Button
-                  onClick={handleCTA}
-                  size="lg"
-                  className="bg-primary hover:bg-primary/90 text-white text-base md:text-lg px-8 py-6 rounded-full shadow-button font-bold"
-                >
+                <Button onClick={handleCTA} size="lg" className="bg-primary hover:bg-primary/90 text-white text-base md:text-lg px-8 py-6 rounded-full shadow-button font-bold">
                   Criar o vídeo mágico ✨
                 </Button>
               </div>
             </DialogContent>
           </Dialog>
-        </Suspense>
-      )}
-    </>
-  );
+        </Suspense>}
+    </>;
 };
-
 export default HeroSection;
