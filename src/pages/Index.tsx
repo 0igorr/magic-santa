@@ -5,6 +5,14 @@ import Snowfall from "@/components/Snowfall";
 import HeroSection from "@/components/HeroSection";
 import TrustCarousel from "@/components/TrustCarousel";
 
+// Skeleton loaders for each section type
+import VideoProofSkeleton from "@/components/skeletons/VideoProofSkeleton";
+import VideoDemoSkeleton from "@/components/skeletons/VideoDemoSkeleton";
+import FeaturesSkeleton from "@/components/skeletons/FeaturesSkeleton";
+import TestimonialsSkeleton from "@/components/skeletons/TestimonialsSkeleton";
+import FooterSkeleton from "@/components/skeletons/FooterSkeleton";
+import GenericSectionSkeleton from "@/components/skeletons/GenericSectionSkeleton";
+
 // Lazy load below-the-fold components for better initial load
 const VideoProofSection = lazy(() => import("@/components/VideoProofSection"));
 const VideoDemo = lazy(() => import("@/components/VideoDemo"));
@@ -16,17 +24,10 @@ const Pricing = lazy(() => import("@/components/Pricing"));
 const FAQ = lazy(() => import("@/components/FAQ"));
 const Footer = lazy(() => import("@/components/Footer"));
 
-// Simple loading fallback
-const SectionLoader = () => (
-  <div className="py-16 flex justify-center">
-    <div className="w-8 h-8 border-4 border-primary border-t-transparent rounded-full animate-spin" />
-  </div>
-);
-
 const Index = () => {
   return (
     <div className="min-h-screen">
-      {/* Critical above-the-fold components loaded eagerly */}
+      {/* Critical above-the-fold components loaded eagerly - NEVER lazy load these */}
       <AnnouncementBar />
       <div className="relative">
         <Header />
@@ -35,32 +36,32 @@ const Index = () => {
       </div>
       <TrustCarousel />
       
-      {/* Below-the-fold components lazy loaded */}
-      <Suspense fallback={<SectionLoader />}>
+      {/* Below-the-fold components lazy loaded with specific skeletons */}
+      <Suspense fallback={<VideoProofSkeleton />}>
         <VideoProofSection />
       </Suspense>
-      <Suspense fallback={<SectionLoader />}>
+      <Suspense fallback={<VideoDemoSkeleton />}>
         <VideoDemo />
       </Suspense>
-      <Suspense fallback={<SectionLoader />}>
+      <Suspense fallback={<FeaturesSkeleton />}>
         <Features />
       </Suspense>
-      <Suspense fallback={<SectionLoader />}>
+      <Suspense fallback={<GenericSectionSkeleton />}>
         <HowToOrder />
       </Suspense>
-      <Suspense fallback={<SectionLoader />}>
+      <Suspense fallback={<GenericSectionSkeleton height="py-8" bgClass="bg-primary" />}>
         <MarqueeMessage />
       </Suspense>
-      <Suspense fallback={<SectionLoader />}>
+      <Suspense fallback={<TestimonialsSkeleton />}>
         <Testimonials />
       </Suspense>
-      <Suspense fallback={<SectionLoader />}>
+      <Suspense fallback={<GenericSectionSkeleton />}>
         <Pricing />
       </Suspense>
-      <Suspense fallback={<SectionLoader />}>
+      <Suspense fallback={<GenericSectionSkeleton />}>
         <FAQ />
       </Suspense>
-      <Suspense fallback={<SectionLoader />}>
+      <Suspense fallback={<FooterSkeleton />}>
         <Footer />
       </Suspense>
     </div>
