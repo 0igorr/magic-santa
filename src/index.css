@@ -71,20 +71,20 @@ All colors MUST be HSL.
   }
 }
 
-/* Snowfall Animation */
+/* Snowfall Animation - GPU accelerated */
 @keyframes snowfall {
   0% {
-    transform: translateY(-10vh) translateX(0);
+    transform: translate3d(0, -10vh, 0);
     opacity: 0;
   }
   10% {
-    opacity: 1;
+    opacity: 0.5;
   }
   90% {
-    opacity: 1;
+    opacity: 0.5;
   }
   100% {
-    transform: translateY(100vh) translateX(10vw);
+    transform: translate3d(10vw, 100vh, 0);
     opacity: 0;
   }
 }
@@ -97,7 +97,9 @@ All colors MUST be HSL.
   pointer-events: none;
   animation: snowfall linear infinite;
   color: white;
-  opacity: 0.6;
+  opacity: 0.5;
+  will-change: transform, opacity;
+  contain: layout style;
 }
 
 /* Pulse Animation for CTAs */
@@ -117,19 +119,21 @@ All colors MUST be HSL.
   border: 1px solid rgba(255, 255, 255, 0.3);
 }
 
-/* Infinite Scroll Animations - Optimized */
+/* Infinite Scroll Animations - GPU accelerated */
 @keyframes scroll-infinite {
   0% {
-    transform: translateX(0);
+    transform: translate3d(0, 0, 0);
   }
   100% {
-    transform: translateX(-50%);
+    transform: translate3d(-50%, 0, 0);
   }
 }
 
 .animate-scroll-infinite {
   animation: scroll-infinite 25s linear infinite;
   will-change: transform;
+  contain: layout;
+  backface-visibility: hidden;
 }
 
 /* Fade in up animation - CSS only (no Framer Motion needed) */

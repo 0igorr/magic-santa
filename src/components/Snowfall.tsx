@@ -1,7 +1,7 @@
 import { memo, useEffect, useState, useMemo } from "react";
 
-// Reduced from 18 to 12 snowflakes for better performance
-const SNOWFLAKE_COUNT = 12;
+// Reduced snowflake count for performance
+const SNOWFLAKE_COUNT = 10;
 
 const Snowfall = memo(() => {
   const [isVisible, setIsVisible] = useState(false);
@@ -12,16 +12,27 @@ const Snowfall = memo(() => {
       Array.from({ length: SNOWFLAKE_COUNT }, (_, i) => ({
         id: i,
         left: Math.random() * 100,
-        delay: Math.random() * 10,
-        duration: 12 + Math.random() * 18,
-        size: Math.random() > 0.5 ? "text-xs" : "text-sm",
+        delay: Math.random() * 8,
+        duration: 15 + Math.random() * 15,
+        size: Math.random() > 0.6 ? "text-xs" : "text-sm",
       })),
     []
   );
 
-  // Delay snowfall render to prioritize LCP (increased to 2.5s)
+  // Delay snowfall render to prioritize LCP (3 seconds after load)
   useEffect(() => {
-    const timer = setTimeout(() => setIsVisible(true), 2500);
+    // Use requestIdleCallback for better performance
+    const scheduleSnowfall = () => {
+      if ('requestIdleCallback' in window) {
+        (window as Window & { requestIdleCallback: (cb: () => void) => number }).requestIdleCallback(() => {
+          setIsVisible(true);
+        });
+      } else {
+        setIsVisible(true);
+      }
+    };
+
+    const timer = setTimeout(scheduleSnowfall, 3000);
     return () => clearTimeout(timer);
   }, []);
 
@@ -35,12 +46,11 @@ const Snowfall = memo(() => {
       {snowflakes.map((flake) => (
         <div
           key={flake.id}
-          className={`snowflake absolute text-white opacity-60 ${flake.size}`}
+          className={`snowflake absolute text-white opacity-50 ${flake.size}`}
           style={{
             left: `${flake.left}%`,
             animationDelay: `${flake.delay}s`,
             animationDuration: `${flake.duration}s`,
-            willChange: "transform",
           }}
         >
           ❄

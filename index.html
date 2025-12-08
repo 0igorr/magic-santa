@@ -29,52 +29,55 @@
     <link rel="preconnect" href="https://vimeo.com" crossorigin />
     <link rel="preconnect" href="https://i.vimeocdn.com" crossorigin />
     
-    <!-- Preload critical fonts with font-display: swap -->
-    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Inter:wght@300;400;500;600;700&display=swap" as="style" />
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+    <!-- Optimized font loading with font-display: swap and reduced weights -->
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&family=Inter:wght@400;600;700&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'" />
+    <noscript><link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&family=Inter:wght@400;600;700&display=swap" rel="stylesheet" /></noscript>
     
     <!-- Preload hero image for faster LCP -->
     <link rel="preload" href="/lovable-uploads/c8bf8993-93fd-4a6b-aa47-459397158fb6.png" as="image" fetchpriority="high" />
     
-    <!-- Meta Pixel Code -->
+    <!-- All third-party scripts deferred to after page load for better LCP -->
     <script>
-    !function(f,b,e,v,n,t,s)
-    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-    n.queue=[];t=b.createElement(e);t.async=!0;
-    t.src=v;s=b.getElementsByTagName(e)[0];
-    s.parentNode.insertBefore(t,s)}(window, document,'script',
-    'https://connect.facebook.net/en_US/fbevents.js');
-    fbq('init', '788860820853461');
-    fbq('track', 'PageView');
+      // Defer all tracking scripts until after page is interactive
+      window.addEventListener('load', function() {
+        setTimeout(function() {
+          // Meta Pixel Code
+          !function(f,b,e,v,n,t,s)
+          {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+          n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+          if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+          n.queue=[];t=b.createElement(e);t.async=!0;
+          t.src=v;s=b.getElementsByTagName(e)[0];
+          s.parentNode.insertBefore(t,s)}(window, document,'script',
+          'https://connect.facebook.net/en_US/fbevents.js');
+          fbq('init', '788860820853461');
+          fbq('track', 'PageView');
+          
+          // UTMify Pixel Code
+          window.pixelId = "6935ac9570235d86019dd31c";
+          var a = document.createElement("script");
+          a.setAttribute("async", "");
+          a.setAttribute("defer", "");
+          a.setAttribute("src", "https://cdn.utmify.com.br/scripts/pixel/pixel.js");
+          document.head.appendChild(a);
+          
+          // UTMify UTMs Script
+          var b = document.createElement("script");
+          b.setAttribute("async", "");
+          b.setAttribute("defer", "");
+          b.setAttribute("src", "https://cdn.utmify.com.br/scripts/utms/latest.js");
+          b.setAttribute("data-utmify-prevent-xcod-sck", "");
+          b.setAttribute("data-utmify-prevent-subids", "");
+          document.head.appendChild(b);
+          
+          // ContentSquare Script
+          var c = document.createElement("script");
+          c.setAttribute("async", "");
+          c.setAttribute("src", "https://t.contentsquare.net/uxa/a16c7e92af7c4.js");
+          document.head.appendChild(c);
+        }, 2000); // Delay 2 seconds after load
+      });
     </script>
-    <!-- End Meta Pixel Code -->
-    
-    <!-- UTMify Pixel Code -->
-    <script>
-      window.pixelId = "6935ac9570235d86019dd31c";
-      var a = document.createElement("script");
-      a.setAttribute("async", "");
-      a.setAttribute("defer", "");
-      a.setAttribute("src", "https://cdn.utmify.com.br/scripts/pixel/pixel.js");
-      document.head.appendChild(a);
-    </script>
-    <!-- End UTMify Pixel Code -->
-    
-    <!-- ContentSquare Script -->
-    <script src="https://t.contentsquare.net/uxa/a16c7e92af7c4.js"></script>
-    <!-- End ContentSquare Script -->
-    
-    <!-- UTMify UTMs Script -->
-    <script
-      src="https://cdn.utmify.com.br/scripts/utms/latest.js"
-      data-utmify-prevent-xcod-sck
-      data-utmify-prevent-subids
-      async
-      defer
-    ></script>
-    <!-- End UTMify UTMs Script -->
   </head>
 
   <body>

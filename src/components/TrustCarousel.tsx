@@ -1,5 +1,5 @@
 import { Clock, Gift, Video, Star, Heart } from "lucide-react";
-import { memo } from "react";
+import { memo, useMemo } from "react";
 
 const trustItems = [
   { icon: Clock, text: "Entrega a partir de 10 minutos" },
@@ -19,18 +19,15 @@ const TrustItem = memo(({ icon: Icon, text }: { icon: typeof Clock; text: string
 
 TrustItem.displayName = "TrustItem";
 
-const TrustCarousel = () => {
-  // Duplicate items for seamless infinite loop
-  const duplicatedItems = [...trustItems, ...trustItems];
+const TrustCarousel = memo(() => {
+  // Memoize duplicated items
+  const duplicatedItems = useMemo(() => [...trustItems, ...trustItems], []);
   
   return (
     <section className="py-8 bg-background overflow-hidden border-y border-accent/20">
       <div className="relative">
         <div className="overflow-hidden">
-          <div 
-            className="flex animate-scroll-infinite w-max"
-            style={{ willChange: 'transform' }}
-          >
+          <div className="flex animate-scroll-infinite w-max">
             {duplicatedItems.map((item, index) => (
               <TrustItem key={index} icon={item.icon} text={item.text} />
             ))}
@@ -39,6 +36,8 @@ const TrustCarousel = () => {
       </div>
     </section>
   );
-};
+});
+
+TrustCarousel.displayName = "TrustCarousel";
 
 export default TrustCarousel;

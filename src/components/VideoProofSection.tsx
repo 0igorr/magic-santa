@@ -1,5 +1,5 @@
 import { Star, ChevronLeft, ChevronRight, Play, X } from "lucide-react";
-import { useState, useRef, useCallback, useEffect } from "react";
+import { useState, useRef, useCallback, useEffect, memo } from "react";
 import useEmblaCarousel from "embla-carousel-react";
 import Autoplay from "embla-carousel-autoplay";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
@@ -13,10 +13,21 @@ const videoProofs = [
   { id: 5, username: "Mariana Costa", vimeoId: "1144177130" },
 ];
 
-const VideoProofSection = () => {
+// Pre-computed placeholder colors for faster initial render
+const placeholderColors = [
+  "bg-gradient-to-br from-primary/20 to-secondary/30",
+  "bg-gradient-to-br from-accent/20 to-primary/30",
+  "bg-gradient-to-br from-secondary/20 to-accent/30",
+  "bg-gradient-to-br from-primary/30 to-accent/20",
+  "bg-gradient-to-br from-accent/30 to-secondary/20",
+];
+
+const VideoProofSection = memo(() => {
   const [selectedVideo, setSelectedVideo] = useState<typeof videoProofs[0] | null>(null);
   const [thumbnails, setThumbnails] = useState<Record<string, string>>({});
   const [loadedThumbnails, setLoadedThumbnails] = useState<Set<string>>(new Set());
+  const [isInView, setIsInView] = useState(false);
+  const sectionRef = useRef<HTMLElement>(null);
   
   const autoplayPlugin = useRef(
     Autoplay({
@@ -34,30 +45,47 @@ const VideoProofSection = () => {
   const scrollPrev = useCallback(() => emblaApi?.scrollPrev(), [emblaApi]);
   const scrollNext = useCallback(() => emblaApi?.scrollNext(), [emblaApi]);
 
-  // Fetch high-resolution Vimeo thumbnails on mount
+  // Intersection Observer for lazy loading thumbnails
   useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsInView(true);
+          observer.disconnect();
+        }
+      },
+      { rootMargin: "200px" }
+    );
+
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, []);
+
+  // Fetch thumbnails only when in view
+  useEffect(() => {
+    if (!isInView) return;
+
     const fetchThumbnails = async () => {
       const thumbs: Record<string, string> = {};
       
-      await Promise.all(
+      // Fetch in parallel with error handling
+      await Promise.allSettled(
         videoProofs.map(async (video) => {
           try {
-            // Request larger thumbnail (1280px width for high quality)
             const response = await fetch(
-              `https://vimeo.com/api/oembed.json?url=https://vimeo.com/${video.vimeoId}&width=1280`
+              `https://vimeo.com/api/oembed.json?url=https://vimeo.com/${video.vimeoId}&width=640`
             );
             if (response.ok) {
               const data = await response.json();
-              // Get the base thumbnail URL and request a larger size
-              // Replace the size suffix to get full resolution
               let thumbUrl = data.thumbnail_url;
-              // Vimeo thumbnails can be resized by changing the dimensions in URL
-              // Replace _295x166 or similar with _960x540 for better quality
-              thumbUrl = thumbUrl.replace(/_\d+x\d+/, '_960x540');
+              thumbUrl = thumbUrl.replace(/_\d+x\d+/, '_480x854');
               thumbs[video.vimeoId] = thumbUrl;
             }
           } catch {
-            thumbs[video.vimeoId] = '';
+            // Silent fail - will show placeholder
           }
         })
       );
@@ -66,24 +94,24 @@ const VideoProofSection = () => {
     };
     
     fetchThumbnails();
-  }, []);
+  }, [isInView]);
 
-  const handleThumbnailLoad = (vimeoId: string) => {
+  const handleThumbnailLoad = useCallback((vimeoId: string) => {
     setLoadedThumbnails(prev => new Set(prev).add(vimeoId));
-  };
+  }, []);
 
   const getFullVideoUrl = (vimeoId: string) => 
     `https://player.vimeo.com/video/${vimeoId}?autoplay=1&loop=1&muted=0&badge=0&autopause=0&controls=1&playsinline=1&dnt=1`;
 
-  const handleVideoClick = (video: typeof videoProofs[0]) => {
+  const handleVideoClick = useCallback((video: typeof videoProofs[0]) => {
     setSelectedVideo(video);
-  };
+  }, []);
 
-  const handleClose = () => {
+  const handleClose = useCallback(() => {
     setSelectedVideo(null);
-  };
+  }, []);
 
-  const handleCTA = () => {
+  const handleCTA = useCallback(() => {
     const formSection = document.getElementById('formulario');
     if (formSection) {
       formSection.scrollIntoView({ behavior: 'smooth' });
@@ -91,10 +119,10 @@ const VideoProofSection = () => {
       window.location.href = '/formulario';
     }
     handleClose();
-  };
+  }, [handleClose]);
 
   return (
-    <section className="py-12 md:py-16 bg-background overflow-hidden">
+    <section ref={sectionRef} className="py-12 md:py-16 bg-background overflow-hidden">
       <div className="container mx-auto px-4">
         <div className="text-center mb-8">
           <h2 className="font-display text-3xl md:text-4xl lg:text-5xl text-foreground leading-tight mb-4">
@@ -131,29 +159,27 @@ const VideoProofSection = () => {
 
           <div className="overflow-hidden px-8 md:px-16" ref={emblaRef}>
             <div className="flex gap-3 lg:gap-4">
-              {videoProofs.map((video) => (
+              {videoProofs.map((video, index) => (
                 <div key={video.id} className="flex-none w-[200px] lg:w-[220px] xl:w-[240px]">
                   <div 
                     className="relative rounded-2xl overflow-hidden aspect-[9/16] bg-secondary cursor-pointer group"
                     onClick={() => handleVideoClick(video)}
                   >
-                    {/* Thumbnail Image - Full resolution, no zoom */}
-                    {thumbnails[video.vimeoId] ? (
+                    {/* Placeholder with gradient */}
+                    <div className={`absolute inset-0 ${placeholderColors[index % placeholderColors.length]}`} />
+                    
+                    {/* Thumbnail Image - Lazy loaded */}
+                    {thumbnails[video.vimeoId] && (
                       <img
                         src={thumbnails[video.vimeoId]}
                         alt={`Vídeo de ${video.username}`}
-                        className={`absolute inset-0 w-full h-full object-contain bg-black transition-opacity duration-300 ${
+                        className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-300 ${
                           loadedThumbnails.has(video.vimeoId) ? 'opacity-100' : 'opacity-0'
                         }`}
                         loading="lazy"
                         decoding="async"
                         onLoad={() => handleThumbnailLoad(video.vimeoId)}
                       />
-                    ) : null}
-                    
-                    {/* Loading skeleton */}
-                    {!loadedThumbnails.has(video.vimeoId) && (
-                      <div className="absolute inset-0 bg-secondary animate-pulse" />
                     )}
                     
                     {/* Play button overlay */}
@@ -213,6 +239,7 @@ const VideoProofSection = () => {
                   allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media"
                   allowFullScreen
                   title={`Vídeo de ${selectedVideo.username}`}
+                  loading="lazy"
                 />
               </div>
 
@@ -233,6 +260,8 @@ const VideoProofSection = () => {
       </Dialog>
     </section>
   );
-};
+});
+
+VideoProofSection.displayName = "VideoProofSection";
 
 export default VideoProofSection;
