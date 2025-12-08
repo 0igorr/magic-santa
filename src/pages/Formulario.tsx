@@ -791,7 +791,7 @@ const Formulario = () => {
                           <div className="flex items-baseline gap-2 mt-2">
                             <span className="text-2xl md:text-3xl font-bold" style={{
                         color: '#7B2D3A'
-                      }}>R$ 17,90</span>
+                      }}>R$ 14,90</span>
                           </div>
                         </div>
                         
@@ -881,7 +881,7 @@ const Formulario = () => {
                           <div className="flex items-baseline gap-2 mt-2">
                             <span className="text-2xl md:text-3xl font-bold" style={{
                         color: '#B08D57'
-                      }}>R$ 24,90</span>
+                      }}>R$17,90</span>
                             <span className="text-sm line-through" style={{
                         color: 'rgba(255, 251, 242, 0.5)'
                       }}>R$ 49,90</span>
