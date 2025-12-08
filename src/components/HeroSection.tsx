@@ -1,14 +1,11 @@
-import { useState } from "react";
-import { motion } from "framer-motion";
+import { useState, lazy, Suspense } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Star, X } from "lucide-react";
-import {
-  Dialog,
-  DialogContent,
-  DialogTitle,
-} from "@/components/ui/dialog";
-import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
+
+// Lazy load Dialog for better initial bundle size
+const Dialog = lazy(() => import("@/components/ui/dialog").then(m => ({ default: m.Dialog })));
+const DialogContent = lazy(() => import("@/components/ui/dialog").then(m => ({ default: m.DialogContent })));
 
 const HeroSection = () => {
   const [isVideoOpen, setIsVideoOpen] = useState(false);
@@ -22,7 +19,7 @@ const HeroSection = () => {
   return (
     <>
       <section id="hero" className="relative h-[85vh] flex items-center justify-center overflow-hidden pt-16">
-        {/* Background Image - Optimized with loading priority */}
+        {/* Background Image - Optimized with native lazy loading disabled for LCP */}
         <div className="absolute inset-0 z-0">
           <img
             alt="Santa in cozy workshop"
@@ -35,14 +32,9 @@ const HeroSection = () => {
           <div className="absolute inset-0 bg-black/50" />
         </div>
 
-        {/* Content */}
+        {/* Content - CSS animations instead of Framer Motion for critical path */}
         <div className="relative z-10 container text-center my-0 px-[15px] py-0 mx-0 pb-20 pt-[70px]">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            className="max-w-3xl mx-auto"
-          >
+          <div className="max-w-3xl mx-auto animate-fade-in-up">
             <h1 className="sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-3 leading-tight text-primary-foreground text-2xl">
               A melhor e inesquecível surpresa
               <br />
@@ -50,22 +42,18 @@ const HeroSection = () => {
               <br />
             </h1>
             
-            <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.2 }}
-              className="text-base sm:text-lg md:text-xl text-white/95 mb-8 leading-relaxed px-4"
+            <p
+              className="text-base sm:text-lg md:text-xl text-white/95 mb-8 leading-relaxed px-4 animate-fade-in-up"
+              style={{ animationDelay: "0.2s" }}
             >
               Vídeo <span className="italic font-semibold">personalizado</span> do Papai Noel que irá{" "}
               <span className="font-semibold">encantar as crianças</span>. Leve a real{" "}
               <span className="italic font-semibold">magia do Natal</span> para seu lar!
-            </motion.p>
+            </p>
 
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.4 }}
-              className="flex flex-col items-center gap-4 mb-6"
+            <div
+              className="flex flex-col items-center gap-4 mb-6 animate-fade-in-up"
+              style={{ animationDelay: "0.4s" }}
             >
               <Link to="/formulario" className="w-full max-w-md">
                 <Button
@@ -92,15 +80,13 @@ const HeroSection = () => {
                 </div>
                 <span className="font-medium">Veja o vídeo</span>
               </button>
-            </motion.div>
+            </div>
 
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.8, delay: 0.6 }}
-              className="flex flex-col sm:flex-row items-center justify-center gap-4 text-white/90 text-sm"
+            <div
+              className="flex flex-col sm:flex-row items-center justify-center gap-4 text-white/90 text-sm animate-fade-in-up"
+              style={{ animationDelay: "0.6s" }}
             >
-              {/* Trustpilot Section */}
+              {/* Trustpilot Section - Inline SVG for faster render */}
               <div className="flex items-center gap-2 bg-white/10 backdrop-blur-sm px-4 py-2 rounded-lg">
                 <div className="bg-white px-2 py-1 rounded">
                   <svg width="80" height="16" viewBox="0 0 80 16" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -118,47 +104,48 @@ const HeroSection = () => {
                   <span className="text-xs font-medium">4,7 de 1429 avaliações</span>
                 </div>
               </div>
-            </motion.div>
-          </motion.div>
+            </div>
+          </div>
         </div>
       </section>
 
-      {/* Video Modal */}
-      <Dialog open={isVideoOpen} onOpenChange={setIsVideoOpen}>
-        <DialogContent className="max-w-4xl w-[95vw] p-0 bg-black/95 border-white/10 overflow-hidden">
-          <VisuallyHidden>
-            <DialogTitle>Vídeo de apresentação</DialogTitle>
-          </VisuallyHidden>
-          
-          <button
-            onClick={() => setIsVideoOpen(false)}
-            className="absolute right-3 top-3 z-50 p-2 rounded-full bg-black/60 hover:bg-black/80 transition-colors"
-          >
-            <X className="w-5 h-5 text-white" />
-          </button>
+      {/* Video Modal - Lazy loaded */}
+      {isVideoOpen && (
+        <Suspense fallback={<div className="fixed inset-0 bg-black/80 z-50 flex items-center justify-center"><div className="animate-spin w-8 h-8 border-4 border-white border-t-transparent rounded-full" /></div>}>
+          <Dialog open={isVideoOpen} onOpenChange={setIsVideoOpen}>
+            <DialogContent className="max-w-4xl w-[95vw] p-0 bg-black/95 border-white/10 overflow-hidden">
+              <button
+                onClick={() => setIsVideoOpen(false)}
+                className="absolute right-3 top-3 z-50 p-2 rounded-full bg-black/60 hover:bg-black/80 transition-colors"
+              >
+                <X className="w-5 h-5 text-white" />
+              </button>
 
-          <div className="relative w-full" style={{ paddingTop: "56.25%" }}>
-            <iframe
-              src="https://player.vimeo.com/video/1144190110?badge=0&autopause=0&player_id=0&app_id=58479&autoplay=1&loop=1"
-              frameBorder="0"
-              allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
-              referrerPolicy="strict-origin-when-cross-origin"
-              className="absolute inset-0 w-full h-full"
-              title="Vídeo de apresentação"
-            />
-          </div>
+              <div className="relative w-full" style={{ paddingTop: "56.25%" }}>
+                <iframe
+                  src="https://player.vimeo.com/video/1144190110?badge=0&autopause=0&player_id=0&app_id=58479&autoplay=1&loop=1"
+                  frameBorder="0"
+                  allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
+                  referrerPolicy="strict-origin-when-cross-origin"
+                  className="absolute inset-0 w-full h-full"
+                  title="Vídeo de apresentação"
+                  loading="lazy"
+                />
+              </div>
 
-          <div className="p-4 flex justify-center">
-            <Button
-              onClick={handleCTA}
-              size="lg"
-              className="bg-primary hover:bg-primary/90 text-white text-base md:text-lg px-8 py-6 rounded-full shadow-button font-bold"
-            >
-              Criar o vídeo mágico ✨
-            </Button>
-          </div>
-        </DialogContent>
-      </Dialog>
+              <div className="p-4 flex justify-center">
+                <Button
+                  onClick={handleCTA}
+                  size="lg"
+                  className="bg-primary hover:bg-primary/90 text-white text-base md:text-lg px-8 py-6 rounded-full shadow-button font-bold"
+                >
+                  Criar o vídeo mágico ✨
+                </Button>
+              </div>
+            </DialogContent>
+          </Dialog>
+        </Suspense>
+      )}
     </>
   );
 };
