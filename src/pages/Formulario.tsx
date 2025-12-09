@@ -942,7 +942,7 @@ const Formulario = () => {
                           <li className="flex items-center gap-3">
                             <span className="text-sm" style={{
                         color: '#2F3730'
-                      }}>• Vídeo personalizado em HD</span>
+                      }}>• Vídeo personalizado qualidade comum</span>
                           </li>
                           <li className="flex items-center gap-3">
                             <span className="text-sm" style={{
@@ -1059,7 +1059,7 @@ const Formulario = () => {
                       }} />
                             <span className="text-sm" style={{
                         color: '#FFFBF2'
-                      }}>Vídeo em qualidade 4K</span>
+                      }}>Vídeo em qualidade premium</span>
                           </li>
                           <li className="flex items-center gap-3">
                             <Check className="w-4 h-4" style={{
