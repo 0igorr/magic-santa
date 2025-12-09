@@ -1083,7 +1083,7 @@ const Formulario = () => {
                       }} />
                             <span className="text-sm" style={{
                         color: '#FFFBF2'
-                      }}>Suporte prioritário</span>
+                      }}>Suporte prioritário 24h</span>
                           </li>
                         </ul>
 
