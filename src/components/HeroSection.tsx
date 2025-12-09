@@ -97,7 +97,7 @@ const HeroSection = () => {
               <div className="relative w-full" style={{
             paddingTop: "56.25%"
           }}>
-                <iframe src="https://player.vimeo.com/video/1144190110?badge=0&autopause=0&player_id=0&app_id=58479&autoplay=1&loop=1" frameBorder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" referrerPolicy="strict-origin-when-cross-origin" className="absolute inset-0 w-full h-full" title="Vídeo de apresentação" loading="lazy" />
+                <iframe src="https://player.vimeo.com/video/1144733735?badge=0&autopause=0&player_id=0&app_id=58479&autoplay=1&loop=1&title=0&byline=0&portrait=0" frameBorder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" referrerPolicy="strict-origin-when-cross-origin" className="absolute inset-0 w-full h-full" title="Vídeo de apresentação" loading="lazy" />
               </div>
 
               <div className="p-4 flex justify-center">
