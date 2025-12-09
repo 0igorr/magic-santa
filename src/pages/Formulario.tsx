@@ -457,86 +457,223 @@ const Formulario = () => {
                   <p className="text-sm text-muted-foreground">
                     O que o Papai Noel deve dizer sobre a criança?
                   </p>
-                  <SelectWithCustom
-                    value={secretMessage}
-                    onValueChange={setSecretMessage}
-                    placeholder="Selecione uma opção..."
-                    maxCustomLength={120}
-                    options={[
-                      { value: "É o melhor irmão.", label: "É o melhor irmão." },
-                      { value: "É a melhor irmã.", label: "É a melhor irmã." },
-                      { value: "É o melhor filho.", label: "É o melhor filho." },
-                      { value: "É a melhor filha.", label: "É a melhor filha." },
-                      { value: "É o melhor neto.", label: "É o melhor neto." },
-                      { value: "É a melhor neta.", label: "É a melhor neta." },
-                      { value: "É o melhor sobrinho.", label: "É o melhor sobrinho." },
-                      { value: "É a melhor sobrinha.", label: "É a melhor sobrinha." },
-                      { value: "É o melhor amigo do mundo.", label: "É o melhor amigo do mundo." },
-                      { value: "É a melhor amiga do mundo.", label: "É a melhor amiga do mundo." },
-                      { value: "É o melhor dançarino do mundo.", label: "É o melhor dançarino do mundo." },
-                      { value: "É a melhor dançarina do mundo.", label: "É a melhor dançarina do mundo." },
-                      { value: "É o melhor cantor do mundo.", label: "É o melhor cantor do mundo." },
-                      { value: "É a melhor cantora do mundo.", label: "É a melhor cantora do mundo." },
-                      { value: "É muito divertido.", label: "É muito divertido." },
-                      { value: "É muito divertida.", label: "É muito divertida." },
-                      { value: "É muito minucioso.", label: "É muito minucioso." },
-                      { value: "É muito minuciosa.", label: "É muito minuciosa." },
-                      { value: "É muito valente.", label: "É muito valente." },
-                      { value: "É muito respeitoso.", label: "É muito respeitoso." },
-                      { value: "É muito respeitosa.", label: "É muito respeitosa." },
-                      { value: "É muito bom em tecnologia.", label: "É muito bom em tecnologia." },
-                      { value: "É muito boa em tecnologia.", label: "É muito boa em tecnologia." },
-                      { value: "É um mestre na cozinha.", label: "É um mestre na cozinha." },
-                      { value: "É uma mestra na cozinha.", label: "É uma mestra na cozinha." },
-                      { value: "É um artista incrível.", label: "É um artista incrível." },
-                      { value: "É uma artista incrível.", label: "É uma artista incrível." },
-                      { value: "É o melhor colega de classe.", label: "É o melhor colega de classe." },
-                      { value: "É a melhor colega de classe.", label: "É a melhor colega de classe." },
-                      { value: "É muito dedicado ao que faz.", label: "É muito dedicado ao que faz." },
-                      { value: "É muito dedicada ao que faz.", label: "É muito dedicada ao que faz." },
-                      { value: "É muito bom em desenhar.", label: "É muito bom em desenhar." },
-                      { value: "É muito boa em desenhar.", label: "É muito boa em desenhar." },
-                      { value: "É muito criativo com as histórias.", label: "É muito criativo com as histórias." },
-                      { value: "É muito criativa com as histórias.", label: "É muito criativa com as histórias." },
-                      { value: "É muito honesto.", label: "É muito honesto." },
-                      { value: "É muito honesta.", label: "É muito honesta." },
-                      { value: "É muito gentil.", label: "É muito gentil." },
-                      { value: "É muito amigável.", label: "É muito amigável." },
-                      { value: "É muito inteligente.", label: "É muito inteligente." },
-                      { value: "É um bom líder.", label: "É um bom líder." },
-                      { value: "É uma boa líder.", label: "É uma boa líder." },
-                      { value: "É muito amoroso.", label: "É muito amoroso." },
-                      { value: "É muito amorosa.", label: "É muito amorosa." },
-                      { value: "É um excelente ouvinte.", label: "É um excelente ouvinte." },
-                      { value: "É uma excelente ouvinte.", label: "É uma excelente ouvinte." },
-                      { value: "Adora ler muito bem.", label: "Adora ler muito bem." },
-                      { value: "Cresce muito rápido.", label: "Cresce muito rápido." },
-                      { value: "Conta lindas histórias.", label: "Conta lindas histórias." },
-                      { value: "Adora fazer esportes.", label: "Adora fazer esportes." },
-                      { value: "Adora jogar jogos.", label: "Adora jogar jogos." },
-                      { value: "Adora rir.", label: "Adora rir." },
-                      { value: "Gosta de contar piadas.", label: "Gosta de contar piadas." },
-                      { value: "Gosta de tocar música.", label: "Gosta de tocar música." },
-                      { value: "Vai muito bem na escola.", label: "Vai muito bem na escola." },
-                      { value: "Sabe andar de bicicleta.", label: "Sabe andar de bicicleta." },
-                      { value: "Tem uma grande imaginação.", label: "Tem uma grande imaginação." },
-                      { value: "Tem um sorriso lindo.", label: "Tem um sorriso lindo." },
-                      { value: "Está atento(a) aos outros.", label: "Está atento(a) aos outros." },
-                      { value: "Estuda bastante.", label: "Estuda bastante." },
-                      { value: "Tem um senso de justiça admirável.", label: "Tem um senso de justiça admirável." },
-                      { value: "Gosta de cuidar dos animais.", label: "Gosta de cuidar dos animais." },
-                      { value: "Tem uma risada muito contagiante.", label: "Tem uma risada muito contagiante." },
-                      { value: "Consegue ver o lado bom das coisas.", label: "Consegue ver o lado bom das coisas." },
-                      { value: "É muito minucioso(a) com os detalhes.", label: "É muito minucioso(a) com os detalhes." },
-                      { value: "Adora passar tempo com o vovô.", label: "Adora passar tempo com o vovô." },
-                      { value: "Adora passar tempo com a vovó.", label: "Adora passar tempo com a vovó." },
-                      { value: "É um presente para todos nós.", label: "É um presente para todos nós." },
-                      { value: "Tem um coração muito generoso.", label: "Tem um coração muito generoso." },
-                      { value: "É o sol da nossa casa.", label: "É o sol da nossa casa." },
-                      { value: "Tem um senso de humor único.", label: "Tem um senso de humor único." },
-                      { value: "Escreve lindas histórias.", label: "Escreve lindas histórias." },
-                    ]}
-                  />
+                  <SelectWithCustom value={secretMessage} onValueChange={setSecretMessage} placeholder="Selecione uma opção..." maxCustomLength={120} options={[{
+                value: "É o melhor irmão.",
+                label: "É o melhor irmão."
+              }, {
+                value: "É a melhor irmã.",
+                label: "É a melhor irmã."
+              }, {
+                value: "É o melhor filho.",
+                label: "É o melhor filho."
+              }, {
+                value: "É a melhor filha.",
+                label: "É a melhor filha."
+              }, {
+                value: "É o melhor neto.",
+                label: "É o melhor neto."
+              }, {
+                value: "É a melhor neta.",
+                label: "É a melhor neta."
+              }, {
+                value: "É o melhor sobrinho.",
+                label: "É o melhor sobrinho."
+              }, {
+                value: "É a melhor sobrinha.",
+                label: "É a melhor sobrinha."
+              }, {
+                value: "É o melhor amigo do mundo.",
+                label: "É o melhor amigo do mundo."
+              }, {
+                value: "É a melhor amiga do mundo.",
+                label: "É a melhor amiga do mundo."
+              }, {
+                value: "É o melhor dançarino do mundo.",
+                label: "É o melhor dançarino do mundo."
+              }, {
+                value: "É a melhor dançarina do mundo.",
+                label: "É a melhor dançarina do mundo."
+              }, {
+                value: "É o melhor cantor do mundo.",
+                label: "É o melhor cantor do mundo."
+              }, {
+                value: "É a melhor cantora do mundo.",
+                label: "É a melhor cantora do mundo."
+              }, {
+                value: "É muito divertido.",
+                label: "É muito divertido."
+              }, {
+                value: "É muito divertida.",
+                label: "É muito divertida."
+              }, {
+                value: "É muito minucioso.",
+                label: "É muito minucioso."
+              }, {
+                value: "É muito minuciosa.",
+                label: "É muito minuciosa."
+              }, {
+                value: "É muito valente.",
+                label: "É muito valente."
+              }, {
+                value: "É muito respeitoso.",
+                label: "É muito respeitoso."
+              }, {
+                value: "É muito respeitosa.",
+                label: "É muito respeitosa."
+              }, {
+                value: "É muito bom em tecnologia.",
+                label: "É muito bom em tecnologia."
+              }, {
+                value: "É muito boa em tecnologia.",
+                label: "É muito boa em tecnologia."
+              }, {
+                value: "É um mestre na cozinha.",
+                label: "É um mestre na cozinha."
+              }, {
+                value: "É uma mestra na cozinha.",
+                label: "É uma mestra na cozinha."
+              }, {
+                value: "É um artista incrível.",
+                label: "É um artista incrível."
+              }, {
+                value: "É uma artista incrível.",
+                label: "É uma artista incrível."
+              }, {
+                value: "É o melhor colega de classe.",
+                label: "É o melhor colega de classe."
+              }, {
+                value: "É a melhor colega de classe.",
+                label: "É a melhor colega de classe."
+              }, {
+                value: "É muito dedicado ao que faz.",
+                label: "É muito dedicado ao que faz."
+              }, {
+                value: "É muito dedicada ao que faz.",
+                label: "É muito dedicada ao que faz."
+              }, {
+                value: "É muito bom em desenhar.",
+                label: "É muito bom em desenhar."
+              }, {
+                value: "É muito boa em desenhar.",
+                label: "É muito boa em desenhar."
+              }, {
+                value: "É muito criativo com as histórias.",
+                label: "É muito criativo com as histórias."
+              }, {
+                value: "É muito criativa com as histórias.",
+                label: "É muito criativa com as histórias."
+              }, {
+                value: "É muito honesto.",
+                label: "É muito honesto."
+              }, {
+                value: "É muito honesta.",
+                label: "É muito honesta."
+              }, {
+                value: "É muito gentil.",
+                label: "É muito gentil."
+              }, {
+                value: "É muito amigável.",
+                label: "É muito amigável."
+              }, {
+                value: "É muito inteligente.",
+                label: "É muito inteligente."
+              }, {
+                value: "É um bom líder.",
+                label: "É um bom líder."
+              }, {
+                value: "É uma boa líder.",
+                label: "É uma boa líder."
+              }, {
+                value: "É muito amoroso.",
+                label: "É muito amoroso."
+              }, {
+                value: "É muito amorosa.",
+                label: "É muito amorosa."
+              }, {
+                value: "É um excelente ouvinte.",
+                label: "É um excelente ouvinte."
+              }, {
+                value: "É uma excelente ouvinte.",
+                label: "É uma excelente ouvinte."
+              }, {
+                value: "Adora ler muito bem.",
+                label: "Adora ler muito bem."
+              }, {
+                value: "Cresce muito rápido.",
+                label: "Cresce muito rápido."
+              }, {
+                value: "Conta lindas histórias.",
+                label: "Conta lindas histórias."
+              }, {
+                value: "Adora fazer esportes.",
+                label: "Adora fazer esportes."
+              }, {
+                value: "Adora jogar jogos.",
+                label: "Adora jogar jogos."
+              }, {
+                value: "Adora rir.",
+                label: "Adora rir."
+              }, {
+                value: "Gosta de contar piadas.",
+                label: "Gosta de contar piadas."
+              }, {
+                value: "Gosta de tocar música.",
+                label: "Gosta de tocar música."
+              }, {
+                value: "Vai muito bem na escola.",
+                label: "Vai muito bem na escola."
+              }, {
+                value: "Sabe andar de bicicleta.",
+                label: "Sabe andar de bicicleta."
+              }, {
+                value: "Tem uma grande imaginação.",
+                label: "Tem uma grande imaginação."
+              }, {
+                value: "Tem um sorriso lindo.",
+                label: "Tem um sorriso lindo."
+              }, {
+                value: "Está atento(a) aos outros.",
+                label: "Está atento(a) aos outros."
+              }, {
+                value: "Estuda bastante.",
+                label: "Estuda bastante."
+              }, {
+                value: "Tem um senso de justiça admirável.",
+                label: "Tem um senso de justiça admirável."
+              }, {
+                value: "Gosta de cuidar dos animais.",
+                label: "Gosta de cuidar dos animais."
+              }, {
+                value: "Tem uma risada muito contagiante.",
+                label: "Tem uma risada muito contagiante."
+              }, {
+                value: "Consegue ver o lado bom das coisas.",
+                label: "Consegue ver o lado bom das coisas."
+              }, {
+                value: "É muito minucioso(a) com os detalhes.",
+                label: "É muito minucioso(a) com os detalhes."
+              }, {
+                value: "Adora passar tempo com o vovô.",
+                label: "Adora passar tempo com o vovô."
+              }, {
+                value: "Adora passar tempo com a vovó.",
+                label: "Adora passar tempo com a vovó."
+              }, {
+                value: "É um presente para todos nós.",
+                label: "É um presente para todos nós."
+              }, {
+                value: "Tem um coração muito generoso.",
+                label: "Tem um coração muito generoso."
+              }, {
+                value: "É o sol da nossa casa.",
+                label: "É o sol da nossa casa."
+              }, {
+                value: "Tem um senso de humor único.",
+                label: "Tem um senso de humor único."
+              }, {
+                value: "Escreve lindas histórias.",
+                label: "Escreve lindas histórias."
+              }]} />
                 </div>
 
                 {/* Conselho Secreto */}
@@ -563,13 +700,7 @@ const Formulario = () => {
                   <Label htmlFor="activity" className="text-base md:text-lg font-semibold">
                     Opções de Atividade ou Elogio
                   </Label>
-                  <SelectWithCustom
-                    value={activity}
-                    onValueChange={setActivity}
-                    placeholder="Selecione uma opção..."
-                    maxCustomLength={120}
-                    options={getActivityOptions()}
-                  />
+                  <SelectWithCustom value={activity} onValueChange={setActivity} placeholder="Selecione uma opção..." maxCustomLength={120} options={getActivityOptions()} />
                 </div>
 
                 {/* Característica Principal */}
@@ -577,21 +708,28 @@ const Formulario = () => {
                   <Label htmlFor="characteristic" className="text-base md:text-lg font-semibold">
                     Característica Principal
                   </Label>
-                  <SelectWithCustom
-                    value={characteristic}
-                    onValueChange={setCharacteristic}
-                    placeholder="Selecione uma característica..."
-                    maxCustomLength={120}
-                    options={[
-                      { value: "caring", label: "Carinhoso(a)" },
-                      { value: "brave", label: "Corajoso(a)" },
-                      { value: "creative", label: "Criativo(a)" },
-                      { value: "responsible", label: "Responsável" },
-                      { value: "curious", label: "Curioso(a)" },
-                      { value: "helpful", label: "Prestativo(a)" },
-                      { value: "joyful", label: "Alegre" },
-                    ]}
-                  />
+                  <SelectWithCustom value={characteristic} onValueChange={setCharacteristic} placeholder="Selecione uma característica..." maxCustomLength={120} options={[{
+                value: "caring",
+                label: "Carinhoso(a)"
+              }, {
+                value: "brave",
+                label: "Corajoso(a)"
+              }, {
+                value: "creative",
+                label: "Criativo(a)"
+              }, {
+                value: "responsible",
+                label: "Responsável"
+              }, {
+                value: "curious",
+                label: "Curioso(a)"
+              }, {
+                value: "helpful",
+                label: "Prestativo(a)"
+              }, {
+                value: "joyful",
+                label: "Alegre"
+              }]} />
                 </div>
 
                 {/* Navigation */}
@@ -814,7 +952,7 @@ const Formulario = () => {
                           <li className="flex items-center gap-3">
                             <span className="text-sm" style={{
                         color: '#2F3730'
-                      }}>• Entrega de 24 a 48h</span>
+                      }}>• Entrega até 24h</span>
                           </li>
                         </ul>
 
@@ -826,7 +964,10 @@ const Formulario = () => {
                         description: "Você precisa aceitar os termos de autorização de imagem para continuar.",
                         variant: "destructive"
                       });
-                      imageTermsRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                      imageTermsRef.current?.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'center'
+                      });
                       return;
                     }
                     if (!acceptedPurchaseTermsComum) {
@@ -934,7 +1075,7 @@ const Formulario = () => {
                       }} />
                             <span className="text-sm" style={{
                         color: '#FFFBF2'
-                      }}>Entrega express até 24h   </span>
+                      }}>Entrega ultra rápida em até 12h</span>
                           </li>
                           <li className="flex items-center gap-3">
                             <Check className="w-4 h-4" style={{
@@ -982,7 +1123,10 @@ const Formulario = () => {
                         description: "Você precisa aceitar os termos de autorização de imagem para continuar.",
                         variant: "destructive"
                       });
-                      imageTermsRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                      imageTermsRef.current?.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'center'
+                      });
                       return;
                     }
                     if (!acceptedPurchaseTermsExclusivo) {
