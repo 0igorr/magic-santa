@@ -117,9 +117,11 @@ const FormularioErro = () => {
   const [phone, setPhone] = useState("");
   const [cpfCnpj, setCpfCnpj] = useState("");
   const [acceptedImageTerms, setAcceptedImageTerms] = useState(false);
+  const [imageTermsError, setImageTermsError] = useState(false);
   const [acceptedFinalTerms, setAcceptedFinalTerms] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
+  const imageTermsRef = useRef<HTMLDivElement | null>(null);
   const {
     toast
   } = useToast();
@@ -711,8 +713,11 @@ const FormularioErro = () => {
                   <input ref={fileInputRef} type="file" accept="image/jpeg,image/png,image/webp" onChange={handlePhotoChange} className="hidden" />
 
                   {/* Terms checkbox for image upload */}
-                  <div className="flex items-start gap-3 mt-4 p-4 bg-muted/50 rounded-xl border border-border/50">
-                    <Checkbox id="imageTerms" checked={acceptedImageTerms} onCheckedChange={checked => setAcceptedImageTerms(checked as boolean)} className="mt-0.5" />
+                  <div ref={imageTermsRef} className={`flex items-start gap-3 mt-4 p-4 bg-muted/50 rounded-xl transition-all ${imageTermsError ? 'border-2 border-red-500' : 'border border-border/50'}`}>
+                    <Checkbox id="imageTerms" checked={acceptedImageTerms} onCheckedChange={checked => {
+                      setAcceptedImageTerms(checked as boolean);
+                      if (checked) setImageTermsError(false);
+                    }} className={`mt-0.5 ${imageTermsError ? 'border-red-500' : ''}`} />
                     <label htmlFor="imageTerms" className="text-xs text-muted-foreground leading-relaxed cursor-pointer">
                       Confirmo que tenho autorização legal para enviar estas imagens e dados, e concordo com os{" "}
                       <Link to="/politicas" className="text-primary hover:underline" target="_blank">
@@ -762,14 +767,26 @@ const FormularioErro = () => {
                   </div>}
 
                 {/* Create Video Button - Shows when all fields are filled */}
-                {email && fullName && phone && cpfCnpj && acceptedImageTerms && <motion.div initial={{
+                {email && fullName && phone && cpfCnpj && <motion.div initial={{
               opacity: 0,
               y: 20
             }} animate={{
               opacity: 1,
               y: 0
             }} className="space-y-4">
-                    <Button size="lg" className="w-full bg-primary hover:bg-primary/90 text-lg py-6" disabled={!acceptedFinalTerms || isSubmitting} onClick={handleSubmitForm}>
+                    <Button size="lg" className="w-full bg-primary hover:bg-primary/90 text-lg py-6" disabled={!acceptedFinalTerms || isSubmitting} onClick={() => {
+                      if (!acceptedImageTerms) {
+                        setImageTermsError(true);
+                        toast({
+                          title: "Atenção",
+                          description: "Você precisa aceitar os termos de autorização de imagem para continuar.",
+                          variant: "destructive"
+                        });
+                        imageTermsRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        return;
+                      }
+                      handleSubmitForm();
+                    }}>
                       {isSubmitting ? <>
                           <Loader2 className="w-5 h-5 mr-2 animate-spin" />
                           Enviando...
