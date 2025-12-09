@@ -1,17 +1,16 @@
 import { memo } from "react";
 import { Play } from "lucide-react";
 import { Button } from "@/components/ui/button";
-
 const ProductShowcase = memo(() => {
   const scrollToForm = () => {
     const heroSection = document.getElementById("hero");
     if (heroSection) {
-      heroSection.scrollIntoView({ behavior: "smooth" });
+      heroSection.scrollIntoView({
+        behavior: "smooth"
+      });
     }
   };
-
-  return (
-    <section className="py-12 md:py-16 px-4 bg-background">
+  return <section className="py-12 md:py-16 px-4 bg-background">
       <div className="container mx-auto max-w-4xl">
         <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-center text-foreground mb-8 md:mb-12 font-christmas">
           Os mais vendidos
@@ -28,11 +27,7 @@ const ProductShowcase = memo(() => {
 
               {/* Product Image */}
               <div className="aspect-[4/3] bg-secondary/30 relative">
-                <img
-                  src="/lovable-uploads/d22e1aad-ec41-4425-a972-eb2316affb90.jpg"
-                  alt="Vídeo personalizado do Papai Noel"
-                  className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-                />
+                <img src="/lovable-uploads/d22e1aad-ec41-4425-a972-eb2316affb90.jpg" alt="Vídeo personalizado do Papai Noel" className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" />
                 
                 {/* Play Button Overlay */}
                 <div className="absolute inset-0 flex items-center justify-center">
@@ -50,26 +45,20 @@ const ProductShowcase = memo(() => {
               </h3>
               
               <div className="flex items-center justify-center gap-2">
-                <span className="text-muted-foreground line-through text-sm">R$ 18,90</span>
+                <span className="text-muted-foreground line-through text-sm">R$ 29,90</span>
                 <span className="text-2xl md:text-3xl font-bold text-primary">
                   R$ 14,90
                 </span>
               </div>
 
-              <Button 
-                onClick={scrollToForm}
-                className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-bold py-3 text-base md:text-lg rounded-full shadow-md hover:shadow-lg transition-all duration-300"
-              >
+              <Button onClick={scrollToForm} className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-bold py-3 text-base md:text-lg rounded-full shadow-md hover:shadow-lg transition-all duration-300">
                 Criar vídeo
               </Button>
             </div>
           </div>
         </div>
       </div>
-    </section>
-  );
+    </section>;
 });
-
 ProductShowcase.displayName = "ProductShowcase";
-
 export default ProductShowcase;
