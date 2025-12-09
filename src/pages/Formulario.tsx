@@ -952,7 +952,7 @@ const Formulario = () => {
                           <li className="flex items-center gap-3">
                             <span className="text-sm" style={{
                         color: '#2F3730'
-                      }}>• Entrega até 24h</span>
+                      }}>• Entrega comum em até 24h</span>
                           </li>
                         </ul>
 
@@ -1075,7 +1075,7 @@ const Formulario = () => {
                       }} />
                             <span className="text-sm" style={{
                         color: '#FFFBF2'
-                      }}>Entrega ultra rápida em até 12h</span>
+                      }}>Entrega prioritária em até 12h</span>
                           </li>
                           <li className="flex items-center gap-3">
                             <Check className="w-4 h-4" style={{
