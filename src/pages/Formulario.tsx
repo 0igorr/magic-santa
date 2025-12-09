@@ -118,10 +118,12 @@ const Formulario = () => {
   const [isGiftCard, setIsGiftCard] = useState(false);
   const [selectedPlan, setSelectedPlan] = useState<"comum" | "exclusivo" | null>(null);
   const [acceptedImageTerms, setAcceptedImageTerms] = useState(false);
+  const [imageTermsError, setImageTermsError] = useState(false);
   const [acceptedPurchaseTermsComum, setAcceptedPurchaseTermsComum] = useState(false);
   const [acceptedPurchaseTermsExclusivo, setAcceptedPurchaseTermsExclusivo] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
+  const imageTermsRef = useRef<HTMLDivElement | null>(null);
   const {
     toast
   } = useToast();
@@ -664,12 +666,15 @@ const Formulario = () => {
                   <input ref={fileInputRef} type="file" accept="image/jpeg,image/png,image/webp" onChange={handlePhotoChange} className="hidden" />
 
                   {/* Terms checkbox for image upload */}
-                  <div className="flex items-start gap-3 mt-4 p-4 rounded-xl" style={{
+                  <div ref={imageTermsRef} className="flex items-start gap-3 mt-4 p-4 rounded-xl transition-all" style={{
                 backgroundColor: 'rgba(176, 141, 87, 0.1)',
-                border: '1px solid rgba(176, 141, 87, 0.2)'
+                border: imageTermsError ? '2px solid #DC2626' : '1px solid rgba(176, 141, 87, 0.2)'
               }}>
-                    <Checkbox id="imageTerms" checked={acceptedImageTerms} onCheckedChange={checked => setAcceptedImageTerms(checked as boolean)} className="mt-0.5" style={{
-                  borderColor: '#B08D57'
+                    <Checkbox id="imageTerms" checked={acceptedImageTerms} onCheckedChange={checked => {
+                  setAcceptedImageTerms(checked as boolean);
+                  if (checked) setImageTermsError(false);
+                }} className="mt-0.5" style={{
+                  borderColor: imageTermsError ? '#DC2626' : '#B08D57'
                 }} />
                     <label htmlFor="imageTerms" className="text-xs leading-relaxed cursor-pointer" style={{
                   color: '#2F3730'
@@ -757,7 +762,7 @@ const Formulario = () => {
                   </div>}
 
                 {/* Plans Section - Shows when all fields are filled */}
-                {email && fullName && phone && cpfCnpj && (isGiftCard || acceptedImageTerms) && <motion.div initial={{
+                {email && fullName && phone && cpfCnpj && <motion.div initial={{
               opacity: 0,
               y: 20
             }} animate={{
@@ -814,6 +819,16 @@ const Formulario = () => {
                         </ul>
 
                         <Button size="lg" onClick={() => {
+                    if (!isGiftCard && !acceptedImageTerms) {
+                      setImageTermsError(true);
+                      toast({
+                        title: "Atenção",
+                        description: "Você precisa aceitar os termos de autorização de imagem para continuar.",
+                        variant: "destructive"
+                      });
+                      imageTermsRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                      return;
+                    }
                     if (!acceptedPurchaseTermsComum) {
                       toast({
                         title: "Atenção",
@@ -960,6 +975,16 @@ const Formulario = () => {
                         </div>
 
                         <Button className="w-full mt-4 font-bold uppercase tracking-wide" size="lg" onClick={() => {
+                    if (!isGiftCard && !acceptedImageTerms) {
+                      setImageTermsError(true);
+                      toast({
+                        title: "Atenção",
+                        description: "Você precisa aceitar os termos de autorização de imagem para continuar.",
+                        variant: "destructive"
+                      });
+                      imageTermsRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                      return;
+                    }
                     if (!acceptedPurchaseTermsExclusivo) {
                       toast({
                         title: "Atenção",
