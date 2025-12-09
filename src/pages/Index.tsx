@@ -14,6 +14,7 @@ import FooterSkeleton from "@/components/skeletons/FooterSkeleton";
 import GenericSectionSkeleton from "@/components/skeletons/GenericSectionSkeleton";
 
 // Lazy load below-the-fold components for better initial load
+const ProductShowcase = lazy(() => import("@/components/ProductShowcase"));
 const VideoProofSection = lazy(() => import("@/components/VideoProofSection"));
 const VideoDemo = lazy(() => import("@/components/VideoDemo"));
 const Features = lazy(() => import("@/components/Features"));
@@ -37,6 +38,9 @@ const Index = () => {
       <TrustCarousel />
       
       {/* Below-the-fold components lazy loaded with specific skeletons */}
+      <Suspense fallback={<GenericSectionSkeleton />}>
+        <ProductShowcase />
+      </Suspense>
       <Suspense fallback={<VideoProofSkeleton />}>
         <VideoProofSection />
       </Suspense>
