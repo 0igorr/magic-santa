@@ -415,7 +415,7 @@ const Formulario = () => {
                       Voltar
                     </Button>
                   </Link>
-                  <Button size="lg" disabled={!childName.trim() || !gender || !behavior} onClick={() => setCurrentStep(2)} className="bg-primary hover:bg-primary/90 gap-2">
+                  <Button size="lg" onClick={() => setCurrentStep(2)} className="bg-primary hover:bg-primary/90 gap-2">
                     Próximo
                     <ArrowRight className="w-4 h-4" />
                   </Button>
@@ -738,7 +738,7 @@ const Formulario = () => {
                     <ArrowLeft className="w-4 h-4" />
                     Voltar
                   </Button>
-                  <Button size="lg" disabled={!age || !secretMessage.trim() || !secretAdvice.trim() || !activity || !characteristic} onClick={() => setCurrentStep(3)} className="bg-primary hover:bg-primary/90 gap-2">
+                  <Button size="lg" onClick={() => setCurrentStep(3)} className="bg-primary hover:bg-primary/90 gap-2">
                     Próximo
                     <ArrowRight className="w-4 h-4" />
                   </Button>
