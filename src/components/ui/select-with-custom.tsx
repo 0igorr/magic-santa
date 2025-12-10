@@ -65,6 +65,11 @@ export function SelectWithCustom({
   if (isCustomMode) {
     return (
       <div className={`space-y-2 ${className || ""}`}>
+        <div className="bg-amber-500/10 border border-amber-500/30 rounded-lg p-3 mb-2">
+          <p className="text-xs text-amber-600 dark:text-amber-400">
+            ⚠️ <strong>Atenção:</strong> Escreva exatamente como o Papai Noel deve falar. Preste atenção na ortografia e pontuação.
+          </p>
+        </div>
         <div className="relative">
           <Input
             type="text"
