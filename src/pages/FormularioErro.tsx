@@ -529,7 +529,7 @@ const FormularioErro = () => {
                     value={secretMessage}
                     onValueChange={setSecretMessage}
                     placeholder="Selecione uma opção..."
-                    maxCustomLength={120}
+                    maxCustomLength={50}
                     options={[
                       { value: "É o melhor irmão.", label: "É o melhor irmão." },
                       { value: "É a melhor irmã.", label: "É a melhor irmã." },
@@ -620,9 +620,9 @@ const FormularioErro = () => {
                       ⚠️ <strong>Atenção:</strong> Escreva exatamente o que o Papai Noel vai falar. Preste atenção na ortografia e pontuação, pois será lido da forma que você escrever.
                     </p>
                   </div>
-                  <Textarea id="secretAdvice" placeholder="Ex: Continue sendo essa criança maravilhosa e nunca deixe de sonhar!" value={secretAdvice} onChange={e => setSecretAdvice(e.target.value.slice(0, 80))} className="min-h-[80px] text-base rounded-xl border-2 border-accent/30 focus:border-accent resize-none" maxLength={80} />
+                  <Textarea id="secretAdvice" placeholder="Ex: Continue sendo essa criança maravilhosa!" value={secretAdvice} onChange={e => setSecretAdvice(e.target.value.slice(0, 50))} className="min-h-[80px] text-base rounded-xl border-2 border-accent/30 focus:border-accent resize-none" maxLength={50} />
                   <p className="text-xs text-muted-foreground text-right">
-                    {secretAdvice.length}/80 caracteres
+                    {secretAdvice.length}/50 caracteres
                   </p>
                 </div>
 
@@ -635,7 +635,7 @@ const FormularioErro = () => {
                     value={activity}
                     onValueChange={setActivity}
                     placeholder="Selecione uma opção..."
-                    maxCustomLength={120}
+                    maxCustomLength={50}
                     options={getActivityOptions()}
                   />
                 </div>
@@ -649,15 +649,20 @@ const FormularioErro = () => {
                     value={characteristic}
                     onValueChange={setCharacteristic}
                     placeholder="Selecione uma característica..."
-                    maxCustomLength={120}
+                    maxCustomLength={50}
                     options={[
-                      { value: "caring", label: "Carinhoso(a)" },
-                      { value: "brave", label: "Corajoso(a)" },
-                      { value: "creative", label: "Criativo(a)" },
-                      { value: "responsible", label: "Responsável" },
-                      { value: "curious", label: "Curioso(a)" },
-                      { value: "helpful", label: "Prestativo(a)" },
-                      { value: "joyful", label: "Alegre" },
+                      { value: "Carinhoso", label: "Carinhoso" },
+                      { value: "Carinhosa", label: "Carinhosa" },
+                      { value: "Corajoso", label: "Corajoso" },
+                      { value: "Corajosa", label: "Corajosa" },
+                      { value: "Criativo", label: "Criativo" },
+                      { value: "Criativa", label: "Criativa" },
+                      { value: "Responsável", label: "Responsável" },
+                      { value: "Curioso", label: "Curioso" },
+                      { value: "Curiosa", label: "Curiosa" },
+                      { value: "Prestativo", label: "Prestativo" },
+                      { value: "Prestativa", label: "Prestativa" },
+                      { value: "Alegre", label: "Alegre" },
                     ]}
                   />
                 </div>
