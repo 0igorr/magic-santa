@@ -20,6 +20,9 @@ const steps = [{
 }, {
   number: 3,
   title: "Fotos e Finalização"
+}, {
+  number: 4,
+  title: "Revisão"
 }];
 
 // Age options
@@ -517,6 +520,47 @@ const FormularioErro = () => {
                   </div>
                 </div>
 
+                {/* Atividade ou Elogio */}
+                <div className="space-y-3">
+                  <Label htmlFor="activity" className="text-base md:text-lg font-semibold">
+                    Opções de Atividade ou Elogio
+                  </Label>
+                  <SelectWithCustom
+                    value={activity}
+                    onValueChange={setActivity}
+                    placeholder="Selecione uma opção..."
+                    maxCustomLength={50}
+                    options={getActivityOptions()}
+                  />
+                </div>
+
+                {/* Característica Principal */}
+                <div className="space-y-3">
+                  <Label htmlFor="characteristic" className="text-base md:text-lg font-semibold">
+                    Característica Principal
+                  </Label>
+                  <SelectWithCustom
+                    value={characteristic}
+                    onValueChange={setCharacteristic}
+                    placeholder="Selecione uma característica..."
+                    maxCustomLength={50}
+                    options={[
+                      { value: "Carinhoso", label: "Carinhoso" },
+                      { value: "Carinhosa", label: "Carinhosa" },
+                      { value: "Corajoso", label: "Corajoso" },
+                      { value: "Corajosa", label: "Corajosa" },
+                      { value: "Criativo", label: "Criativo" },
+                      { value: "Criativa", label: "Criativa" },
+                      { value: "Responsável", label: "Responsável" },
+                      { value: "Curioso", label: "Curioso" },
+                      { value: "Curiosa", label: "Curiosa" },
+                      { value: "Prestativo", label: "Prestativo" },
+                      { value: "Prestativa", label: "Prestativa" },
+                      { value: "Alegre", label: "Alegre" },
+                    ]}
+                  />
+                </div>
+
                 {/* Mensagem Secreta */}
                 <div className="space-y-3">
                   <Label htmlFor="secretMessage" className="text-base md:text-lg font-semibold">
@@ -626,47 +670,6 @@ const FormularioErro = () => {
                   </p>
                 </div>
 
-                {/* Atividade ou Elogio */}
-                <div className="space-y-3">
-                  <Label htmlFor="activity" className="text-base md:text-lg font-semibold">
-                    Opções de Atividade ou Elogio
-                  </Label>
-                  <SelectWithCustom
-                    value={activity}
-                    onValueChange={setActivity}
-                    placeholder="Selecione uma opção..."
-                    maxCustomLength={50}
-                    options={getActivityOptions()}
-                  />
-                </div>
-
-                {/* Característica Principal */}
-                <div className="space-y-3">
-                  <Label htmlFor="characteristic" className="text-base md:text-lg font-semibold">
-                    Característica Principal
-                  </Label>
-                  <SelectWithCustom
-                    value={characteristic}
-                    onValueChange={setCharacteristic}
-                    placeholder="Selecione uma característica..."
-                    maxCustomLength={50}
-                    options={[
-                      { value: "Carinhoso", label: "Carinhoso" },
-                      { value: "Carinhosa", label: "Carinhosa" },
-                      { value: "Corajoso", label: "Corajoso" },
-                      { value: "Corajosa", label: "Corajosa" },
-                      { value: "Criativo", label: "Criativo" },
-                      { value: "Criativa", label: "Criativa" },
-                      { value: "Responsável", label: "Responsável" },
-                      { value: "Curioso", label: "Curioso" },
-                      { value: "Curiosa", label: "Curiosa" },
-                      { value: "Prestativo", label: "Prestativo" },
-                      { value: "Prestativa", label: "Prestativa" },
-                      { value: "Alegre", label: "Alegre" },
-                    ]}
-                  />
-                </div>
-
                 {/* Navigation */}
                 <div className="flex justify-between pt-6">
                   <Button variant="outline" size="lg" className="gap-2" onClick={() => setCurrentStep(1)}>
@@ -772,14 +775,14 @@ const FormularioErro = () => {
                   </div>}
 
                 {/* Create Video Button - Shows when all fields are filled */}
-                {email && fullName && phone && cpfCnpj && <motion.div initial={{
+                {email && fullName && phone && cpfCnpj && photo && <motion.div initial={{
               opacity: 0,
               y: 20
             }} animate={{
               opacity: 1,
               y: 0
             }} className="space-y-4">
-                    <Button size="lg" className="w-full bg-primary hover:bg-primary/90 text-lg py-6" disabled={!acceptedFinalTerms || isSubmitting} onClick={() => {
+                    <Button size="lg" className="w-full bg-primary hover:bg-primary/90 text-lg py-6" disabled={!acceptedFinalTerms || !acceptedImageTerms} onClick={() => {
                       if (!acceptedImageTerms) {
                         setImageTermsError(true);
                         toast({
@@ -790,12 +793,10 @@ const FormularioErro = () => {
                         imageTermsRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
                         return;
                       }
-                      handleSubmitForm();
+                      setCurrentStep(4);
                     }}>
-                      {isSubmitting ? <>
-                          <Loader2 className="w-5 h-5 mr-2 animate-spin" />
-                          Enviando...
-                        </> : "Criar Vídeo"}
+                      Criar Vídeo
+                      <ArrowRight className="w-4 h-4 ml-2" />
                     </Button>
 
                     {/* Terms checkbox for final submission */}
@@ -810,11 +811,227 @@ const FormularioErro = () => {
                     </div>
                   </motion.div>}
 
+                {/* Photo required warning */}
+                {email && fullName && phone && cpfCnpj && !photo && <div className="bg-red-500/10 border border-red-500/30 rounded-lg p-4">
+                  <p className="text-sm text-red-600 dark:text-red-400">
+                    ⚠️ <strong>Foto obrigatória:</strong> Você precisa enviar uma foto da criança para continuar.
+                  </p>
+                </div>}
+
                 {/* Navigation */}
                 <div className="flex flex-col sm:flex-row gap-3 sm:justify-between pt-6">
                   <Button variant="outline" size="lg" className="gap-2 w-full sm:w-auto" onClick={() => setCurrentStep(2)}>
                     <ArrowLeft className="w-4 h-4" />
                     Voltar
+                  </Button>
+                </div>
+              </div>}
+
+            {/* Step 4 - Review */}
+            {currentStep === 4 && <div className="space-y-8">
+                <h2 className="text-2xl md:text-3xl font-bold text-foreground mb-4">
+                  Revisão Final
+                </h2>
+                
+                {/* Warning Banner */}
+                <div className="bg-red-500/10 border-2 border-red-500/50 rounded-xl p-4 md:p-6">
+                  <p className="text-base md:text-lg font-semibold text-red-600 dark:text-red-400 mb-2">
+                    ⚠️ ATENÇÃO: REVISE CUIDADOSAMENTE!
+                  </p>
+                  <p className="text-sm text-red-600/80 dark:text-red-400/80">
+                    O Papai Noel vai ler <strong>exatamente</strong> o que está escrito abaixo. Não alteramos nenhuma letra, vírgula, nome ou concordância. Revise tudo antes de confirmar!
+                  </p>
+                </div>
+
+                {/* Review Section - Dados do destinatário */}
+                <div className="space-y-4 p-4 md:p-6 bg-muted/30 rounded-xl border border-border/50">
+                  <h3 className="text-lg font-semibold text-primary">1. Dados do Destinatário</h3>
+                  
+                  <div className="space-y-3">
+                    <div className="flex flex-col gap-1">
+                      <Label className="text-sm font-medium text-muted-foreground">Nome da Criança:</Label>
+                      <Input 
+                        value={childName} 
+                        onChange={e => setChildName(e.target.value.slice(0, 10))} 
+                        className="text-base py-4 rounded-xl border-2 border-accent/30 focus:border-accent"
+                        maxLength={10}
+                      />
+                      <p className="text-xs text-muted-foreground text-right">{childName.length}/10</p>
+                    </div>
+
+                    <div className="flex flex-col gap-1">
+                      <Label className="text-sm font-medium text-muted-foreground">Gênero:</Label>
+                      <p className="text-base font-medium capitalize">{gender === 'menino' ? '👦 Menino' : '👧 Menina'}</p>
+                    </div>
+
+                    <div className="flex flex-col gap-1">
+                      <Label className="text-sm font-medium text-muted-foreground">Comportamento:</Label>
+                      <p className="text-base font-medium">{behavior === 'sim' ? '😊 Sim' : behavior === 'mais-ou-menos' ? '😐 Mais ou menos' : '🤷 Sem resposta'}</p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Review Section - Personalização */}
+                <div className="space-y-4 p-4 md:p-6 bg-muted/30 rounded-xl border border-border/50">
+                  <h3 className="text-lg font-semibold text-primary">2. Personalização</h3>
+                  
+                  <div className="space-y-4">
+                    <div className="flex flex-col gap-1">
+                      <Label className="text-sm font-medium text-muted-foreground">Idade:</Label>
+                      <div className="relative">
+                        <Input 
+                          type="text" 
+                          placeholder="Digite para buscar ou selecione..." 
+                          value={ageSearch} 
+                          onChange={e => setAgeSearch(e.target.value)} 
+                          onFocus={() => setIsAgeDropdownOpen(true)} 
+                          onBlur={() => setTimeout(() => setIsAgeDropdownOpen(false), 200)} 
+                          className="text-base py-4 rounded-xl border-2 border-accent/30 focus:border-accent" 
+                        />
+                        {isAgeDropdownOpen && <div className="absolute z-50 w-full mt-2 bg-background border-2 border-accent/30 rounded-xl shadow-lg max-h-60 overflow-y-auto">
+                            {filteredAgeOptions.length > 0 ? filteredAgeOptions.map((option, index) => <div key={index} onClick={() => {
+                          setAge(option);
+                          setAgeSearch(option);
+                          setIsAgeDropdownOpen(false);
+                        }} className="px-4 py-3 hover:bg-accent/10 cursor-pointer transition-colors border-b border-border/50 last:border-0">
+                                  {option}
+                                </div>) : <div className="px-4 py-3 text-muted-foreground">
+                                Nenhuma opção encontrada
+                              </div>}
+                          </div>}
+                      </div>
+                    </div>
+
+                    <div className="flex flex-col gap-1">
+                      <Label className="text-sm font-medium text-muted-foreground">Atividade/Elogio:</Label>
+                      <SelectWithCustom
+                        value={activity}
+                        onValueChange={setActivity}
+                        placeholder="Selecione uma opção..."
+                        maxCustomLength={50}
+                        options={getActivityOptions()}
+                      />
+                    </div>
+
+                    <div className="flex flex-col gap-1">
+                      <Label className="text-sm font-medium text-muted-foreground">Característica Principal:</Label>
+                      <SelectWithCustom
+                        value={characteristic}
+                        onValueChange={setCharacteristic}
+                        placeholder="Selecione uma característica..."
+                        maxCustomLength={50}
+                        options={[
+                          { value: "Carinhoso", label: "Carinhoso" },
+                          { value: "Carinhosa", label: "Carinhosa" },
+                          { value: "Corajoso", label: "Corajoso" },
+                          { value: "Corajosa", label: "Corajosa" },
+                          { value: "Criativo", label: "Criativo" },
+                          { value: "Criativa", label: "Criativa" },
+                          { value: "Responsável", label: "Responsável" },
+                          { value: "Curioso", label: "Curioso" },
+                          { value: "Curiosa", label: "Curiosa" },
+                          { value: "Prestativo", label: "Prestativo" },
+                          { value: "Prestativa", label: "Prestativa" },
+                          { value: "Alegre", label: "Alegre" },
+                        ]}
+                      />
+                    </div>
+
+                    <div className="flex flex-col gap-1">
+                      <Label className="text-sm font-medium text-muted-foreground">Mensagem Secreta:</Label>
+                      <SelectWithCustom
+                        value={secretMessage}
+                        onValueChange={setSecretMessage}
+                        placeholder="Selecione uma opção..."
+                        maxCustomLength={50}
+                        options={[
+                          { value: "É o melhor irmão.", label: "É o melhor irmão." },
+                          { value: "É a melhor irmã.", label: "É a melhor irmã." },
+                          { value: "É o melhor filho.", label: "É o melhor filho." },
+                          { value: "É a melhor filha.", label: "É a melhor filha." },
+                          { value: "É o melhor neto.", label: "É o melhor neto." },
+                          { value: "É a melhor neta.", label: "É a melhor neta." },
+                          { value: "É o melhor sobrinho.", label: "É o melhor sobrinho." },
+                          { value: "É a melhor sobrinha.", label: "É a melhor sobrinha." },
+                          { value: "É o melhor amigo do mundo.", label: "É o melhor amigo do mundo." },
+                          { value: "É a melhor amiga do mundo.", label: "É a melhor amiga do mundo." },
+                          { value: "É muito divertido.", label: "É muito divertido." },
+                          { value: "É muito divertida.", label: "É muito divertida." },
+                          { value: "É muito gentil.", label: "É muito gentil." },
+                          { value: "É muito inteligente.", label: "É muito inteligente." },
+                          { value: "Adora rir.", label: "Adora rir." },
+                        ]}
+                      />
+                    </div>
+
+                    <div className="flex flex-col gap-1">
+                      <Label className="text-sm font-medium text-muted-foreground">Conselho Secreto:</Label>
+                      <Textarea 
+                        value={secretAdvice} 
+                        onChange={e => setSecretAdvice(e.target.value.slice(0, 50))} 
+                        className="min-h-[60px] text-base rounded-xl border-2 border-accent/30 focus:border-accent resize-none" 
+                        maxLength={50} 
+                      />
+                      <p className="text-xs text-muted-foreground text-right">{secretAdvice.length}/50</p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Review Section - Fotos e Dados */}
+                <div className="space-y-4 p-4 md:p-6 bg-muted/30 rounded-xl border border-border/50">
+                  <h3 className="text-lg font-semibold text-primary">3. Fotos e Dados</h3>
+                  
+                  <div className="space-y-3">
+                    {photoPreview && <div className="flex flex-col gap-1">
+                      <Label className="text-sm font-medium text-muted-foreground">Foto da Criança:</Label>
+                      <img src={photoPreview} alt="Preview da foto" className="w-32 h-32 object-cover rounded-xl border-2 border-accent/30" />
+                    </div>}
+
+                    <div className="flex flex-col gap-1">
+                      <Label className="text-sm font-medium text-muted-foreground">Email:</Label>
+                      <p className="text-base font-medium">{email}</p>
+                    </div>
+
+                    <div className="flex flex-col gap-1">
+                      <Label className="text-sm font-medium text-muted-foreground">Nome Completo:</Label>
+                      <p className="text-base font-medium">{fullName}</p>
+                    </div>
+
+                    <div className="flex flex-col gap-1">
+                      <Label className="text-sm font-medium text-muted-foreground">Telefone:</Label>
+                      <p className="text-base font-medium">{phone}</p>
+                    </div>
+
+                    <div className="flex flex-col gap-1">
+                      <Label className="text-sm font-medium text-muted-foreground">CPF/CNPJ:</Label>
+                      <p className="text-base font-medium">{cpfCnpj}</p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Final Warning */}
+                <div className="bg-amber-500/10 border border-amber-500/30 rounded-xl p-4">
+                  <p className="text-sm text-amber-600 dark:text-amber-400">
+                    ⚠️ <strong>Última chance de revisar!</strong> Após confirmar, não será possível alterar as informações. O Papai Noel irá ler exatamente o que está escrito acima.
+                  </p>
+                </div>
+
+                {/* Navigation */}
+                <div className="flex flex-col sm:flex-row gap-3 sm:justify-between pt-6">
+                  <Button variant="outline" size="lg" className="gap-2 w-full sm:w-auto" onClick={() => setCurrentStep(3)}>
+                    <ArrowLeft className="w-4 h-4" />
+                    Voltar e Editar
+                  </Button>
+                  <Button 
+                    size="lg" 
+                    className="w-full sm:w-auto bg-primary hover:bg-primary/90 gap-2" 
+                    disabled={isSubmitting}
+                    onClick={handleSubmitForm}
+                  >
+                    {isSubmitting ? <>
+                        <Loader2 className="w-5 h-5 mr-2 animate-spin" />
+                        Enviando...
+                      </> : "Confirmar e Enviar"}
                   </Button>
                 </div>
               </div>}
