@@ -838,8 +838,11 @@ const FormularioErro = () => {
                   <p className="text-base md:text-lg font-semibold text-red-600 dark:text-red-400 mb-2">
                     ⚠️ ATENÇÃO: REVISE CUIDADOSAMENTE!
                   </p>
-                  <p className="text-sm text-red-600/80 dark:text-red-400/80">
+                  <p className="text-sm text-red-600/80 dark:text-red-400/80 mb-2">
                     O Papai Noel vai ler <strong>exatamente</strong> o que está escrito abaixo. Não alteramos nenhuma letra, vírgula, nome ou concordância. Revise tudo antes de confirmar!
+                  </p>
+                  <p className="text-sm text-red-600/80 dark:text-red-400/80">
+                    <strong>IMPORTANTE:</strong> Não abrevie palavras! Escreva tudo por extenso para que o Papai Noel leia corretamente.
                   </p>
                 </div>
 
