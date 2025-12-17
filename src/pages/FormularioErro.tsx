@@ -529,7 +529,7 @@ const FormularioErro = () => {
                     value={activity}
                     onValueChange={setActivity}
                     placeholder="Selecione uma opção..."
-                    maxCustomLength={50}
+                    maxCustomLength={35}
                     options={getActivityOptions()}
                   />
                 </div>
@@ -911,7 +911,7 @@ const FormularioErro = () => {
                         value={activity}
                         onValueChange={setActivity}
                         placeholder="Selecione uma opção..."
-                        maxCustomLength={50}
+                        maxCustomLength={35}
                         options={getActivityOptions()}
                       />
                     </div>

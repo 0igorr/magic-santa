@@ -700,7 +700,7 @@ const Formulario = () => {
                   <Label htmlFor="activity" className="text-base md:text-lg font-semibold">
                     Opções de Atividade ou Elogio
                   </Label>
-                  <SelectWithCustom value={activity} onValueChange={setActivity} placeholder="Selecione uma opção..." maxCustomLength={120} options={getActivityOptions()} />
+                  <SelectWithCustom value={activity} onValueChange={setActivity} placeholder="Selecione uma opção..." maxCustomLength={35} options={getActivityOptions()} />
                 </div>
 
                 {/* Característica Principal */}
