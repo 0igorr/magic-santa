@@ -457,223 +457,85 @@ const Formulario = () => {
                   <p className="text-sm text-muted-foreground">
                     O que o Papai Noel deve dizer sobre a criança?
                   </p>
-                  <SelectWithCustom value={secretMessage} onValueChange={setSecretMessage} placeholder="Selecione uma opção..." maxCustomLength={120} options={[{
-                value: "É o melhor irmão.",
-                label: "É o melhor irmão."
-              }, {
-                value: "É a melhor irmã.",
-                label: "É a melhor irmã."
-              }, {
-                value: "É o melhor filho.",
-                label: "É o melhor filho."
-              }, {
-                value: "É a melhor filha.",
-                label: "É a melhor filha."
-              }, {
-                value: "É o melhor neto.",
-                label: "É o melhor neto."
-              }, {
-                value: "É a melhor neta.",
-                label: "É a melhor neta."
-              }, {
-                value: "É o melhor sobrinho.",
-                label: "É o melhor sobrinho."
-              }, {
-                value: "É a melhor sobrinha.",
-                label: "É a melhor sobrinha."
-              }, {
-                value: "É o melhor amigo do mundo.",
-                label: "É o melhor amigo do mundo."
-              }, {
-                value: "É a melhor amiga do mundo.",
-                label: "É a melhor amiga do mundo."
-              }, {
-                value: "É o melhor dançarino do mundo.",
-                label: "É o melhor dançarino do mundo."
-              }, {
-                value: "É a melhor dançarina do mundo.",
-                label: "É a melhor dançarina do mundo."
-              }, {
-                value: "É o melhor cantor do mundo.",
-                label: "É o melhor cantor do mundo."
-              }, {
-                value: "É a melhor cantora do mundo.",
-                label: "É a melhor cantora do mundo."
-              }, {
-                value: "É muito divertido.",
-                label: "É muito divertido."
-              }, {
-                value: "É muito divertida.",
-                label: "É muito divertida."
-              }, {
-                value: "É muito minucioso.",
-                label: "É muito minucioso."
-              }, {
-                value: "É muito minuciosa.",
-                label: "É muito minuciosa."
-              }, {
-                value: "É muito valente.",
-                label: "É muito valente."
-              }, {
-                value: "É muito respeitoso.",
-                label: "É muito respeitoso."
-              }, {
-                value: "É muito respeitosa.",
-                label: "É muito respeitosa."
-              }, {
-                value: "É muito bom em tecnologia.",
-                label: "É muito bom em tecnologia."
-              }, {
-                value: "É muito boa em tecnologia.",
-                label: "É muito boa em tecnologia."
-              }, {
-                value: "É um mestre na cozinha.",
-                label: "É um mestre na cozinha."
-              }, {
-                value: "É uma mestra na cozinha.",
-                label: "É uma mestra na cozinha."
-              }, {
-                value: "É um artista incrível.",
-                label: "É um artista incrível."
-              }, {
-                value: "É uma artista incrível.",
-                label: "É uma artista incrível."
-              }, {
-                value: "É o melhor colega de classe.",
-                label: "É o melhor colega de classe."
-              }, {
-                value: "É a melhor colega de classe.",
-                label: "É a melhor colega de classe."
-              }, {
-                value: "É muito dedicado ao que faz.",
-                label: "É muito dedicado ao que faz."
-              }, {
-                value: "É muito dedicada ao que faz.",
-                label: "É muito dedicada ao que faz."
-              }, {
-                value: "É muito bom em desenhar.",
-                label: "É muito bom em desenhar."
-              }, {
-                value: "É muito boa em desenhar.",
-                label: "É muito boa em desenhar."
-              }, {
-                value: "É muito criativo com as histórias.",
-                label: "É muito criativo com as histórias."
-              }, {
-                value: "É muito criativa com as histórias.",
-                label: "É muito criativa com as histórias."
-              }, {
-                value: "É muito honesto.",
-                label: "É muito honesto."
-              }, {
-                value: "É muito honesta.",
-                label: "É muito honesta."
-              }, {
-                value: "É muito gentil.",
-                label: "É muito gentil."
-              }, {
-                value: "É muito amigável.",
-                label: "É muito amigável."
-              }, {
-                value: "É muito inteligente.",
-                label: "É muito inteligente."
-              }, {
-                value: "É um bom líder.",
-                label: "É um bom líder."
-              }, {
-                value: "É uma boa líder.",
-                label: "É uma boa líder."
-              }, {
-                value: "É muito amoroso.",
-                label: "É muito amoroso."
-              }, {
-                value: "É muito amorosa.",
-                label: "É muito amorosa."
-              }, {
-                value: "É um excelente ouvinte.",
-                label: "É um excelente ouvinte."
-              }, {
-                value: "É uma excelente ouvinte.",
-                label: "É uma excelente ouvinte."
-              }, {
-                value: "Adora ler muito bem.",
-                label: "Adora ler muito bem."
-              }, {
-                value: "Cresce muito rápido.",
-                label: "Cresce muito rápido."
-              }, {
-                value: "Conta lindas histórias.",
-                label: "Conta lindas histórias."
-              }, {
-                value: "Adora fazer esportes.",
-                label: "Adora fazer esportes."
-              }, {
-                value: "Adora jogar jogos.",
-                label: "Adora jogar jogos."
-              }, {
-                value: "Adora rir.",
-                label: "Adora rir."
-              }, {
-                value: "Gosta de contar piadas.",
-                label: "Gosta de contar piadas."
-              }, {
-                value: "Gosta de tocar música.",
-                label: "Gosta de tocar música."
-              }, {
-                value: "Vai muito bem na escola.",
-                label: "Vai muito bem na escola."
-              }, {
-                value: "Sabe andar de bicicleta.",
-                label: "Sabe andar de bicicleta."
-              }, {
-                value: "Tem uma grande imaginação.",
-                label: "Tem uma grande imaginação."
-              }, {
-                value: "Tem um sorriso lindo.",
-                label: "Tem um sorriso lindo."
-              }, {
-                value: "Está atento(a) aos outros.",
-                label: "Está atento(a) aos outros."
-              }, {
-                value: "Estuda bastante.",
-                label: "Estuda bastante."
-              }, {
-                value: "Tem um senso de justiça admirável.",
-                label: "Tem um senso de justiça admirável."
-              }, {
-                value: "Gosta de cuidar dos animais.",
-                label: "Gosta de cuidar dos animais."
-              }, {
-                value: "Tem uma risada muito contagiante.",
-                label: "Tem uma risada muito contagiante."
-              }, {
-                value: "Consegue ver o lado bom das coisas.",
-                label: "Consegue ver o lado bom das coisas."
-              }, {
-                value: "É muito minucioso(a) com os detalhes.",
-                label: "É muito minucioso(a) com os detalhes."
-              }, {
-                value: "Adora passar tempo com o vovô.",
-                label: "Adora passar tempo com o vovô."
-              }, {
-                value: "Adora passar tempo com a vovó.",
-                label: "Adora passar tempo com a vovó."
-              }, {
-                value: "É um presente para todos nós.",
-                label: "É um presente para todos nós."
-              }, {
-                value: "Tem um coração muito generoso.",
-                label: "Tem um coração muito generoso."
-              }, {
-                value: "É o sol da nossa casa.",
-                label: "É o sol da nossa casa."
-              }, {
-                value: "Tem um senso de humor único.",
-                label: "Tem um senso de humor único."
-              }, {
-                value: "Escreve lindas histórias.",
-                label: "Escreve lindas histórias."
-              }]} />
+                  <Select value={secretMessage} onValueChange={setSecretMessage}>
+                    <SelectTrigger className="text-base py-6 rounded-xl border-2 border-accent/30">
+                      <SelectValue placeholder="Selecione uma opção..." />
+                    </SelectTrigger>
+                    <SelectContent className="max-h-[300px]">
+                      <SelectItem value="É o melhor irmão.">É o melhor irmão.</SelectItem>
+                      <SelectItem value="É a melhor irmã.">É a melhor irmã.</SelectItem>
+                      <SelectItem value="É o melhor filho.">É o melhor filho.</SelectItem>
+                      <SelectItem value="É a melhor filha.">É a melhor filha.</SelectItem>
+                      <SelectItem value="É o melhor neto.">É o melhor neto.</SelectItem>
+                      <SelectItem value="É a melhor neta.">É a melhor neta.</SelectItem>
+                      <SelectItem value="É o melhor sobrinho.">É o melhor sobrinho.</SelectItem>
+                      <SelectItem value="É a melhor sobrinha.">É a melhor sobrinha.</SelectItem>
+                      <SelectItem value="É o melhor amigo do mundo.">É o melhor amigo do mundo.</SelectItem>
+                      <SelectItem value="É a melhor amiga do mundo.">É a melhor amiga do mundo.</SelectItem>
+                      <SelectItem value="É o melhor dançarino do mundo.">É o melhor dançarino do mundo.</SelectItem>
+                      <SelectItem value="É a melhor dançarina do mundo.">É a melhor dançarina do mundo.</SelectItem>
+                      <SelectItem value="É o melhor cantor do mundo.">É o melhor cantor do mundo.</SelectItem>
+                      <SelectItem value="É a melhor cantora do mundo.">É a melhor cantora do mundo.</SelectItem>
+                      <SelectItem value="É muito divertido.">É muito divertido.</SelectItem>
+                      <SelectItem value="É muito divertida.">É muito divertida.</SelectItem>
+                      <SelectItem value="É muito minucioso.">É muito minucioso.</SelectItem>
+                      <SelectItem value="É muito minuciosa.">É muito minuciosa.</SelectItem>
+                      <SelectItem value="É muito valente.">É muito valente.</SelectItem>
+                      <SelectItem value="É muito respeitoso.">É muito respeitoso.</SelectItem>
+                      <SelectItem value="É muito respeitosa.">É muito respeitosa.</SelectItem>
+                      <SelectItem value="É muito bom em tecnologia.">É muito bom em tecnologia.</SelectItem>
+                      <SelectItem value="É muito boa em tecnologia.">É muito boa em tecnologia.</SelectItem>
+                      <SelectItem value="É um mestre na cozinha.">É um mestre na cozinha.</SelectItem>
+                      <SelectItem value="É uma mestra na cozinha.">É uma mestra na cozinha.</SelectItem>
+                      <SelectItem value="É um artista incrível.">É um artista incrível.</SelectItem>
+                      <SelectItem value="É uma artista incrível.">É uma artista incrível.</SelectItem>
+                      <SelectItem value="É o melhor colega de classe.">É o melhor colega de classe.</SelectItem>
+                      <SelectItem value="É a melhor colega de classe.">É a melhor colega de classe.</SelectItem>
+                      <SelectItem value="É muito dedicado ao que faz.">É muito dedicado ao que faz.</SelectItem>
+                      <SelectItem value="É muito dedicada ao que faz.">É muito dedicada ao que faz.</SelectItem>
+                      <SelectItem value="É muito bom em desenhar.">É muito bom em desenhar.</SelectItem>
+                      <SelectItem value="É muito boa em desenhar.">É muito boa em desenhar.</SelectItem>
+                      <SelectItem value="É muito criativo com as histórias.">É muito criativo com as histórias.</SelectItem>
+                      <SelectItem value="É muito criativa com as histórias.">É muito criativa com as histórias.</SelectItem>
+                      <SelectItem value="É muito honesto.">É muito honesto.</SelectItem>
+                      <SelectItem value="É muito honesta.">É muito honesta.</SelectItem>
+                      <SelectItem value="É muito gentil.">É muito gentil.</SelectItem>
+                      <SelectItem value="É muito amigável.">É muito amigável.</SelectItem>
+                      <SelectItem value="É muito inteligente.">É muito inteligente.</SelectItem>
+                      <SelectItem value="É um bom líder.">É um bom líder.</SelectItem>
+                      <SelectItem value="É uma boa líder.">É uma boa líder.</SelectItem>
+                      <SelectItem value="É muito amoroso.">É muito amoroso.</SelectItem>
+                      <SelectItem value="É muito amorosa.">É muito amorosa.</SelectItem>
+                      <SelectItem value="É um excelente ouvinte.">É um excelente ouvinte.</SelectItem>
+                      <SelectItem value="É uma excelente ouvinte.">É uma excelente ouvinte.</SelectItem>
+                      <SelectItem value="Adora ler muito bem.">Adora ler muito bem.</SelectItem>
+                      <SelectItem value="Cresce muito rápido.">Cresce muito rápido.</SelectItem>
+                      <SelectItem value="Conta lindas histórias.">Conta lindas histórias.</SelectItem>
+                      <SelectItem value="Adora fazer esportes.">Adora fazer esportes.</SelectItem>
+                      <SelectItem value="Adora jogar jogos.">Adora jogar jogos.</SelectItem>
+                      <SelectItem value="Adora rir.">Adora rir.</SelectItem>
+                      <SelectItem value="Gosta de contar piadas.">Gosta de contar piadas.</SelectItem>
+                      <SelectItem value="Gosta de tocar música.">Gosta de tocar música.</SelectItem>
+                      <SelectItem value="Vai muito bem na escola.">Vai muito bem na escola.</SelectItem>
+                      <SelectItem value="Sabe andar de bicicleta.">Sabe andar de bicicleta.</SelectItem>
+                      <SelectItem value="Tem uma grande imaginação.">Tem uma grande imaginação.</SelectItem>
+                      <SelectItem value="Tem um sorriso lindo.">Tem um sorriso lindo.</SelectItem>
+                      <SelectItem value="Está atento(a) aos outros.">Está atento(a) aos outros.</SelectItem>
+                      <SelectItem value="Estuda bastante.">Estuda bastante.</SelectItem>
+                      <SelectItem value="Tem um senso de justiça admirável.">Tem um senso de justiça admirável.</SelectItem>
+                      <SelectItem value="Gosta de cuidar dos animais.">Gosta de cuidar dos animais.</SelectItem>
+                      <SelectItem value="Tem uma risada muito contagiante.">Tem uma risada muito contagiante.</SelectItem>
+                      <SelectItem value="Consegue ver o lado bom das coisas.">Consegue ver o lado bom das coisas.</SelectItem>
+                      <SelectItem value="É muito minucioso(a) com os detalhes.">É muito minucioso(a) com os detalhes.</SelectItem>
+                      <SelectItem value="Adora passar tempo com o vovô.">Adora passar tempo com o vovô.</SelectItem>
+                      <SelectItem value="Adora passar tempo com a vovó.">Adora passar tempo com a vovó.</SelectItem>
+                      <SelectItem value="É um presente para todos nós.">É um presente para todos nós.</SelectItem>
+                      <SelectItem value="Tem um coração muito generoso.">Tem um coração muito generoso.</SelectItem>
+                      <SelectItem value="É o sol da nossa casa.">É o sol da nossa casa.</SelectItem>
+                      <SelectItem value="Tem um senso de humor único.">Tem um senso de humor único.</SelectItem>
+                      <SelectItem value="Escreve lindas histórias.">Escreve lindas histórias.</SelectItem>
+                    </SelectContent>
+                  </Select>
                 </div>
 
                 {/* Conselho Secreto */}
