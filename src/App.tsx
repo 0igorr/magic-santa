@@ -6,6 +6,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import Formulario from "./pages/Formulario";
 import FormularioErro from "./pages/FormularioErro";
+import FormularioErroSucesso from "./pages/FormularioErroSucesso";
 import Politicas from "./pages/Politicas";
 import NotFound from "./pages/NotFound";
 import FloatingChat from "./components/FloatingChat";
@@ -22,6 +23,7 @@ const App = () => (
           <Route path="/" element={<Index />} />
           <Route path="/formulario" element={<Formulario />} />
           <Route path="/formularioerro" element={<FormularioErro />} />
+          <Route path="/formularioerro/sucesso" element={<FormularioErroSucesso />} />
           <Route path="/politicas" element={<Politicas />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
