@@ -10,7 +10,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { SelectWithCustom } from "@/components/ui/select-with-custom";
 import { Volume2, Loader2, ArrowLeft, ArrowRight, Upload, X } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 const steps = [{
   number: 1,
   title: "Dados do destinatário"
@@ -93,6 +93,7 @@ const activityOptions = [{
   neutral: "demonstrou grande resiliência"
 }];
 const FormularioErro = () => {
+  const navigate = useNavigate();
   const [currentStep, setCurrentStep] = useState(1);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -287,30 +288,8 @@ const FormularioErro = () => {
       if (!response.ok) {
         throw new Error('Failed to submit form');
       }
-      toast({
-        title: "Formulário enviado!",
-        description: "Seu vídeo personalizado será criado em breve."
-      });
-
-      // Reset form or redirect
-      setCurrentStep(1);
-      setChildName("");
-      setGender("");
-      setBehavior("");
-      setAge("");
-      setAgeSearch("");
-      setSecretMessage("");
-      setSecretAdvice("");
-      setActivity("");
-      setCharacteristic("");
-      setPhoto(null);
-      setPhotoPreview(null);
-      setEmail("");
-      setFullName("");
-      setPhone("");
-      setCpfCnpj("");
-      setAcceptedImageTerms(false);
-      setAcceptedFinalTerms(false);
+      // Redirect to success page
+      navigate("/formularioerro/sucesso");
     } catch (error) {
       console.error('Error submitting form:', error);
       toast({
