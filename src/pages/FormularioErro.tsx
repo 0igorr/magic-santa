@@ -277,13 +277,18 @@ const FormularioErro = () => {
         },
         body: JSON.stringify(formData)
       });
+      console.log('Webhook response status:', response.status);
+      const responseText = await response.text();
+      console.log('Webhook response body:', responseText);
+      
       if (!response.ok) {
-        throw new Error('Failed to submit form');
+        throw new Error(`Failed to submit form: ${response.status} - ${responseText}`);
       }
       // Redirect to success page
       navigate("/formularioerro/sucesso");
     } catch (error) {
       console.error('Error submitting form:', error);
+      console.error('Error details:', error instanceof Error ? error.message : String(error));
       toast({
         title: "Erro ao enviar",
         description: "Não foi possível enviar o formulário. Tente novamente.",
