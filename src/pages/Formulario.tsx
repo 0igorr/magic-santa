@@ -188,14 +188,6 @@ const Formulario = () => {
       });
       return;
     }
-    if (childName.length > 10) {
-      toast({
-        title: "Nome muito longo",
-        description: "O nome deve ter máximo 10 caracteres",
-        variant: "destructive"
-      });
-      return;
-    }
     setIsGenerating(true);
     try {
       const response = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/generate-santa-voice`, {
@@ -325,10 +317,7 @@ const Formulario = () => {
                   </Label>
                   <div className="flex gap-3 items-start">
                     <div className="flex-1">
-                      <Input id="childName" type="text" placeholder="Digite o nome..." value={childName} onChange={e => setChildName(e.target.value.slice(0, 10))} className="text-base md:text-lg py-6 rounded-xl border-2 border-accent/30 focus:border-accent" maxLength={10} />
-                      <p className="text-xs text-muted-foreground mt-1">
-                        {childName.length}/10 caracteres
-                      </p>
+                      <Input id="childName" type="text" placeholder="Digite o nome..." value={childName} onChange={e => setChildName(e.target.value)} className="text-base md:text-lg py-6 rounded-xl border-2 border-accent/30 focus:border-accent" />
                     </div>
                     <Button onClick={handleGenerateVoice} disabled={isGenerating || !childName.trim()} variant="outline" size="lg" className="border-2 border-primary/30 hover:bg-primary/10 hover:border-primary text-primary px-4 py-6">
                       {isGenerating ? <Loader2 className="w-5 h-5 animate-spin" /> : <>
