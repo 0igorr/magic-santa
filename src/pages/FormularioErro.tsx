@@ -270,7 +270,7 @@ const FormularioErro = () => {
         cpfCnpj,
         submittedAt: new Date().toISOString()
       };
-      const response = await fetch('https://n8n-n8n.lw9gve.easypanel.host/webhook/papainoel-poscompra', {
+      const response = await fetch('https://n8n-n8n.lw9gve.easypanel.host/webhook/papainoelformulario2', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
